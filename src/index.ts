@@ -13,10 +13,10 @@ function component() {
 document.body.appendChild(component());
 
 kontra.init();
-let sprites = [];
+let sprites: any[] = [];
 
 // helper function to convert degrees to radians
-function degreesToRadians(degrees) {
+function degreesToRadians(degrees: number) {
   return (degrees * Math.PI) / 180;
 }
 
@@ -97,7 +97,7 @@ let ship = kontra.sprite({
 
 sprites.push(ship);
 
-function createAsteroid(x, y, radius) {
+function createAsteroid(x: number, y: number, radius: number) {
   let asteroid = kontra.sprite({
     type: "asteroid",
     x: x,
