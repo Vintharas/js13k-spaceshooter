@@ -2,5 +2,5 @@ import "kontra";
 import "./styles.css";
 import Game from "./game";
 
-const game = new Game();
+const game = Game.instance();
 game.start();

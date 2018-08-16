@@ -1,6 +1,7 @@
 import Scene from "./scene";
 import { createAsteroid } from "./asteroid";
 import createShip from "./ship";
+import createText from "./text";
 
 export default function createSpaceScene() {
   let loop = kontra.gameLoop({
@@ -14,6 +15,7 @@ export default function createSpaceScene() {
     scene.addSprite(asteroid);
   }
   scene.addSprite(createShip(scene));
+
   return scene;
 
   function update() {
@@ -74,6 +76,7 @@ export default function createSpaceScene() {
     scene.sprites = scene.sprites.filter(sprite => sprite.isAlive());
   }
 
+  // TODO: extract to scene
   function render() {
     scene.sprites.forEach(s => s.render());
   }
