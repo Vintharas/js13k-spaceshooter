@@ -42,7 +42,8 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(["dist"]),
     new HtmlWebpackPlugin({
-      title: "js13k-spaceshooter"
+      title: "js13k-spaceshooter",
+      template: "src/index.html"
     })
   ]
 };
