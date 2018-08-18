@@ -32,6 +32,7 @@
         - get nearer to a sun more energy faster
     - move
       - move affects energy
+      - cant move if you dont have energy enough
       - move around a map of fixed size
       - iteratively generate map boundaries
     - asteroids generation

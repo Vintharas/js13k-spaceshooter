@@ -48,7 +48,10 @@ export default function createShip(scene: Scene) {
       const cos = Math.cos(degreesToRadians(this.rotation));
       const sin = Math.sin(degreesToRadians(this.rotation));
 
-      if (kontra.keys.pressed("up")) {
+      if (
+        kontra.keys.pressed("up") &&
+        this.energy.hasEnoughEnergy(EnergyCost.ThrustCost)
+      ) {
         this.ddx = cos * 0.1;
         this.ddy = sin * 0.1;
         // reduce energy
@@ -116,6 +119,10 @@ function ShipEnergy(energy: number) {
 
     consume(energyCost: number) {
       if (this.energy > 0) this.energy -= energyCost;
+    },
+
+    hasEnoughEnergy(energyCost: number) {
+      return this.energy >= energyCost;
     }
   });
 }
