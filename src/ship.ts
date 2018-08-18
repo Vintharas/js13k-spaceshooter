@@ -38,6 +38,9 @@ export default function createShip(scene: Scene) {
       this.energy.render();
     },
     update() {
+      // update ship energy
+      this.energy.update();
+
       // rotate the ship left or right
       if (kontra.keys.pressed("left")) {
         this.rotation += -4;
@@ -66,6 +69,7 @@ export default function createShip(scene: Scene) {
         this.dx *= 0.95;
         this.dy *= 0.95;
       }
+
       // allow the player to fire no more than 1 bullet every 1/4 second
       this.dt += 1 / 60;
       if (kontra.keys.pressed("space") && this.dt > 0.25) {
@@ -106,6 +110,17 @@ function ShipEnergy(energy: number) {
 
     x: 5,
     y: 5,
+
+    dt: 0,
+
+    update() {
+      this.dt += 1 / 60;
+      if (this.dt > 0.25) {
+        // baseline for recharging energy
+        this.energy++;
+        this.dt = 0;
+      }
+    },
     render() {
       // energy bar
       let energyWidth = Math.ceil((this.energy * barWidth) / this.maxEnergy);

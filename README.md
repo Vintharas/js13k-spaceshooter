@@ -28,8 +28,8 @@
 
     - ship energy
       * ship energy indicator
-      - suns slowly recharge energy
-        - get nearer to a sun more energy faster
+      * suns slowly recharge energy
+      - when you get near to a sun you get more energy faster
     - move
       - move affects energy
       - cant move if you dont have energy enough
