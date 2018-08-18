@@ -1,4 +1,3 @@
-import "kontra";
 import createSpaceScene from "./spaceScene";
 import Scene from "./scene";
 import createOpenScene from "./openScene";

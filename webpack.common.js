@@ -8,17 +8,19 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 module.exports = {
   entry: "./src/index.ts",
   output: {
-    filename: "main.js",
+    filename: "bundle.js",
     path: path.resolve(__dirname, "dist")
   },
   module: {
     rules: [
       // game engine kontra.js
       {
-        test: /kontra/,
+        test: /kontra\.js/,
         use: ["script-loader"]
       },
       // styles
+      // TODO: this is adding 10K to the bundle :O
+      // review if I want to have this
       {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
@@ -34,10 +36,6 @@ module.exports = {
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js", ".css"]
-  },
-  devtool: "inline-source-map",
-  devServer: {
-    contentBase: "./dist"
   },
   plugins: [
     new CleanWebpackPlugin(["dist"]),

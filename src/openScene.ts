@@ -1,4 +1,3 @@
-import "kontra";
 import Scene from "./scene";
 import createText from "./text";
 import Game from "./game";

@@ -1,18 +1,22 @@
-import "kontra";
 import { degreesToRadians } from "./utils";
 import Scene from "./scene";
 
 export default function createShip(scene: Scene) {
   const ship = kontra.sprite({
-    // make sure to give the asteroids a type: 'asteroids'!
     type: "ship",
 
+    // position
     x: 300,
     y: 300,
-    width: 6, // we'll use this later for collision detection
-    rotation: 0, // 0 degrees is to the right
+    rotation: 0,
+
+    // collisions
+    width: 6,
+
+    // energy
+    energy: ShipEnergy(200),
+
     dt: 0, // track how much time has passed
-    // make sure to give the asteroids this as well!
     ttl: Infinity,
 
     render() {
@@ -29,6 +33,9 @@ export default function createShip(scene: Scene) {
       this.context.closePath();
       this.context.stroke();
       this.context.restore();
+
+      // draw ship energy
+      this.energy.render();
     },
     update() {
       // rotate the ship left or right
@@ -44,6 +51,8 @@ export default function createShip(scene: Scene) {
       if (kontra.keys.pressed("up")) {
         this.ddx = cos * 0.1;
         this.ddy = sin * 0.1;
+        // reduce energy
+        this.energy.consume(EnergyCost.ThrustCost);
       } else {
         this.ddx = this.ddy = 0;
       }
@@ -79,4 +88,34 @@ export default function createShip(scene: Scene) {
   });
 
   return ship;
+}
+
+const barWidth = 100;
+const barHeight = 10;
+const EnergyCost = {
+  ThrustCost: 1
+};
+
+function ShipEnergy(energy: number) {
+  return kontra.sprite({
+    maxEnergy: energy,
+    energy,
+
+    x: 5,
+    y: 5,
+    render() {
+      // energy bar
+      let energyWidth = Math.ceil((this.energy * barWidth) / this.maxEnergy);
+
+      this.context.fillStyle = "green";
+      this.context.fillRect(this.x, this.y, energyWidth, barHeight);
+      // energy bar container
+      this.context.strokeStyle = "white";
+      this.context.strokeRect(this.x, this.y, barWidth, barHeight);
+    },
+
+    consume(energyCost: number) {
+      if (this.energy > 0) this.energy -= energyCost;
+    }
+  });
 }

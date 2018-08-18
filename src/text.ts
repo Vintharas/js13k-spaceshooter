@@ -1,5 +1,3 @@
-import "kontra";
-
 export interface FontOptions {
   size: number;
   family: string;
