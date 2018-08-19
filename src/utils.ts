@@ -9,6 +9,16 @@ export interface Velocity {
   dy: number;
 }
 
+export const Color = {
+  get(alpha: number) {
+    let red = getValueInRange(0, 255);
+    let green = getValueInRange(0, 255);
+    let blue = getValueInRange(0, 255);
+
+    return `rgba(${red},${green},${blue},${alpha})`;
+  }
+};
+
 export function degreesToRadians(degrees: number) {
   return (degrees * Math.PI) / 180;
 }

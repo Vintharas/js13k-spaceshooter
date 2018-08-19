@@ -86,8 +86,9 @@ function cleanupObjectIfOutOfBounds(scene: Scene, cameraPosition: Position) {
 }
 
 function addStars(scene: Scene, cameraPosition: Position) {
-  for (var i = -1000; i <= 1000; i += 100) {
-    for (var j = -1000; j <= 1000; j += 100) {
+  let spaceBetweenStars = 50;
+  for (var i = -1000; i <= 1000; i += spaceBetweenStars) {
+    for (var j = -1000; j <= 1000; j += spaceBetweenStars) {
       let star = createStar(i, j, cameraPosition);
       scene.addSprite(star);
     }
