@@ -6,6 +6,7 @@ const Config = {
   // more than this constant will be recycled
   mapBoundary: 3000,
 
+  // enable debug printouts
   debug: false
 };
 

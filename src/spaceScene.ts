@@ -3,6 +3,7 @@ import { createAsteroid } from "./asteroid";
 import createShip from "./ship";
 import { isObjectOutOfBounds, Position } from "./utils";
 import createStar from "./star";
+import Config from "./config";
 
 export default function createSpaceScene() {
   let loop = kontra.gameLoop({
@@ -12,12 +13,7 @@ export default function createSpaceScene() {
   const scene = new Scene([], loop);
   const ship = createShip(scene);
   // initial state
-  for (var i = -1000; i <= 1000; i += 100) {
-    for (var j = -1000; j <= 1000; j += 100) {
-      let star = createStar(i, j, ship);
-      scene.addSprite(star);
-    }
-  }
+  addStars(scene, ship);
 
   for (var i = 0; i < 4; i++) {
     let asteroid = createAsteroid(100, 100, 30, ship);
@@ -84,6 +80,16 @@ function cleanupObjectIfOutOfBounds(scene: Scene, cameraPosition: Position) {
   scene.sprites.forEach((s: any) => {
     if (isObjectOutOfBounds(s, cameraPosition)) {
       s.ttl = 0;
+      if (Config.debug) console.log(`Object ${s.type} out of bounds`, s);
     }
   });
+}
+
+function addStars(scene: Scene, cameraPosition: Position) {
+  for (var i = -1000; i <= 1000; i += 100) {
+    for (var j = -1000; j <= 1000; j += 100) {
+      let star = createStar(i, j, cameraPosition);
+      scene.addSprite(star);
+    }
+  }
 }

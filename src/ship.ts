@@ -83,7 +83,14 @@ export default function createShip(scene: Scene) {
         this.dt = 0;
         let position: Position = this;
         let velocity: Velocity = this;
-        const bullet = createBullet(position, velocity, cos, sin, this);
+        let cameraPosition: Position = this;
+        const bullet = createBullet(
+          position,
+          velocity,
+          cos,
+          sin,
+          cameraPosition
+        );
         scene.addSprite(bullet);
       }
     }

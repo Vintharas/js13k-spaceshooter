@@ -31,8 +31,8 @@ export default class Scene {
 
   logGameObjects(loop: any) {
     let dt = 0;
+    const sprites = () => this.sprites;
     let update = this.loop.update;
-    let sprites = this.sprites;
     let logPeriodSeconds = 1;
 
     this.loop.update = function debugUpdate(...args: any[]) {
@@ -40,7 +40,7 @@ export default class Scene {
       if (dt >= logPeriodSeconds) {
         dt = 0;
         console.table(
-          sprites.map((s: any) => ({
+          sprites().map((s: any) => ({
             type: s.type,
             x: s.x,
             y: s.y
