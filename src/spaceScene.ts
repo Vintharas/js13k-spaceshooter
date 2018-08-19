@@ -1,7 +1,7 @@
 import Scene from "./scene";
 import { createAsteroid } from "./asteroid";
 import createShip from "./ship";
-import { isObjectOutOfBounds, Position } from "./utils";
+import { isObjectOutOfBounds, Position, getValueInRange } from "./utils";
 import createStar from "./star";
 import Config from "./config";
 
@@ -14,11 +14,7 @@ export default function createSpaceScene() {
   const ship = createShip(scene);
   // initial state
   addStars(scene, ship);
-
-  for (var i = 0; i < 4; i++) {
-    let asteroid = createAsteroid(100, 100, 30, ship);
-    scene.addSprite(asteroid);
-  }
+  addAsteroids(scene, ship);
   scene.addSprite(ship);
 
   return scene;
@@ -48,8 +44,8 @@ export default function createSpaceScene() {
               if (asteroid.radius > 10) {
                 for (var x = 0; x < 3; x++) {
                   let newAsteroid = createAsteroid(
-                    asteroid.x,
-                    asteroid.y,
+                    asteroid,
+                    { dx: getValueInRange(-2, 2), dy: getValueInRange(-2, 2) },
                     asteroid.radius / 2.5,
                     ship
                   );
@@ -85,6 +81,7 @@ function cleanupObjectIfOutOfBounds(scene: Scene, cameraPosition: Position) {
   });
 }
 
+// creates initial amount of stars surrounding the spaceship
 function addStars(scene: Scene, cameraPosition: Position) {
   let spaceBetweenStars = 50;
   for (var i = -1000; i <= 1000; i += spaceBetweenStars) {
@@ -92,5 +89,36 @@ function addStars(scene: Scene, cameraPosition: Position) {
       let star = createStar(i, j, cameraPosition);
       scene.addSprite(star);
     }
+  }
+}
+
+function addAsteroids(scene: Scene, cameraPosition: Position) {
+  // create some clusters of varying sizes
+  for (let i = 0; i < 10; i++) addAsteroidCluster(scene, cameraPosition, i);
+}
+
+// creates a cluster of asteroids and adds it to the scene
+function addAsteroidCluster(
+  scene: Scene,
+  cameraPosition: Position,
+  clusterSize: number
+) {
+  let x = getValueInRange(-1000, 1000);
+  let y = getValueInRange(-1000, 1000);
+  let dx = getValueInRange(-2, 2);
+  let dy = getValueInRange(-2, 2);
+  for (var i = 0; i < clusterSize; i++) {
+    let radius = getValueInRange(0, 30);
+    let offsetX = getValueInRange(-100, 100);
+    let offsetY = getValueInRange(-100, 100);
+    let doffset = getValueInRange(-0.25, 0.25);
+
+    let asteroid = createAsteroid(
+      { x: x + offsetX, y: y + offsetY },
+      { dx: dx + doffset, dy: dy + doffset },
+      radius,
+      cameraPosition
+    );
+    scene.addSprite(asteroid);
   }
 }

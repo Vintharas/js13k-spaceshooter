@@ -1,20 +1,25 @@
-import { Position, getCanvasPosition, isObjectOutOfBounds } from "./utils";
+import {
+  Position,
+  getCanvasPosition,
+  isObjectOutOfBounds,
+  Velocity
+} from "./utils";
 import Config from "./config";
 
 export function createAsteroid(
-  x: number,
-  y: number,
+  position: Position,
+  velocity: Velocity,
   radius: number,
   cameraPosition: Position
 ) {
   let asteroid = kontra.sprite({
     type: "asteroid",
-    x: x,
-    y: y,
+    x: position.x,
+    y: position.y,
     radius: radius,
     ttl: Infinity,
-    dx: Math.random() * 4 - 2,
-    dy: Math.random() * 4 - 2,
+    dx: velocity.dx,
+    dy: velocity.dy,
     dt: 0,
     render() {
       if (isObjectOutOfBounds(this, cameraPosition)) return;
