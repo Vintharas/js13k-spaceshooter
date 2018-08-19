@@ -38,22 +38,27 @@
     - (is canvas smart enough to do this or do I need to take it into account?)
   - iteratively generate map boundaries
 - asteroids generation
-  - come from random location at random speed
-  - different size
+  - [*] come from random location at random speed
+  - [*] different size
+  - [*] create clusters of asteroids
+  - add new clusters every so often (outside of the current camera view)
 - shoot
+  - shooting spends energy
   - shooting at asteroids releases components -> energy
   - makes asteroids smaller
   - energy moves towards the ship, when the ship is near
 - stars
+  - [*] testing sprites so far
+  - [*] two different layers with different speeds and intensity
+  - [*] moving as the camera moves
   - stars as tilesets or sprites?
     - sprites, very easy to create
       - perhaps harder to distribute at an "even" way around the ship
+      - I think I have a working solution there
     - tiles, can create a parallax effect much easier
       - hmm I could make the camera movement affect more
         nearer background stuff as well, that should work
   - can I make stars with a tileset?
-  - two different layers with different speeds and intensity
-  - moving as the camera moves
 - planets
   - more resources
   - stars give you energy faster
@@ -64,6 +69,19 @@
   - show interesting stuff (like a minimap)
 - vision
   - diminish range of vision (player sees less space, rest becomes darker)
+- enable/disable systems based on energy left
+  - shield
+  - radar
+  - vision
+  - shoot
+  - thrust
+  - life support?
+- ways to lose
+  - crushed by an asteroid
+  - been too near a sun
+  - black holes?
+  - beasts and enemies attack you
+  - too low energy? Life support disabled for a long period of time?
 - smart enemies
   - reapers
   - galatic empire, etc
