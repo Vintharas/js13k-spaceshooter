@@ -1,13 +1,17 @@
-import { degreesToRadians } from "./utils";
+import { degreesToRadians, Velocity, Position } from "./utils";
 import Scene from "./scene";
+import createBullet from "./bullet";
 
 export default function createShip(scene: Scene) {
   const ship = kontra.sprite({
     type: "ship",
 
     // position
+    // this is actually the position of the camera
+    // of the game
     x: 300,
     y: 300,
+
     rotation: 0,
 
     // collisions
@@ -23,7 +27,10 @@ export default function createShip(scene: Scene) {
       this.context.save();
       // transform the origin, and rotate around the origin
       // using the ships rotation
-      this.context.translate(this.x, this.y);
+
+      // the ship is always in the middle of the canvas
+      // we move the camera instead, which affects all other objects
+      this.context.translate(300, 300);
       this.context.rotate(degreesToRadians(this.rotation));
       // draw a right facing triangle
       this.context.beginPath();
@@ -74,21 +81,9 @@ export default function createShip(scene: Scene) {
       this.dt += 1 / 60;
       if (kontra.keys.pressed("space") && this.dt > 0.25) {
         this.dt = 0;
-        let bullet = kontra.sprite({
-          type: "bullet",
-          // start the bullet on the ship at the end of the triangle
-          x: this.x + cos * 12,
-          y: this.y + sin * 12,
-          // move the bullet slightly faster than the ship
-          dx: this.dx + cos * 5,
-          dy: this.dy + sin * 5,
-          // live only 50 frames
-          ttl: 50,
-          // bullets are small
-          width: 2,
-          height: 2,
-          color: "white"
-        });
+        let position: Position = this;
+        let velocity: Velocity = this;
+        const bullet = createBullet(position, velocity, cos, sin, this);
         scene.addSprite(bullet);
       }
     }
@@ -117,7 +112,7 @@ function ShipEnergy(energy: number) {
       this.dt += 1 / 60;
       if (this.dt > 0.25) {
         // baseline for recharging energy
-        this.energy++;
+        if (this.energy < this.maxEnergy) this.energy++;
         this.dt = 0;
       }
     },

@@ -1,7 +1,8 @@
 import Scene from "./scene";
 import { createAsteroid } from "./asteroid";
 import createShip from "./ship";
-import createText from "./text";
+import { isObjectOutOfBounds, Position } from "./utils";
+import createStar from "./star";
 
 export default function createSpaceScene() {
   let loop = kontra.gameLoop({
@@ -9,34 +10,26 @@ export default function createSpaceScene() {
     render
   });
   const scene = new Scene([], loop);
+  const ship = createShip(scene);
   // initial state
+  for (var i = -1000; i <= 1000; i += 100) {
+    for (var j = -1000; j <= 1000; j += 100) {
+      let star = createStar(i, j, ship);
+      scene.addSprite(star);
+    }
+  }
+
   for (var i = 0; i < 4; i++) {
-    let asteroid = createAsteroid(100, 100, 30);
+    let asteroid = createAsteroid(100, 100, 30, ship);
     scene.addSprite(asteroid);
   }
-  scene.addSprite(createShip(scene));
+  scene.addSprite(ship);
 
   return scene;
 
   function update() {
     scene.sprites.map(sprite => {
       sprite.update();
-      // sprite is beyond the left edge
-      if (sprite.x < 0) {
-        sprite.x = kontra.canvas.width;
-      }
-      // sprite is beyond the right edge
-      else if (sprite.x > kontra.canvas.width) {
-        sprite.x = 0;
-      }
-      // sprite is beyond the top edge
-      if (sprite.y < 0) {
-        sprite.y = kontra.canvas.height;
-      }
-      // sprite is beyond the bottom edge
-      else if (sprite.y > kontra.canvas.height) {
-        sprite.y = 0;
-      }
     });
 
     // collision detection
@@ -61,7 +54,8 @@ export default function createSpaceScene() {
                   let newAsteroid = createAsteroid(
                     asteroid.x,
                     asteroid.y,
-                    asteroid.radius / 2.5
+                    asteroid.radius / 2.5,
+                    ship
                   );
                   scene.sprites.push(newAsteroid);
                 }
@@ -73,6 +67,10 @@ export default function createSpaceScene() {
         }
       }
     }
+
+    // remove sprites too far from camera
+    cleanupObjectIfOutOfBounds(scene, this);
+
     scene.sprites = scene.sprites.filter(sprite => sprite.isAlive());
   }
 
@@ -80,4 +78,12 @@ export default function createSpaceScene() {
   function render() {
     scene.sprites.forEach(s => s.render());
   }
+}
+
+function cleanupObjectIfOutOfBounds(scene: Scene, cameraPosition: Position) {
+  scene.sprites.forEach((s: any) => {
+    if (isObjectOutOfBounds(s, cameraPosition)) {
+      s.ttl = 0;
+    }
+  });
 }
