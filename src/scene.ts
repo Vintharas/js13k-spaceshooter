@@ -6,13 +6,11 @@ import CollisionsEngine from "./collisions";
 // a single scene
 export default class Scene {
   private collisionsEngine: CollisionsEngine;
+  // TODO: this should be part of the constructor
+  public cameraPosition: Position;
 
-  constructor(
-    public sprites: any[],
-    private loop: any,
-    public cameraPosition: Position = { x: 1500, y: 1500 }
-  ) {
-    this.collisionsEngine = new CollisionsEngine(this, cameraPosition);
+  constructor(public sprites: any[], private loop: any) {
+    this.collisionsEngine = new CollisionsEngine(this);
     if (Config.debug && Config.verbose) {
       this.logGameObjects(loop);
     }
@@ -28,11 +26,6 @@ export default class Scene {
     this.loop.stop();
   }
 
-  updateCameraPosition(position: Position) {
-    this.cameraPosition.x = position.x;
-    this.cameraPosition.y = position.y;
-  }
-
   logGameObjects(loop: any) {
     let dt = 0;
     const sprites = () => this.sprites;
@@ -44,11 +37,13 @@ export default class Scene {
       if (dt >= logPeriodSeconds) {
         dt = 0;
         console.table(
-          sprites().map((s: any) => ({
-            type: s.type,
-            x: s.x,
-            y: s.y
-          }))
+          sprites()
+            .filter((s: any) => Config.typesToLog.includes(s.type))
+            .map((s: any) => ({
+              type: s.type,
+              x: s.x,
+              y: s.y
+            }))
         );
       }
       // call real loop update function

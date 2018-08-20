@@ -4,14 +4,17 @@ import createShip from "./ship";
 import { isObjectOutOfBounds, Position, getValueInRange } from "./utils";
 import createStar from "./star";
 import Config from "./config";
+import Game from "./game";
 
 export default function createSpaceScene() {
   let loop = kontra.gameLoop({
     update,
     render
   });
+
   const scene = new Scene([], loop);
   const ship = createShip(scene);
+
   // initial state
   addStars(scene, ship);
   addAsteroids(scene, ship);
@@ -23,7 +26,13 @@ export default function createSpaceScene() {
     scene.sprites.map(sprite => {
       sprite.update();
     });
+
     scene.processCollisions();
+
+    if (!ship.isAlive()) {
+      Game.instance().goToGameOverScene();
+    }
+
     // remove sprites too far from camera
     cleanupObjectIfOutOfBounds(scene, this);
     scene.sprites = scene.sprites.filter(sprite => sprite.isAlive());

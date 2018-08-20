@@ -2,16 +2,23 @@ import {
   Position,
   getCanvasPosition,
   isObjectOutOfBounds,
-  Velocity
+  Velocity,
+  Sprite
 } from "./utils";
-import Config from "./config";
+import OffscreenCanvas from "./canvas";
+
+export interface Asteroid extends Sprite {
+  radius: number;
+  ttl: number;
+  dt: number;
+}
 
 export function createAsteroid(
   position: Position,
   velocity: Velocity,
   radius: number,
   cameraPosition: Position
-) {
+): Asteroid {
   let asteroid = kontra.sprite({
     type: "asteroid",
     x: position.x,
@@ -28,6 +35,8 @@ export function createAsteroid(
       this.context.beginPath(); // start drawing a shape
       this.context.arc(position.x, position.y, this.radius, 0, Math.PI * 2);
       this.context.stroke(); // outline the circle
+      this.context.fillStyle = OffscreenCanvas.instance().getPattern();
+      this.context.fill(); // fill circle
     }
   });
 

@@ -113,6 +113,13 @@ export default function createShip(scene: Scene) {
     }
   });
 
+  // TODO: clean this up, there's a little bit
+  // of circular dependencies issue here
+  // scene needs to know the camera position (the ship)
+  // while the ship needs the scene to push new sprites into the scene
+  // (problem caused by the entaglement of camera and ship)
+  scene.cameraPosition = ship;
+
   return ship;
 }
 

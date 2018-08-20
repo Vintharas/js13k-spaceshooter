@@ -37,6 +37,8 @@
   - [*] don't render stuff that is not in the visible area
     - (is canvas smart enough to do this or do I need to take it into account?)
   - [*] add particles to moving (back and front)
+  - show speed indicator?
+  - tinker with the max speed
   - enabling pressing back to diminish forward speed (less strong than forward but same amount of energy)
   - iteratively generate map boundaries
 - asteroids generation
@@ -116,3 +118,7 @@
 - Music
   - ?
 - Find a name for the game :D
+
+## BUGS
+
+- for some reason, a broken down asteroid doesn't collide with the ship, although it does collide with bullets. #wat

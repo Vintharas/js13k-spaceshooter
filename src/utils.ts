@@ -8,6 +8,13 @@ export interface Velocity {
   dx: number;
   dy: number;
 }
+export interface Sprite {
+  type: string;
+  x: number;
+  y: number;
+  dx: number;
+  dy: number;
+}
 
 export const Color = {
   get(alpha: number) {

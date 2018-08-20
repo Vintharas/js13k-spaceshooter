@@ -1,6 +1,7 @@
 import createSpaceScene from "./spaceScene";
 import Scene from "./scene";
 import createOpenScene from "./openScene";
+import createGameOverScene from "./gameOverScene";
 
 export default class Game {
   private static game: Game;
@@ -21,8 +22,16 @@ export default class Game {
   }
 
   goToSpaceScene(): void {
+    this.switchToScene(createSpaceScene());
+  }
+
+  goToGameOverScene(): any {
+    this.switchToScene(createGameOverScene());
+  }
+
+  switchToScene(scene: Scene) {
     this.currentScene.stop();
-    this.currentScene = createSpaceScene();
+    this.currentScene = scene;
     this.start();
   }
 }

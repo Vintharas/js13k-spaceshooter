@@ -4,19 +4,24 @@ import { Position, getValueInRange } from "./utils";
 import Config from "./config";
 
 export default class CollisionsEngine {
-  constructor(private scene: Scene, private cameraPosition: Position) {}
+  constructor(private scene: Scene) {}
 
   processCollisions() {
     let scene = this.scene;
+    // temporary hack to test something
+    let collidableObjects = scene.sprites.filter(s =>
+      Config.collidableTypes.includes(s.type)
+    );
+
     // collision detection
-    for (let i = 0; i < scene.sprites.length; i++) {
+    for (let i = 0; i < collidableObjects.length; i++) {
       // only check for collision against asteroids
-      if (scene.sprites[i].type === "asteroid") {
-        for (let j = i + 1; j < scene.sprites.length; j++) {
+      if (collidableObjects[i].type === "asteroid") {
+        for (let j = i + 1; j < collidableObjects.length; j++) {
           // don't check asteroid vs. asteroid collisions
-          if (scene.sprites[j].type !== "asteroid") {
-            let asteroid = scene.sprites[i];
-            let sprite = scene.sprites[j];
+          if (collidableObjects[j].type !== "asteroid") {
+            let asteroid = collidableObjects[i];
+            let sprite = collidableObjects[j];
             // circle vs. circle collision detection
             let dx = asteroid.x - sprite.x;
             let dy = asteroid.y - sprite.y;
@@ -41,22 +46,32 @@ export default class CollisionsEngine {
 
               // split the asteroid only if it's large enough
               if (asteroid.radius > 10) {
-                for (var x = 0; x < 3; x++) {
-                  let newAsteroid = createAsteroid(
-                    asteroid,
-                    { dx: getValueInRange(-2, 2), dy: getValueInRange(-2, 2) },
-                    asteroid.radius / 2.5,
-                    this.cameraPosition
-                  );
-                  scene.sprites.push(newAsteroid);
-                }
+                breakAsteroidInSmallerOnes(asteroid, scene);
               }
 
+              // what the heck is this break doing here?
+              // if this object has already collided with another object
+              // then there's no need to check more (since the item will be destroyed)
               break;
             }
           }
         }
       }
     }
+  }
+}
+
+function breakAsteroidInSmallerOnes(asteroid: any, scene: Scene) {
+  if (Config.debug)
+    console.log("Asteroid destroyed. Creating smaller asteroids", asteroid);
+
+  for (let i = 0; i < 3; i++) {
+    let newAsteroid = createAsteroid(
+      asteroid,
+      { dx: getValueInRange(-2, 2), dy: getValueInRange(-2, 2) },
+      asteroid.radius / 2.5,
+      scene.cameraPosition
+    );
+    scene.sprites.push(newAsteroid);
   }
 }
