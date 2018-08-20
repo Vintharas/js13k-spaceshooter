@@ -6,12 +6,24 @@ const Config = {
   // more than this constant will be recycled
   mapBoundary: 3000,
 
+  // game objects
+  maxAsteroidClusterSize: 10,
+  initialNumberOfClusters: 10,
+
+  // collisions
   collidableTypes: ["asteroid", "bullet", "ship"],
 
   // enable debug printouts
   debug: true,
-  verbose: false,
-  typesToLog: ["asteroid", "ship"]
+  verbose: true,
+  typesToLog: ["asteroid", "ship"],
+  logTheseProperties: (s: any) => ({
+    type: s.type,
+    x: s.x,
+    y: s.y,
+    ttl: s.ttl
+  }),
+  onlyLogInProximityToShip: true // great for debugging collisions
 };
 
 export default Config;

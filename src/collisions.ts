@@ -1,6 +1,6 @@
 import Scene from "./scene";
 import { createAsteroid } from "./asteroid";
-import { Position, getValueInRange } from "./utils";
+import { Position, getValueInRange, Sprite } from "./utils";
 import Config from "./config";
 
 export default class CollisionsEngine {
@@ -9,9 +9,17 @@ export default class CollisionsEngine {
   processCollisions() {
     let scene = this.scene;
     // temporary hack to test something
-    let collidableObjects = scene.sprites.filter(s =>
-      Config.collidableTypes.includes(s.type)
-    );
+    let collidableObjects = scene.sprites
+      .filter(s => Config.collidableTypes.includes(s.type))
+      // with the current algorithm that
+      // checks whether an asteroid has collided with X
+      // we need to put all the asteroids first, otherwise
+      // we won't calculate the collision of an asteroid with
+      // the ship (this was a BUG that it took me a lot to find)
+      // TODO: improve collision algorithm so that it doesn't
+      // require sorting (we could use types to match to specific functions
+      // and do one pass)
+      .sort((a: Sprite, b: Sprite) => (a.type > b.type ? 1 : -1));
 
     // collision detection
     for (let i = 0; i < collidableObjects.length; i++) {
@@ -73,5 +81,6 @@ function breakAsteroidInSmallerOnes(asteroid: any, scene: Scene) {
       scene.cameraPosition
     );
     scene.sprites.push(newAsteroid);
+    if (Config.debug) console.log("New Asteroid", newAsteroid);
   }
 }

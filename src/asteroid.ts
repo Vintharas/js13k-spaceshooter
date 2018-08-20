@@ -23,7 +23,7 @@ export function createAsteroid(
     type: "asteroid",
     x: position.x,
     y: position.y,
-    radius: radius,
+    radius,
     ttl: Infinity,
     dx: velocity.dx,
     dy: velocity.dy,

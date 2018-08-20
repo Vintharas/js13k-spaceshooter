@@ -1,4 +1,4 @@
-import { Position } from "./utils";
+import { Position, Positions } from "./utils";
 import Config from "./config";
 import CollisionsEngine from "./collisions";
 
@@ -29,6 +29,7 @@ export default class Scene {
   logGameObjects(loop: any) {
     let dt = 0;
     const sprites = () => this.sprites;
+    const cameraPosition = () => this.cameraPosition;
     let update = this.loop.update;
     let logPeriodSeconds = 1;
 
@@ -38,12 +39,14 @@ export default class Scene {
         dt = 0;
         console.table(
           sprites()
-            .filter((s: any) => Config.typesToLog.includes(s.type))
-            .map((s: any) => ({
-              type: s.type,
-              x: s.x,
-              y: s.y
-            }))
+            .filter((s: any) => {
+              let isLogged = Config.typesToLog.includes(s.type);
+              if (Config.onlyLogInProximityToShip)
+                isLogged =
+                  isLogged && Positions.areNear(s, cameraPosition(), 50);
+              return isLogged;
+            })
+            .map(Config.logTheseProperties)
         );
       }
       // call real loop update function

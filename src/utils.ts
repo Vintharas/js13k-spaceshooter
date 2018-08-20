@@ -29,6 +29,15 @@ export const Color = {
   }
 };
 
+export const Positions = {
+  areNear(pos1: Position, pos2: Position, distance: number): boolean {
+    return (
+      Math.abs(pos1.x - pos2.x) < distance &&
+      Math.abs(pos1.y - pos2.y) < distance
+    );
+  }
+};
+
 export function degreesToRadians(degrees: number) {
   return (degrees * Math.PI) / 180;
 }
@@ -70,10 +79,10 @@ export function isObjectOutOfBounds(
   );
 }
 
-export function getNumberWithVariance(n: number, variance: number) {
+export function getNumberWithVariance(n: number, variance: number): number {
   return n + Math.random() * variance;
 }
 
-export function getValueInRange(bottom: number, top: number) {
+export function getValueInRange(bottom: number, top: number): number {
   return Math.random() * (top - bottom) + bottom;
 }

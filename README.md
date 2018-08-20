@@ -47,8 +47,10 @@
   - [*] create clusters of asteroids
   - add new clusters every so often (outside of the current camera view)
 - ship life/collisions
-  - life and life indicator for the ship
-  - collisions reduces life
+  - [*] life and life indicator for the ship
+  - [*] collisions reduces life
+  - BUUUUUG collisions seem not to be working 100%
+    - they don't work for asteroids generated when one other asteroid is broken?
   - collision decreases speed
   - asteroid breaks on collision (or disintegrates depending on size)
 - shoot

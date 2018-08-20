@@ -66,7 +66,12 @@ function addStars(scene: Scene, cameraPosition: Position) {
 
 function addAsteroids(scene: Scene, cameraPosition: Position) {
   // create some clusters of varying sizes
-  for (let i = 0; i < 10; i++) addAsteroidCluster(scene, cameraPosition, i);
+  for (let i = 0; i < Config.initialNumberOfClusters; i++) {
+    let clusterSize = Math.ceil(
+      getValueInRange(0, Config.maxAsteroidClusterSize)
+    );
+    addAsteroidCluster(scene, cameraPosition, clusterSize);
+  }
 }
 
 // creates a cluster of asteroids and adds it to the scene
