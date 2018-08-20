@@ -70,7 +70,7 @@ export default function createShip(scene: Scene) {
         // create particles from this position
         let position: Position = ship;
         let velocity: Velocity = ship;
-        for (let i = 0; i < 25; i++) {
+        for (let i = 0; i < 2; i++) {
           let particle = createStaticParticle(
             { x: 300, y: 300 }, // ship position remains static in the canvas
             { dx: 1, dy: 1 }, // base speed for particles

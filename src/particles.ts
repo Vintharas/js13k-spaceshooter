@@ -16,8 +16,8 @@ export function createStaticParticle(
 ): any {
   let dxVariance = getValueInRange(0.5, 1.5);
   let dyVariance = getValueInRange(0.5, 1.5);
-  let ParticleAxisVariance = getValueInRange(-15, 15);
-  let maxTTL = 30;
+  let ParticleAxisVariance = getValueInRange(-20, 20);
+  let maxTTL = 50;
 
   const cos = Math.cos(degreesToRadians(particleAxis + ParticleAxisVariance));
   const sin = Math.sin(degreesToRadians(particleAxis + ParticleAxisVariance));
@@ -44,6 +44,10 @@ export function createStaticParticle(
     // particles are small
     width: 2,
     height: 2,
+
+    // So that the particles don't originate from
+    // a single point
+    thicknessVariance: getValueInRange(-4, 4),
     update() {
       this.dt += 1 / 60;
       this.advance();
@@ -52,9 +56,15 @@ export function createStaticParticle(
       // as time passes the alpha increases until particles disappear
       let frames = this.dt * 60;
       let alpha = 1 - frames / maxTTL;
+      //this.context.fillStyle = Color.rgba(255, 255, 255, alpha);
+      //this.context.fillRect(this.x, this.y, this.width, this.height);
+
+      this.context.save();
+      this.context.translate(this.x, this.y);
+      this.context.rotate(degreesToRadians(particleAxis));
       this.context.fillStyle = Color.rgba(255, 255, 255, alpha);
-      //this.context.fillStyle = "white";
-      this.context.fillRect(this.x, this.y, this.width, this.height);
+      this.context.fillRect(4, this.thicknessVariance, this.width, this.height);
+      this.context.restore();
     }
   });
 }
