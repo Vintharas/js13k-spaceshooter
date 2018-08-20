@@ -33,9 +33,11 @@
 - move
   - [*] move affects energy
   - [*] cant move if you dont have energy enough
-  - move around a map of fixed size?
-  - don't render stuff that is not in the visible area
+  - [*] move around a map of fixed size? (more or less)
+  - [*] don't render stuff that is not in the visible area
     - (is canvas smart enough to do this or do I need to take it into account?)
+  - enabling pressing back to diminish forward speed (less strong than forward but same amount of energy)
+  - add particles to moving (back and front)
   - iteratively generate map boundaries
 - asteroids generation
   - [*] come from random location at random speed

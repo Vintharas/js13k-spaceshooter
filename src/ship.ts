@@ -1,6 +1,7 @@
 import { degreesToRadians, Velocity, Position } from "./utils";
 import Scene from "./scene";
 import createBullet from "./bullet";
+import { createParticle, createStaticParticle } from "./particles";
 
 export default function createShip(scene: Scene) {
   const ship = kontra.sprite({
@@ -66,6 +67,19 @@ export default function createShip(scene: Scene) {
         this.ddy = sin * 0.1;
         // reduce energy
         this.energy.consume(EnergyCost.ThrustCost);
+        // create particles from this position
+        let position: Position = ship;
+        let velocity: Velocity = ship;
+        for (let i = 0; i < 25; i++) {
+          let particle = createStaticParticle(
+            { x: 300, y: 300 }, // ship position remains static in the canvas
+            { dx: 1, dy: 1 }, // base speed for particles
+            // the particle axis is opposite to the rotation
+            // of the ship (in the back)
+            ship.rotation + 180
+          );
+          scene.sprites.push(particle);
+        }
       } else {
         this.ddx = this.ddy = 0;
       }

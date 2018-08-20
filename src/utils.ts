@@ -15,6 +15,9 @@ export const Color = {
     let green = getValueInRange(0, 255);
     let blue = getValueInRange(0, 255);
 
+    return this.rgba(red, green, blue, alpha);
+  },
+  rgba(red: number, green: number, blue: number, alpha: number) {
     return `rgba(${red},${green},${blue},${alpha})`;
   }
 };
