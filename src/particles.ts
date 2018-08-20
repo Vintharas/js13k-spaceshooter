@@ -9,6 +9,7 @@ import {
 
 // particles that don't take into account cameraPosition
 // TODO: refactor these two so they use common code
+// right now it is quite specific to the ships exhaust when moving the ship
 export function createStaticParticle(
   position: Position,
   velocity: Velocity,
@@ -56,9 +57,8 @@ export function createStaticParticle(
       // as time passes the alpha increases until particles disappear
       let frames = this.dt * 60;
       let alpha = 1 - frames / maxTTL;
-      //this.context.fillStyle = Color.rgba(255, 255, 255, alpha);
-      //this.context.fillRect(this.x, this.y, this.width, this.height);
 
+      // easier to paint these by rotating the canvas
       this.context.save();
       this.context.translate(this.x, this.y);
       this.context.rotate(degreesToRadians(particleAxis));

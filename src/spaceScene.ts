@@ -23,46 +23,9 @@ export default function createSpaceScene() {
     scene.sprites.map(sprite => {
       sprite.update();
     });
-
-    // collision detection
-    for (let i = 0; i < scene.sprites.length; i++) {
-      // only check for collision against asteroids
-      if (scene.sprites[i].type === "asteroid") {
-        for (let j = i + 1; j < scene.sprites.length; j++) {
-          // don't check asteroid vs. asteroid collisions
-          if (scene.sprites[j].type !== "asteroid") {
-            let asteroid = scene.sprites[i];
-            let sprite = scene.sprites[j];
-            // circle vs. circle collision detection
-            let dx = asteroid.x - sprite.x;
-            let dy = asteroid.y - sprite.y;
-            if (Math.sqrt(dx * dx + dy * dy) < asteroid.radius + sprite.width) {
-              asteroid.ttl = 0;
-              sprite.ttl = 0;
-
-              // split the asteroid only if it's large enough
-              if (asteroid.radius > 10) {
-                for (var x = 0; x < 3; x++) {
-                  let newAsteroid = createAsteroid(
-                    asteroid,
-                    { dx: getValueInRange(-2, 2), dy: getValueInRange(-2, 2) },
-                    asteroid.radius / 2.5,
-                    ship
-                  );
-                  scene.sprites.push(newAsteroid);
-                }
-              }
-
-              break;
-            }
-          }
-        }
-      }
-    }
-
+    scene.processCollisions();
     // remove sprites too far from camera
     cleanupObjectIfOutOfBounds(scene, this);
-
     scene.sprites = scene.sprites.filter(sprite => sprite.isAlive());
   }
 

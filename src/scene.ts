@@ -1,15 +1,19 @@
 import { Position } from "./utils";
 import Config from "./config";
+import CollisionsEngine from "./collisions";
 
 // manages sprites and game loop within
 // a single scene
 export default class Scene {
+  private collisionsEngine: CollisionsEngine;
+
   constructor(
     public sprites: any[],
     private loop: any,
     public cameraPosition: Position = { x: 1500, y: 1500 }
   ) {
-    if (Config.debug) {
+    this.collisionsEngine = new CollisionsEngine(this, cameraPosition);
+    if (Config.debug && Config.verbose) {
       this.logGameObjects(loop);
     }
   }
@@ -50,5 +54,9 @@ export default class Scene {
       // call real loop update function
       update.apply(this, args);
     };
+  }
+
+  processCollisions(): void {
+    this.collisionsEngine.processCollisions();
   }
 }

@@ -36,17 +36,22 @@
   - [*] move around a map of fixed size? (more or less)
   - [*] don't render stuff that is not in the visible area
     - (is canvas smart enough to do this or do I need to take it into account?)
+  - [*] add particles to moving (back and front)
   - enabling pressing back to diminish forward speed (less strong than forward but same amount of energy)
-  - add particles to moving (back and front)
   - iteratively generate map boundaries
 - asteroids generation
   - [*] come from random location at random speed
   - [*] different size
   - [*] create clusters of asteroids
   - add new clusters every so often (outside of the current camera view)
+- ship life/collisions
+  - life and life indicator for the ship
+  - collisions reduces life
+  - collision decreases speed
+  - asteroid breaks on collision (or disintegrates depending on size)
 - shoot
   - shooting spends energy
-  - shooting at asteroids releases components -> energy
+  - shooting at asteroids releases components -> energy, life
   - makes asteroids smaller
   - energy moves towards the ship, when the ship is near
 - stars
@@ -90,15 +95,22 @@
   - AIs
   - creatures
 - a way to deliver story
+- game engine
+
+  - extract all variables so they're configurable from a single point
+  - this could be altered by a UI in realtime and allow me to tweak the game
 
 - Art
   - pixel art for everything
   - ship
     - particle systems for ship thrust
     - particle system for explosions/impacts
+    - animate collisions
   - asteroids
+    - test creating a texture procedurally
     - rotate as well as translate
   - planets
+    - test generating a texture procedurally as well
     - idem
   - enemy ships, etc
 - Music

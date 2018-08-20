@@ -2,6 +2,7 @@ import { degreesToRadians, Velocity, Position } from "./utils";
 import Scene from "./scene";
 import createBullet from "./bullet";
 import { createParticle, createStaticParticle } from "./particles";
+import Config from "./config";
 
 export default function createShip(scene: Scene) {
   const ship = kontra.sprite({
@@ -20,6 +21,7 @@ export default function createShip(scene: Scene) {
 
     // energy
     energy: ShipEnergy(200),
+    life: ShipLife(200),
 
     dt: 0, // track how much time has passed
     ttl: Infinity,
@@ -42,8 +44,9 @@ export default function createShip(scene: Scene) {
       this.context.stroke();
       this.context.restore();
 
-      // draw ship energy
+      // draw ship energy and life bars
       this.energy.render();
+      this.life.render();
     },
     update() {
       // update ship energy
@@ -114,11 +117,15 @@ export default function createShip(scene: Scene) {
 }
 
 const barWidth = 100;
-const barHeight = 10;
+const barHeight = 5;
 const EnergyCost = {
   ThrustCost: 1
 };
 
+// TODO: shipEnergy and shipLife
+// extract visual representation from behavior
+// Both are similarly rendered but may offer different behaviors
+// (the difference in behaviors depends on where I decide to put more collision and damaging logic)
 function ShipEnergy(energy: number) {
   return kontra.sprite({
     maxEnergy: energy,
@@ -154,6 +161,51 @@ function ShipEnergy(energy: number) {
 
     hasEnoughEnergy(energyCost: number) {
       return this.energy >= energyCost;
+    }
+  });
+}
+
+function ShipLife(life: number) {
+  return kontra.sprite({
+    maxLife: life,
+    life,
+
+    x: 5,
+    y: 15,
+
+    dt: 0,
+
+    update() {
+      this.dt += 1 / 60;
+      if (this.dt > 0.25) {
+        // baseline for recharging energy
+        if (this.life < this.maxLife) this.life++;
+        this.dt = 0;
+      }
+    },
+    render() {
+      // energy bar
+      let lifeWidth = Math.ceil((this.life * barWidth) / this.maxLife);
+
+      this.context.fillStyle = "red";
+      this.context.fillRect(this.x, this.y, lifeWidth, barHeight);
+      // energy bar container
+      this.context.strokeStyle = "white";
+      this.context.strokeRect(this.x, this.y, barWidth, barHeight);
+    },
+
+    damage(damage: number) {
+      if (this.life > 0) this.life -= damage;
+      if (this.life < 0) this.life = 0;
+      if (Config.debug) {
+        console.log(
+          `Ship took damage ${damage}. Remaining life is ${this.life}`
+        );
+      }
+    },
+
+    get(): number {
+      return this.life;
     }
   });
 }

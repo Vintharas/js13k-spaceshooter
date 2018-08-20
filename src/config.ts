@@ -7,7 +7,8 @@ const Config = {
   mapBoundary: 3000,
 
   // enable debug printouts
-  debug: false
+  debug: true,
+  verbose: false
 };
 
 export default Config;
