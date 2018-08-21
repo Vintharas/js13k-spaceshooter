@@ -2,6 +2,7 @@ import Scene from "./scene";
 import { createAsteroid } from "./asteroid";
 import { Position, getValueInRange, Sprite } from "./utils";
 import Config from "./config";
+import { createParticle, createExplosionParticle } from "./particles";
 
 export default class CollisionsEngine {
   constructor(private scene: Scene) {}
@@ -50,6 +51,29 @@ export default class CollisionsEngine {
                 }
               } else {
                 sprite.ttl = 0;
+              }
+
+              // explosion
+              // particle explosion
+
+              // TODO: extract colors and selection
+              // to a helper function
+              let red = { r: 255, g: 0, b: 0 };
+              let orange = { r: 255, g: 165, b: 0 };
+              let yellow = { r: 255, g: 255, b: 0 };
+              let explosionColors = [red, orange, yellow];
+              for (let i = 0; i < asteroid.radius * 10; i++) {
+                let colorIndex = Math.round(Math.random() * 2);
+                let particle = createExplosionParticle(
+                  asteroid,
+                  scene.cameraPosition,
+                  {
+                    ttl: 50,
+                    color: explosionColors[colorIndex],
+                    magnitude: asteroid.radius / 2
+                  }
+                );
+                scene.sprites.push(particle);
               }
 
               // split the asteroid only if it's large enough

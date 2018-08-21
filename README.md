@@ -40,7 +40,7 @@
   - show speed indicator?
   - tinker with the max speed
   - enabling pressing back to diminish forward speed (less strong than forward but same amount of energy)
-  - iteratively generate map boundaries
+  - iteratively generate map boundaries!!!! CORE to gameplay
 - asteroids generation
   - [*] come from random location at random speed
   - [*] different size
@@ -49,15 +49,22 @@
 - ship life/collisions
   - [*] life and life indicator for the ship
   - [*] collisions reduces life
-  - BUUUUUG collisions seem not to be working 100%
-    - they don't work for asteroids generated when one other asteroid is broken?
+  - [*]BUUUUUG collisions seem not to be working 100%
+    - [*] they don't work for asteroids generated when one other asteroid is broken?
+    - [*] Fix, the issue was the collision algorithm which wasn't checking the collision between new asteroids and the ship (the ship was already considered collision free)
+  - [*] asteroid breaks on collision (or disintegrates depending on size)
+  - when you collide with something or lose life, move the canvas with css like you're shaking. Add some reddish color in the actual screen.
   - collision decreases speed
-  - asteroid breaks on collision (or disintegrates depending on size)
+  - improve collision algorithm to take types into account instead of requiring sorting
 - shoot
-  - shooting spends energy
+  - [*] shooting spends energy
   - shooting at asteroids releases components -> energy, life
-  - makes asteroids smaller
+  - instead of destroying asteroid, makes asteroids smaller
   - energy moves towards the ship, when the ship is near
+- shield
+  - shield is available when you have max energy
+  - it recharges at the same speed as energy (so when it is on, energy doesn't recharge) (the baseline for energy)
+  - if energy goes low or it is broken it disappears
 - stars
   - [*] testing sprites so far
   - [*] two different layers with different speeds and intensity
@@ -100,23 +107,29 @@
   - creatures
 - a way to deliver story
 - game engine
-
   - extract all variables so they're configurable from a single point
   - this could be altered by a UI in realtime and allow me to tweak the game
+- different difficulty levels
+  - higher cost for actions
 
-- Art
-  - pixel art for everything
-  - ship
-    - particle systems for ship thrust
-    - particle system for explosions/impacts
-    - animate collisions
-  - asteroids
-    - test creating a texture procedurally
-    - rotate as well as translate
-  - planets
-    - test generating a texture procedurally as well
-    - idem
-  - enemy ships, etc
+## Art
+
+- pixel art for everything
+- ship
+  - particle systems for ship thrust
+  - particle system for explosions/impacts
+  - animate collisions
+- asteroids
+  - [*] test creating a texture procedurally
+    - looks interesting but it doesn't work out so well with the circular shapes. I should try to create shapes that are less circular. Perhaps using paths of closing angles, with an arbitrary number of sides.
+  - [*] wrote algorithm to generate polygonal shapes
+  - continue improving algorithm so it matches the collision detection
+    - I can write an equation so find the right location in a circle given an angle. And get the right length. (Although this will result in less egdy shapes)
+  - rotate as well as translate
+- planets
+  - test generating a texture procedurally as well
+  - idem
+- enemy ships, etc
 - Music
   - ?
 - Find a name for the game :D

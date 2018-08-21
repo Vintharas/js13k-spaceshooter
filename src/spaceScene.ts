@@ -18,6 +18,7 @@ export default function createSpaceScene() {
   // initial state
   addStars(scene, ship);
   addAsteroids(scene, ship);
+  addStaticAsteroids(scene, ship);
   scene.addSprite(ship);
 
   return scene;
@@ -74,21 +75,50 @@ function addAsteroids(scene: Scene, cameraPosition: Position) {
   }
 }
 
+function addStaticAsteroids(scene: Scene, cameraPosition: Position) {
+  // create some clusters of varying sizes
+  for (let i = 0; i < Config.initialNumberOfClusters; i++) {
+    let clusterSize = Math.ceil(
+      getValueInRange(0, Config.maxAsteroidClusterSize)
+    );
+    addAsteroidCluster(
+      scene,
+      cameraPosition,
+      clusterSize,
+      /*isStatic*/ true,
+      /*separation*/ 500
+    );
+  }
+}
+
 // creates a cluster of asteroids and adds it to the scene
 function addAsteroidCluster(
   scene: Scene,
   cameraPosition: Position,
-  clusterSize: number
+  // extract to object
+  clusterSize: number,
+  isStatic: boolean = false,
+  separation: number = 100
 ) {
   let x = getValueInRange(-1000, 1000);
   let y = getValueInRange(-1000, 1000);
-  let dx = getValueInRange(-2, 2);
-  let dy = getValueInRange(-2, 2);
+
+  let dx = 0;
+  let dy = 0;
+  if (!isStatic) {
+    dx = getValueInRange(-2, 2);
+    dy = getValueInRange(-2, 2);
+  }
+
   for (var i = 0; i < clusterSize; i++) {
     let radius = getValueInRange(0, 30);
-    let offsetX = getValueInRange(-100, 100);
-    let offsetY = getValueInRange(-100, 100);
-    let doffset = getValueInRange(-0.25, 0.25);
+    let offsetX = getValueInRange(-separation, separation);
+    let offsetY = getValueInRange(-separation, separation);
+
+    let doffset = 0;
+    if (!isStatic) {
+      doffset = getValueInRange(-0.25, 0.25);
+    }
 
     let asteroid = createAsteroid(
       { x: x + offsetX, y: y + offsetY },

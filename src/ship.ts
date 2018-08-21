@@ -96,11 +96,19 @@ export default function createShip(scene: Scene) {
 
       // allow the player to fire no more than 1 bullet every 1/4 second
       this.dt += 1 / 60;
-      if (kontra.keys.pressed("space") && this.dt > 0.25) {
+      if (
+        kontra.keys.pressed("space") &&
+        this.dt > 0.25 &&
+        this.energy.hasEnoughEnergy(EnergyCost.ShootCost)
+      ) {
         this.dt = 0;
+        // reduce energy
+        this.energy.consume(EnergyCost.ShootCost);
+
         let position: Position = this;
         let velocity: Velocity = this;
         let cameraPosition: Position = this;
+
         const bullet = createBullet(
           position,
           velocity,
@@ -123,10 +131,13 @@ export default function createShip(scene: Scene) {
   return ship;
 }
 
+// TODO: extract to config
 const barWidth = 100;
 const barHeight = 5;
 const EnergyCost = {
-  ThrustCost: 1
+  ThrustCost: 1,
+  ShootCost: 10,
+  ShieldRechargeCost: 1
 };
 
 // TODO: shipEnergy and shipLife

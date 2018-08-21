@@ -15,7 +15,7 @@ const Config = {
 
   // enable debug printouts
   debug: true,
-  verbose: true,
+  verbose: false,
   typesToLog: ["asteroid", "ship"],
   logTheseProperties: (s: any) => ({
     type: s.type,
@@ -23,7 +23,8 @@ const Config = {
     y: s.y,
     ttl: s.ttl
   }),
-  onlyLogInProximityToShip: true // great for debugging collisions
+  onlyLogInProximityToShip: true, // great for debugging collisions
+  renderCollisionArea: true
 };
 
 export default Config;

@@ -15,6 +15,11 @@ export interface Sprite {
   dx: number;
   dy: number;
 }
+export interface RGB {
+  r: number;
+  g: number;
+  b: number;
+}
 
 export const Color = {
   get(alpha: number) {
@@ -26,6 +31,9 @@ export const Color = {
   },
   rgba(red: number, green: number, blue: number, alpha: number) {
     return `rgba(${red},${green},${blue},${alpha})`;
+  },
+  hsla(hue: number, saturation: number, light: number, alpha: number = 1) {
+    return `hsla(${hue},${saturation}%,${light}%,${alpha})`;
   }
 };
 
