@@ -44,7 +44,7 @@ export default class CollisionsEngine {
                 // the damage produced in the ship depends
                 // on the size of the asteroid
                 let damage = asteroid.radius * 4;
-                if (ship.shield.isEnabled) {
+                if (ship.shield.get() > 0) {
                   ship.shield.damage(damage);
                   if (ship.shield.get() <= 0) {
                     // do some remaining damage to ship but less
