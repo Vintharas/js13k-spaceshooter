@@ -44,7 +44,15 @@ export default class CollisionsEngine {
                 // the damage produced in the ship depends
                 // on the size of the asteroid
                 let damage = asteroid.radius * 4;
-                ship.life.damage(damage);
+                if (ship.shield.isEnabled) {
+                  ship.shield.damage(damage);
+                  if (ship.shield.get() <= 0) {
+                    // do some remaining damage to ship but less
+                    ship.life.damage(damage / 4);
+                  }
+                } else {
+                  ship.life.damage(damage);
+                }
                 if (ship.life.get() <= 0) {
                   if (Config.debug) console.log("SHIP DIED");
                   ship.ttl = 0; // game over mothafucka!

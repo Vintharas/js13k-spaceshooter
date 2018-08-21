@@ -62,9 +62,10 @@
   - instead of destroying asteroid, makes asteroids smaller
   - energy moves towards the ship, when the ship is near
 - shield
-  - shield is available when you have max energy
-  - it recharges at the same speed as energy (so when it is on, energy doesn't recharge) (the baseline for energy)
-  - if energy goes low or it is broken it disappears
+  - [*] shield is available when you have max energy > 4/5
+  - [*] it recharges at the same speed as energy (so when it is on, energy doesn't recharge) (the baseline for energy)
+  - [*] if energy goes low or it is broken it disappears
+  - improve art and flickering animation
 - stars
   - [*] testing sprites so far
   - [*] two different layers with different speeds and intensity
@@ -80,15 +81,16 @@
 - planets
   - more resources
   - stars give you energy faster
-- shield
-  - slowly drains energy (same speed as sun in lowest charge)
-  - protects ship hull
+- shield (implemented above)
+  - [*] slowly drains energy (same speed as sun in lowest charge)
+  - [*] protects ship hull
 - radar
   - show interesting stuff (like a minimap)
 - vision
   - diminish range of vision (player sees less space, rest becomes darker)
 - enable/disable systems based on energy left
-  - shield
+  - show message when this happens
+  - [*] shield
   - radar
   - vision
   - shoot

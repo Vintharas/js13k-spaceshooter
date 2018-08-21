@@ -1,27 +1,35 @@
-import { degreesToRadians, Velocity, Position } from "./utils";
+import { degreesToRadians, Velocity, Position, getValueInRange } from "./utils";
 import Scene from "./scene";
 import createBullet from "./bullet";
 import { createParticle, createStaticParticle } from "./particles";
 import Config from "./config";
 
 export default function createShip(scene: Scene) {
+  const width = 6;
+  const x = 300;
+  const y = 300;
+  const energy = ShipEnergy(200);
+  const life = ShipLife(100);
+  const shield = ShipShield(100, energy, { x, y }, width);
+
   const ship = kontra.sprite({
     type: "ship",
 
     // position
     // this is actually the position of the camera
     // of the game
-    x: 300,
-    y: 300,
+    x,
+    y,
 
     rotation: 0,
 
     // collisions
-    width: 6,
+    width,
 
     // energy
-    energy: ShipEnergy(200),
-    life: ShipLife(200),
+    energy,
+    life,
+    shield,
 
     dt: 0, // track how much time has passed
     ttl: Infinity,
@@ -47,10 +55,15 @@ export default function createShip(scene: Scene) {
       // draw ship energy and life bars
       this.energy.render();
       this.life.render();
+      this.shield.render();
     },
     update() {
       // update ship energy
       this.energy.update();
+      // slowly recover life
+      this.life.update();
+      // recharge shield
+      this.shield.update();
 
       // rotate the ship left or right
       if (kontra.keys.pressed("left")) {
@@ -160,6 +173,10 @@ function ShipEnergy(energy: number) {
         // baseline for recharging energy
         if (this.energy < this.maxEnergy) this.energy++;
         this.dt = 0;
+        // review systems that need to be enabled
+        // when energy increases
+        if (this.energy > (this.maxEnergy * 4) / 5)
+          this.shield.isEnabled = true;
       }
     },
     render() {
@@ -175,6 +192,13 @@ function ShipEnergy(energy: number) {
 
     consume(energyCost: number) {
       if (this.energy > 0) this.energy -= energyCost;
+
+      // review systems that need to be disabled
+      // when energy increases
+      if (this.energy < (this.maxEnergy * 4) / 5) {
+        if (Config.debug) console.log("Low on energy. Disabling shield");
+        this.shield.disable();
+      }
     },
 
     hasEnoughEnergy(energyCost: number) {
@@ -195,7 +219,7 @@ function ShipLife(life: number) {
 
     update() {
       this.dt += 1 / 60;
-      if (this.dt > 0.25) {
+      if (this.dt > 1) {
         // baseline for recharging energy
         if (this.life < this.maxLife) this.life++;
         this.dt = 0;
@@ -226,4 +250,99 @@ function ShipLife(life: number) {
       return this.life;
     }
   });
+}
+
+function ShipShield(
+  shield: number,
+  energy: any,
+  shieldPosition: Position,
+  radius: number
+) {
+  let shipShield = kontra.sprite({
+    maxShield: shield,
+    shield,
+    isEnabled: true,
+
+    // shield bar position
+    x: 5,
+    y: 25,
+    // shield position
+    shieldPosition,
+    radius,
+
+    dt: 0,
+
+    update() {
+      this.dt += 1 / 60;
+      if (this.dt > 0.25) {
+        if (this.isEnabled) {
+          // baseline for recharging energy
+          if (this.shield < this.maxShield) this.shield++;
+          energy.consume(EnergyCost.ShieldRechargeCost);
+        } else {
+          // discharge shield
+          this.damage(3);
+        }
+        this.dt = 0;
+      }
+    },
+
+    render() {
+      // render bar
+      let shieldWidth = Math.ceil((this.shield * barWidth) / this.maxShield);
+
+      this.context.fillStyle = "#00edff";
+      this.context.fillRect(this.x, this.y, shieldWidth, barHeight);
+      // bar container
+      this.context.strokeStyle = "white";
+      this.context.strokeRect(this.x, this.y, barWidth, barHeight);
+
+      // actual shield
+      if (this.shield === 0) return;
+      // TODO: would be interesting to do some flicker for some frames
+      // when it gets disabled
+
+      // TODO2: it would be cool if it did some warping as well
+      // added some warping but it may be more smooth to change it
+      // every longer period of time in a more smooth fashion
+      this.context.save();
+      this.context.strokeStyle = "#00edff";
+      this.context.fillStyle = "rgba(0, 237, 255, 0.2)";
+      this.context.beginPath(); // start drawing a shape
+      this.context.arc(
+        this.shieldPosition.x + getValueInRange(-0.5, 0.5),
+        this.shieldPosition.y + getValueInRange(-0.5, 0.5),
+        this.radius * 2.2,
+        0,
+        Math.PI * 2
+      );
+      this.context.stroke(); // outline the circle
+      this.context.fill();
+      this.context.restore();
+    },
+
+    damage(damage: number) {
+      if (this.shield > 0) this.shield -= damage;
+      if (this.shield < 0) this.shield = 0;
+      if (Config.debug) {
+        console.log(
+          `Ship took damage ${damage}. Remaining life is ${this.life}`
+        );
+      }
+    },
+
+    get(): number {
+      return this.shield;
+    },
+
+    disable() {
+      if (Config.debug) console.log("shield disabled!!");
+      this.isEnabled = false;
+    }
+  });
+
+  // TODO: fix this circular dependency mehhh
+  energy.shield = shipShield;
+
+  return shipShield;
 }
