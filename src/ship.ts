@@ -3,12 +3,13 @@ import Scene from "./scene";
 import createBullet from "./bullet";
 import { createParticle, createStaticParticle } from "./particles";
 import Config from "./config";
+import createText from "./text";
 
 export default function createShip(scene: Scene) {
   const width = 6;
   const x = 300;
   const y = 300;
-  const energy = ShipEnergy(200);
+  const energy = ShipEnergy(200, scene);
   const life = ShipLife(100);
   const shield = ShipShield(100, energy, { x, y }, width);
 
@@ -157,7 +158,7 @@ const EnergyCost = {
 // extract visual representation from behavior
 // Both are similarly rendered but may offer different behaviors
 // (the difference in behaviors depends on where I decide to put more collision and damaging logic)
-function ShipEnergy(energy: number) {
+function ShipEnergy(energy: number, scene: Scene) {
   return kontra.sprite({
     maxEnergy: energy,
     energy,
@@ -175,8 +176,9 @@ function ShipEnergy(energy: number) {
         this.dt = 0;
         // review systems that need to be enabled
         // when energy increases
-        if (this.energy > (this.maxEnergy * 4) / 5)
-          this.shield.isEnabled = true;
+        if (this.energy > (this.maxEnergy * 4) / 5 && !this.shield.isEnabled) {
+          this.addOfflineText("- SHIELD ONLINE -");
+        }
       }
     },
     render() {
@@ -195,14 +197,26 @@ function ShipEnergy(energy: number) {
 
       // review systems that need to be disabled
       // when energy increases
-      if (this.energy < (this.maxEnergy * 4) / 5) {
+      if (this.energy < (this.maxEnergy * 4) / 5 && this.shield.isEnabled) {
         if (Config.debug) console.log("Low on energy. Disabling shield");
         this.shield.disable();
+        this.addOfflineText("- SHIELD OFFLINE -");
       }
     },
 
     hasEnoughEnergy(energyCost: number) {
       return this.energy >= energyCost;
+    },
+
+    addOfflineText(text: string) {
+      let textSprite = createText(
+        text,
+        200,
+        400,
+        "normal normal 18px monospace",
+        120
+      );
+      scene.sprites.push(textSprite);
     }
   });
 }
@@ -336,7 +350,7 @@ function ShipShield(
     },
 
     disable() {
-      if (Config.debug) console.log("shield disabled!!");
+      if (Config.debug) console.log("shield offline!!");
       this.isEnabled = false;
     }
   });

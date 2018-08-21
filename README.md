@@ -89,13 +89,15 @@
 - vision
   - diminish range of vision (player sees less space, rest becomes darker)
 - enable/disable systems based on energy left
-  - show message when this happens
+  - [*] show message when this happens
   - [*] shield
   - radar
   - vision
   - shoot
   - thrust
   - life support?
+  - refinement:
+    - implement so that not two overlapping texts appear at the same time (offline/online)
 - ways to lose
   - crushed by an asteroid
   - been too near a sun
