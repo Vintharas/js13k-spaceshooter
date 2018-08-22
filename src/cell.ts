@@ -5,9 +5,14 @@ import {
   degreesToRadians,
   isObjectOutOfBounds,
   getCanvasPosition,
-  Color
+  Color,
+  Sprite
 } from "./utils";
 import Config from "./config";
+
+export interface Cell extends Sprite {
+  cellType: CellType;
+}
 
 export default function createCell(
   position: Position,
@@ -21,6 +26,7 @@ export default function createCell(
   let sin = Math.sin(degreesToRadians(angle));
   return kontra.sprite({
     type: "cell",
+    cellType,
     x: position.x,
     y: position.y,
     dx: cos * Config.Cell.Speed,

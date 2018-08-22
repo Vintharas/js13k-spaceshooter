@@ -10,6 +10,7 @@ export interface Velocity {
 }
 export interface Sprite extends Position, Velocity {
   type: string;
+  ttl?: number;
 }
 export interface RGB {
   r: number;

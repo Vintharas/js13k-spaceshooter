@@ -1,10 +1,11 @@
 import Scene from "./scene";
 import { createAsteroid, Asteroid } from "./asteroid";
-import { Position, getValueInRange, Sprite } from "./utils";
+import { Position, getValueInRange, Sprite, RGB } from "./utils";
 import Config from "./config";
 import { createParticle, createExplosionParticle } from "./particles";
-import createCell, { CellType } from "./cell";
+import createCell, { CellType, Cell } from "./cell";
 import { Ship } from "./ship";
+import createText from "./text";
 
 export default class CollisionsEngine {
   private ship: Ship;
@@ -44,22 +45,7 @@ export default class CollisionsEngine {
         // did it collide with the ship?
         // circle vs. circle collision detection
         let cell = collidableObjects[i];
-        let dx = cell.x - this.ship.x;
-        let dy = cell.y - this.ship.y;
-        if (
-          Math.sqrt(dx * dx + dy * dy) <
-          Config.Cell.OuterRadius + this.ship.width * 2
-        ) {
-          cell.ttl = 0;
-          // add energy or life to the ship
-          if (cell.type === CellType.Energy) {
-            this.ship.energy.recharge(
-              getValueInRange(0, Config.Cell.EnergyBoost)
-            );
-          } else if (cell.type === CellType.Life) {
-            this.ship.life.repair(getValueInRange(0, Config.Cell.LifeBoost));
-          }
-        }
+        this.handleCollisionBetweenCellAndShip(cell, this.ship);
       }
     }
   }
@@ -98,7 +84,7 @@ export default class CollisionsEngine {
         breakAsteroidInSmallerOnes(asteroid, this.scene);
       }
 
-      this.releaseEnergy(this.scene, asteroid);
+      this.releaseCells(this.scene, asteroid);
 
       return true;
     } else {
@@ -145,7 +131,7 @@ export default class CollisionsEngine {
     }
   }
 
-  releaseEnergy(scene: Scene, asteroid: Asteroid) {
+  releaseCells(scene: Scene, asteroid: Asteroid) {
     let numberOfEnergyCells = Math.round(getValueInRange(1, 3));
     // TODO: Extract all for loops into function that generate
     // n number of sprites and add them to the scene
@@ -162,6 +148,50 @@ export default class CollisionsEngine {
       let newCell = createCell(asteroid, scene.cameraPosition, CellType.Life);
       scene.sprites.push(newCell);
     }
+  }
+
+  handleCollisionBetweenCellAndShip(cell: Cell, ship: Ship): void {
+    let dx = cell.x - this.ship.x;
+    let dy = cell.y - this.ship.y;
+    if (
+      Math.sqrt(dx * dx + dy * dy) <
+      Config.Cell.OuterRadius + this.ship.width * 2
+    ) {
+      cell.ttl = 0;
+      // add energy or life to the ship
+      if (cell.cellType === CellType.Energy) {
+        let energyBoost = Math.ceil(
+          getValueInRange(0, Config.Cell.EnergyBoost)
+        );
+        this.ship.energy.recharge(energyBoost);
+        this.addBoostText(energyBoost, cell, ship, { r: 0, g: 255, b: 0 });
+      } else if (cell.cellType === CellType.Life) {
+        let lifeBoost = Math.ceil(getValueInRange(0, Config.Cell.LifeBoost));
+        this.ship.life.repair(lifeBoost);
+        this.addBoostText(lifeBoost, cell, ship, { r: 255, g: 0, b: 0 });
+      }
+    }
+  }
+
+  addBoostText(
+    boost: number,
+    position: Position,
+    cameraPosition: Position,
+    color: RGB
+  ) {
+    let cellText = createText(
+      `+${boost}`,
+      position,
+      {
+        velocity: { dx: 0, dy: -1 },
+        ttl: 120,
+        color,
+        cameraPosition
+      },
+      { size: 12, family: "monospace" }
+    );
+    this.scene.sprites.push(cellText);
+    if (Config.debug) console.log("Created cell text:", cellText);
   }
 }
 

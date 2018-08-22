@@ -11,10 +11,12 @@ export default function createGameOverScene() {
 
   // TODO: we may be able to extract this into some common
   // text based scene
-  const titleText = createText("GAME OVER", 100, 250, "48px serif");
+  const titleText = createText("GAME OVER", { x: 100, y: 250 }, undefined, {
+    size: 48
+  });
   scene.addSprite(titleText);
 
-  const startText = createText("Press ENTER to play again", 200, 300);
+  const startText = createText("Press ENTER to play again", { x: 200, y: 300 });
   scene.addSprite(startText);
 
   return scene;

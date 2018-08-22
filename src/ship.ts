@@ -235,10 +235,9 @@ function ShipEnergy(energy: number, scene: Scene) {
     addOfflineText(text: string) {
       let textSprite = createText(
         text,
-        200,
-        400,
-        "normal normal 18px monospace",
-        120
+        { x: 200, y: 400 },
+        { ttl: 120 },
+        { size: 18, family: "monospace" }
       );
       scene.sprites.push(textSprite);
     }

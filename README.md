@@ -68,7 +68,9 @@
   - improvement in asteroids breaking
     - instead of destroying asteroid, makes asteroids smaller
     - energy moves towards the ship, when the ship is near
+- energy and life cells
   - make energy, life be attracted by the ship
+  - make the little energy ball do circular transitions
 - shield
   - [*] shield is available when you have max energy > 4/5
   - [*] it recharges at the same speed as energy (so when it is on, energy doesn't recharge) (the baseline for energy)

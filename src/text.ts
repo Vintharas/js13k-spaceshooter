@@ -1,23 +1,64 @@
+import { Position, Velocity, RGB, Color, getCanvasPosition } from "./utils";
+import Config from "./config";
+
 export interface FontOptions {
-  size: number;
-  family: string;
+  style?: string;
+  weight?: string;
+  size?: number;
+  family?: string;
+}
+export interface TextOptions {
+  velocity?: Velocity;
+  ttl?: number;
+  color?: RGB;
+  cameraPosition?: Position;
 }
 
 export default function createText(
   text: string,
-  x: number,
-  y: number,
-  font: string = "24px serif",
-  ttl: number = Infinity
+  { x, y }: Position,
+  {
+    velocity: { dx, dy } = { dx: 0, dy: 0 },
+    ttl = Infinity,
+    color: { r, g, b } = { r: 255, g: 255, b: 255 },
+    cameraPosition
+  }: TextOptions = {},
+  {
+    style = "normal",
+    weight = "normal",
+    size = 24,
+    family = "serif"
+  }: FontOptions = {}
 ) {
   return kontra.sprite({
     x,
     y,
+    dx,
+    dy,
     ttl,
+    maxTTL: ttl,
     render() {
-      this.context.fillStyle = "white";
-      this.context.font = font;
-      this.context.fillText(text, x, y);
+      // TODO: having moving and non moving text
+      // in the same function is kind of a mess
+      // separate into two separate functions
+      let alpha = this.getAlpha();
+      this.context.fillStyle = Color.rgba(r, g, b, alpha);
+      this.context.font = `${style} ${weight} ${size}px ${family}`;
+      if (cameraPosition) {
+        let position = getCanvasPosition(
+          { x: this.x, y: this.y },
+          cameraPosition
+        );
+        this.context.fillText(text, position.x, position.y);
+      } else {
+        this.context.fillText(text, x, y);
+      }
+    },
+    getAlpha() {
+      let TTLvanish = this.maxTTL / 2;
+      if (this.ttl < Infinity && this.ttl < TTLvanish) {
+        return 1 - (TTLvanish - this.ttl) / TTLvanish;
+      } else return 1;
     }
   });
 }

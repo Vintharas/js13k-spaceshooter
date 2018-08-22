@@ -9,10 +9,15 @@ export default function createOpenScene() {
   });
   const scene = new Scene([], loop);
 
-  const titleText = createText("JS13K Space Shooter", 100, 250, "48px serif");
+  const titleText = createText(
+    "JS13K Space Shooter",
+    { x: 100, y: 250 },
+    {},
+    { size: 48 }
+  );
   scene.addSprite(titleText);
 
-  const startText = createText("Press ENTER to start", 200, 300);
+  const startText = createText("Press ENTER to start", { x: 200, y: 300 });
   scene.addSprite(startText);
 
   return scene;
