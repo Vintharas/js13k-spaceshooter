@@ -61,8 +61,8 @@
   - [*] shooting spends energy
   - [*] shooting at asteroids releases components -> energy, life
   - [*] energy, life is absorved by the ship when the ship approaches
-  - add a sprite with a number that shows how much you got
-    - on top of the collision
+  - [*] add a sprite with a number that shows how much you got
+    - [*] on top of the collision
     - in addition, it would be cool to show it beside the bar
   - bullets should have particles behind
   - improvement in asteroids breaking

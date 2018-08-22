@@ -224,6 +224,7 @@ function ShipEnergy(energy: number, scene: Scene) {
       // review systems that need to be enabled
       // when energy increases
       if (this.energy > (this.maxEnergy * 4) / 5 && !this.shield.isEnabled) {
+        this.shield.isEnabled = true;
         this.addOfflineText("- SHIELD ONLINE -");
       }
     },
@@ -312,6 +313,7 @@ function ShipShield(
     radius,
 
     dt: 0,
+    dtr: 0,
 
     update() {
       this.dt += 1 / 60;
@@ -340,6 +342,16 @@ function ShipShield(
 
       // actual shield
       if (this.shield === 0) return;
+
+      // Flickering behavior when shield is disabled
+      // and is losing power
+      this.dtr += 1 / 60;
+      if (!this.isEnabled && this.dtr > 0.5 && this.dtr < 0.75) {
+        return;
+      } else if (!this.isEnabled && this.dtr > 0.75) {
+        this.dtr = 0;
+        return;
+      }
       // TODO: would be interesting to do some flicker for some frames
       // when it gets disabled
 
@@ -366,9 +378,18 @@ function ShipShield(
       if (this.shield > 0) this.shield -= damage;
       if (this.shield < 0) this.shield = 0;
       if (Config.debug) {
-        console.log(
-          `Ship took damage ${damage}. Remaining life is ${this.life}`
-        );
+        if (this.isEnabled)
+          console.log(
+            `Ship took shield damage ${damage}. Remaining shield is ${
+              this.shield
+            }`
+          );
+        else
+          console.log(
+            `Ship shield losing power ${damage}. Remaining shield is ${
+              this.shield
+            }`
+          );
       }
     },
 
