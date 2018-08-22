@@ -45,6 +45,7 @@
   - [*] come from random location at random speed
   - [*] different size
   - [*] create clusters of asteroids
+  - improve clusters to be x-close, or y-close, that will look cooler :D (I think, they will look more like a cluster)
   - add new clusters every so often (outside of the current camera view)
 - ship life/collisions
   - [*] life and life indicator for the ship
@@ -59,7 +60,10 @@
 - shoot
   - [*] shooting spends energy
   - [*] shooting at asteroids releases components -> energy, life
-  - energy, life is absorved by the ship when the ship approaches
+  - [*] energy, life is absorved by the ship when the ship approaches
+  - add a sprite with a number that shows how much you got
+    - on top of the collision
+    - in addition, it would be cool to show it beside the bar
   - bullets should have particles behind
   - improvement in asteroids breaking
     - instead of destroying asteroid, makes asteroids smaller
@@ -69,6 +73,8 @@
   - [*] shield is available when you have max energy > 4/5
   - [*] it recharges at the same speed as energy (so when it is on, energy doesn't recharge) (the baseline for energy)
   - [*] if energy goes low or it is broken it disappears
+  - BUG!!! fix fix!
+    - there seems to be a bug with the shield not coming online!!
   - improve art and flickering animation
     - flicker when it goes off/on (perhaps we can flicker with low energy)
     - when enabled more around a little bit. Perhaps the origin can describe a circle itself

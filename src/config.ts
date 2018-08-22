@@ -11,7 +11,7 @@ const Config = {
   initialNumberOfClusters: 10,
 
   // collisions
-  collidableTypes: ["asteroid", "bullet", "ship"],
+  collidableTypes: ["asteroid", "bullet", "ship", "cell"],
 
   // enable debug printouts
   debug: false,
@@ -31,7 +31,9 @@ const Config = {
     OuterRadius: 8,
     InnerRadius: 2,
     TTL: 240,
-    Speed: 0.7
+    Speed: 0.7,
+    EnergyBoost: 20,
+    LifeBoost: 10
   }
 };
 

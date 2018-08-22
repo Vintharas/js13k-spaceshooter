@@ -20,6 +20,7 @@ export default function createCell(
   let cos = Math.cos(degreesToRadians(angle));
   let sin = Math.sin(degreesToRadians(angle));
   return kontra.sprite({
+    type: "cell",
     x: position.x,
     y: position.y,
     dx: cos * Config.Cell.Speed,

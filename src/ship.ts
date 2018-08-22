@@ -1,9 +1,27 @@
-import { degreesToRadians, Velocity, Position, getValueInRange } from "./utils";
+import {
+  degreesToRadians,
+  Velocity,
+  Position,
+  getValueInRange,
+  Sprite
+} from "./utils";
 import Scene from "./scene";
 import createBullet from "./bullet";
 import { createParticle, createStaticParticle } from "./particles";
 import Config from "./config";
 import createText from "./text";
+
+export interface Ship extends Sprite {
+  width: number;
+  energy: ShipEnergy;
+  life: ShipLife;
+}
+export interface ShipEnergy extends Sprite {
+  recharge(value: number): void;
+}
+export interface ShipLife extends Sprite {
+  repair(value: number): void;
+}
 
 export default function createShip(scene: Scene) {
   const width = 6;
@@ -172,13 +190,8 @@ function ShipEnergy(energy: number, scene: Scene) {
       this.dt += 1 / 60;
       if (this.dt > 0.25) {
         // baseline for recharging energy
-        if (this.energy < this.maxEnergy) this.energy++;
+        this.recharge(1);
         this.dt = 0;
-        // review systems that need to be enabled
-        // when energy increases
-        if (this.energy > (this.maxEnergy * 4) / 5 && !this.shield.isEnabled) {
-          this.addOfflineText("- SHIELD ONLINE -");
-        }
       }
     },
     render() {
@@ -201,6 +214,17 @@ function ShipEnergy(energy: number, scene: Scene) {
         if (Config.debug) console.log("Low on energy. Disabling shield");
         this.shield.disable();
         this.addOfflineText("- SHIELD OFFLINE -");
+      }
+    },
+
+    recharge(energyBoost: number) {
+      // TODO: Extra this increase-value-but-not-past-this-value in a function
+      if (this.energy < this.maxEnergy) this.energy += energyBoost;
+      if (this.energy > this.maxEnergy) this.energy = this.maxEnergy;
+      // review systems that need to be enabled
+      // when energy increases
+      if (this.energy > (this.maxEnergy * 4) / 5 && !this.shield.isEnabled) {
+        this.addOfflineText("- SHIELD ONLINE -");
       }
     },
 
@@ -235,9 +259,13 @@ function ShipLife(life: number) {
       this.dt += 1 / 60;
       if (this.dt > 1) {
         // baseline for recharging energy
-        if (this.life < this.maxLife) this.life++;
         this.dt = 0;
+        this.repair(1);
       }
+    },
+    repair(lifeBoost: number): void {
+      if (this.life < this.maxLife) this.life += lifeBoost;
+      if (this.life > this.maxLife) this.life = this.maxLife;
     },
     render() {
       // energy bar

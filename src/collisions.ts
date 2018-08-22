@@ -4,14 +4,16 @@ import { Position, getValueInRange, Sprite } from "./utils";
 import Config from "./config";
 import { createParticle, createExplosionParticle } from "./particles";
 import createCell, { CellType } from "./cell";
+import { Ship } from "./ship";
 
 export default class CollisionsEngine {
+  private ship: Ship;
   constructor(private scene: Scene) {}
 
   processCollisions() {
-    let scene = this.scene;
+    this.initializeShip();
     // temporary hack to test something
-    let collidableObjects = scene.sprites
+    let collidableObjects = this.scene.sprites
       .filter(s => Config.collidableTypes.includes(s.type))
       // with the current algorithm that
       // checks whether an asteroid has collided with X
@@ -32,55 +34,96 @@ export default class CollisionsEngine {
           if (collidableObjects[j].type !== "asteroid") {
             let asteroid = collidableObjects[i];
             let sprite = collidableObjects[j];
-            // circle vs. circle collision detection
-            let dx = asteroid.x - sprite.x;
-            let dy = asteroid.y - sprite.y;
-            if (Math.sqrt(dx * dx + dy * dy) < asteroid.radius + sprite.width) {
-              asteroid.ttl = 0;
-
-              if (sprite.type === "ship") {
-                let ship = sprite;
-                if (Config.debug)
-                  console.log("Asteroid collided with ship", asteroid, ship);
-                // the damage produced in the ship depends
-                // on the size of the asteroid
-                let damage = asteroid.radius * 4;
-                if (ship.shield.get() > 0) {
-                  ship.shield.damage(damage);
-                  if (ship.shield.get() <= 0) {
-                    // do some remaining damage to ship but less
-                    ship.life.damage(damage / 4);
-                  }
-                } else {
-                  ship.life.damage(damage);
-                }
-                if (ship.life.get() <= 0) {
-                  if (Config.debug) console.log("SHIP DIED");
-                  ship.ttl = 0; // game over mothafucka!
-                }
-              } else {
-                sprite.ttl = 0;
-              }
-
-              // explosion
-              // particle explosion
-              this.addExplosion(scene, asteroid);
-
-              // split the asteroid only if it's large enough
-              if (asteroid.radius > 10) {
-                breakAsteroidInSmallerOnes(asteroid, scene);
-              }
-
-              this.releaseEnergy(scene, asteroid);
-
-              // what the heck is this break doing here?
-              // if this object has already collided with another object
-              // then there's no need to check more (since the item will be destroyed)
-              break;
-            }
+            let collided = this.handleCollisionWithAsteroid(asteroid, sprite);
+            if (collided) break;
           }
         }
       }
+
+      if (collidableObjects[i].type === "cell" && this.ship) {
+        // did it collide with the ship?
+        // circle vs. circle collision detection
+        let cell = collidableObjects[i];
+        let dx = cell.x - this.ship.x;
+        let dy = cell.y - this.ship.y;
+        if (
+          Math.sqrt(dx * dx + dy * dy) <
+          Config.Cell.OuterRadius + this.ship.width * 2
+        ) {
+          cell.ttl = 0;
+          // add energy or life to the ship
+          if (cell.type === CellType.Energy) {
+            this.ship.energy.recharge(
+              getValueInRange(0, Config.Cell.EnergyBoost)
+            );
+          } else if (cell.type === CellType.Life) {
+            this.ship.life.repair(getValueInRange(0, Config.Cell.LifeBoost));
+          }
+        }
+      }
+    }
+  }
+
+  initializeShip() {
+    // TODO: we could inject this via constructor
+    // if I untangle the dependency mess
+    if (this.ship) return;
+
+    let shipTypedSprites = this.scene.sprites.filter(
+      (s: Sprite) => s.type === "ship"
+    );
+    if (shipTypedSprites.length > 0) [this.ship] = shipTypedSprites;
+  }
+
+  handleCollisionWithAsteroid(asteroid: any, sprite: any): boolean {
+    // circle vs. circle collision detection
+    let dx = asteroid.x - sprite.x;
+    let dy = asteroid.y - sprite.y;
+    if (Math.sqrt(dx * dx + dy * dy) < asteroid.radius + sprite.width) {
+      if (!["ship", "bullet"].includes(sprite.type)) return;
+
+      asteroid.ttl = 0;
+      if (sprite.type === "ship") {
+        this.handleCollisionAsteroidWithShip(asteroid, sprite);
+      } else if (sprite.type === "bullet") {
+        sprite.ttl = 0;
+      }
+
+      // explosion
+      // particle explosion
+      this.addExplosion(this.scene, asteroid);
+
+      // split the asteroid only if it's large enough
+      if (asteroid.radius > 10) {
+        breakAsteroidInSmallerOnes(asteroid, this.scene);
+      }
+
+      this.releaseEnergy(this.scene, asteroid);
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  handleCollisionAsteroidWithShip(asteroid: Asteroid, ship: any) {
+    if (Config.debug)
+      console.log("Asteroid collided with ship", asteroid, ship);
+    // the damage produced in the ship depends
+    // on the size of the asteroid
+    let damage = asteroid.radius * 4;
+    if (ship.shield.get() > 0) {
+      ship.shield.damage(damage);
+      if (ship.shield.get() <= 0) {
+        // do some remaining damage to ship but less
+        ship.life.damage(damage / 4);
+      }
+    } else {
+      ship.life.damage(damage);
+    }
+    if (ship.life.get() <= 0) {
+      if (Config.debug) console.log("SHIP DIED");
+      ship.ttl = 0; // game over mothafucka!
     }
   }
 
