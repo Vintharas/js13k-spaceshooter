@@ -69,14 +69,15 @@
     - instead of destroying asteroid, makes asteroids smaller
     - energy moves towards the ship, when the ship is near
 - energy and life cells
+  - [*] energy and life cells
   - make energy, life be attracted by the ship
   - make the little energy ball do circular transitions
 - shield
   - [*] shield is available when you have max energy > 4/5
   - [*] it recharges at the same speed as energy (so when it is on, energy doesn't recharge) (the baseline for energy)
   - [*] if energy goes low or it is broken it disappears
-  - BUG!!! fix fix!
-    - there seems to be a bug with the shield not coming online!!
+  - [*] BUG!!! fix fix!
+    - [*] there seems to be a bug with the shield not coming online!!
   - improve art and flickering animation
     - flicker when it goes off/on (perhaps we can flicker with low energy)
     - when enabled more around a little bit. Perhaps the origin can describe a circle itself
@@ -93,8 +94,20 @@
         nearer background stuff as well, that should work
   - can I make stars with a tileset?
 - planets
-  - more resources
+  - [*] dotted circle and planet
+  - create some patterns for planets (bigger pattern? better algorithm?)
+  - resources
+    - you get resourcs if you get near the dotted circle
+    - more resources
+    - you can recharge resources by orbiting near planets
+  - some planets have moons
+  - cool ideas
+    - get jobs
+    - fullfill quests
+    - sell resources (pillaging/asteroid mining/etc) in exchange for money/equipment/goods
+- stars
   - stars give you energy faster
+  - but if you get too near you die
 - shield (implemented above)
   - [*] slowly drains energy (same speed as sun in lowest charge)
   - [*] protects ship hull

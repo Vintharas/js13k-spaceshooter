@@ -14,7 +14,7 @@ const Config = {
   collidableTypes: ["asteroid", "bullet", "ship", "cell"],
 
   // enable debug printouts
-  debug: true,
+  debug: false,
   verbose: false,
   typesToLog: ["asteroid", "ship"],
   logTheseProperties: (s: any) => ({

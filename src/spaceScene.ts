@@ -5,6 +5,7 @@ import { isObjectOutOfBounds, Position, getValueInRange } from "./utils";
 import createStar from "./star";
 import Config from "./config";
 import Game from "./game";
+import { createPlanet } from "./planet";
 
 export default function createSpaceScene() {
   let loop = kontra.gameLoop({
@@ -17,6 +18,7 @@ export default function createSpaceScene() {
 
   // initial state
   addStars(scene, ship);
+  addPlanets(scene, ship);
   addAsteroids(scene, ship);
   addStaticAsteroids(scene, ship);
   scene.addSprite(ship);
@@ -127,5 +129,16 @@ function addAsteroidCluster(
       cameraPosition
     );
     scene.addSprite(asteroid);
+  }
+}
+
+function addPlanets(scene: Scene, cameraPosition: Position) {
+  let spaceBetweenPlanets = 900;
+  for (let x = -1000; x <= 1000; x += spaceBetweenPlanets) {
+    for (let y = -1000; y <= 1000; y += spaceBetweenPlanets) {
+      let radius = getValueInRange(50, 100);
+      let planet = createPlanet({ x, y }, radius, cameraPosition);
+      scene.addSprite(planet);
+    }
   }
 }
