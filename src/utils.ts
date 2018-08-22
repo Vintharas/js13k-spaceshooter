@@ -8,12 +8,8 @@ export interface Velocity {
   dx: number;
   dy: number;
 }
-export interface Sprite {
+export interface Sprite extends Position, Velocity {
   type: string;
-  x: number;
-  y: number;
-  dx: number;
-  dy: number;
 }
 export interface RGB {
   r: number;

@@ -24,7 +24,15 @@ const Config = {
     ttl: s.ttl
   }),
   onlyLogInProximityToShip: true, // great for debugging collisions
-  renderCollisionArea: true
+  renderCollisionArea: true,
+
+  // Game objects
+  Cell: {
+    OuterRadius: 8,
+    InnerRadius: 2,
+    TTL: 240,
+    Speed: 0.7
+  }
 };
 
 export default Config;

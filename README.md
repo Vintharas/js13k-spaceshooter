@@ -58,14 +58,20 @@
   - improve collision algorithm to take types into account instead of requiring sorting
 - shoot
   - [*] shooting spends energy
-  - shooting at asteroids releases components -> energy, life
-  - instead of destroying asteroid, makes asteroids smaller
-  - energy moves towards the ship, when the ship is near
+  - [*] shooting at asteroids releases components -> energy, life
+  - energy, life is absorved by the ship when the ship approaches
+  - bullets should have particles behind
+  - improvement in asteroids breaking
+    - instead of destroying asteroid, makes asteroids smaller
+    - energy moves towards the ship, when the ship is near
+  - make energy, life be attracted by the ship
 - shield
   - [*] shield is available when you have max energy > 4/5
   - [*] it recharges at the same speed as energy (so when it is on, energy doesn't recharge) (the baseline for energy)
   - [*] if energy goes low or it is broken it disappears
   - improve art and flickering animation
+    - flicker when it goes off/on (perhaps we can flicker with low energy)
+    - when enabled more around a little bit. Perhaps the origin can describe a circle itself
 - stars
   - [*] testing sprites so far
   - [*] two different layers with different speeds and intensity
@@ -97,7 +103,7 @@
   - thrust
   - life support?
   - refinement:
-    - implement so that not two overlapping texts appear at the same time (offline/online)
+    - implement so that not two overlapping texts appear at the same time (offline/online). Add some sort of message queueing system
 - ways to lose
   - crushed by an asteroid
   - been too near a sun
@@ -115,6 +121,9 @@
   - this could be altered by a UI in realtime and allow me to tweak the game
 - different difficulty levels
   - higher cost for actions
+- end escene
+  - show explosion of your ship then move to end screen with scores and such
+  - overdo the explosion
 
 ## Art
 

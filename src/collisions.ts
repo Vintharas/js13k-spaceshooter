@@ -1,8 +1,9 @@
 import Scene from "./scene";
-import { createAsteroid } from "./asteroid";
+import { createAsteroid, Asteroid } from "./asteroid";
 import { Position, getValueInRange, Sprite } from "./utils";
 import Config from "./config";
 import { createParticle, createExplosionParticle } from "./particles";
+import createCell, { CellType } from "./cell";
 
 export default class CollisionsEngine {
   constructor(private scene: Scene) {}
@@ -63,31 +64,14 @@ export default class CollisionsEngine {
 
               // explosion
               // particle explosion
-
-              // TODO: extract colors and selection
-              // to a helper function
-              let red = { r: 255, g: 0, b: 0 };
-              let orange = { r: 255, g: 165, b: 0 };
-              let yellow = { r: 255, g: 255, b: 0 };
-              let explosionColors = [red, orange, yellow];
-              for (let i = 0; i < asteroid.radius * 10; i++) {
-                let colorIndex = Math.round(Math.random() * 2);
-                let particle = createExplosionParticle(
-                  asteroid,
-                  scene.cameraPosition,
-                  {
-                    ttl: 50,
-                    color: explosionColors[colorIndex],
-                    magnitude: asteroid.radius / 2
-                  }
-                );
-                scene.sprites.push(particle);
-              }
+              this.addExplosion(scene, asteroid);
 
               // split the asteroid only if it's large enough
               if (asteroid.radius > 10) {
                 breakAsteroidInSmallerOnes(asteroid, scene);
               }
+
+              this.releaseEnergy(scene, asteroid);
 
               // what the heck is this break doing here?
               // if this object has already collided with another object
@@ -97,6 +81,43 @@ export default class CollisionsEngine {
           }
         }
       }
+    }
+  }
+
+  addExplosion(scene: Scene, asteroid: Asteroid) {
+    // TODO: extract colors and selection
+    // to a helper function
+    let red = { r: 255, g: 0, b: 0 };
+    let orange = { r: 255, g: 165, b: 0 };
+    let yellow = { r: 255, g: 255, b: 0 };
+    let explosionColors = [red, orange, yellow];
+    for (let i = 0; i < asteroid.radius * 10; i++) {
+      let colorIndex = Math.round(Math.random() * 2);
+      let particle = createExplosionParticle(asteroid, scene.cameraPosition, {
+        ttl: 50,
+        color: explosionColors[colorIndex],
+        magnitude: asteroid.radius / 2
+      });
+      scene.sprites.push(particle);
+    }
+  }
+
+  releaseEnergy(scene: Scene, asteroid: Asteroid) {
+    let numberOfEnergyCells = Math.round(getValueInRange(1, 3));
+    // TODO: Extract all for loops into function that generate
+    // n number of sprites and add them to the scene
+    // using a factory function
+    // Energy Cells
+    for (let i = 0; i < numberOfEnergyCells; i++) {
+      let newCell = createCell(asteroid, scene.cameraPosition, CellType.Energy);
+      scene.sprites.push(newCell);
+    }
+
+    //Life Cells
+    let numerOfLifeCells = Math.round(getValueInRange(0, 1));
+    for (let i = 0; i < numerOfLifeCells; i++) {
+      let newCell = createCell(asteroid, scene.cameraPosition, CellType.Life);
+      scene.sprites.push(newCell);
     }
   }
 }
