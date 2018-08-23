@@ -54,7 +54,7 @@ export default class Scene {
     };
   }
 
-  processCollisions(): void {
-    this.collisionsEngine.processCollisions();
+  processCollisions(dt: number): void {
+    this.collisionsEngine.processCollisions(dt);
   }
 }

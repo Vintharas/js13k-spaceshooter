@@ -10,6 +10,7 @@ import Config from "./config";
 
 export interface Planet extends Sprite {
   radius: number;
+  outerRadius: number;
   dt: number;
 }
 
@@ -23,6 +24,7 @@ export function createPlanet(
     x: position.x,
     y: position.y,
     radius,
+    outerRadius: radius + 0.25 * radius,
     ttl: Infinity,
     dt: 0,
     rotation: 0,
@@ -67,7 +69,7 @@ export function createPlanet(
       this.context.beginPath(); // start drawing a shape
       this.context.strokeStyle = "turquoise";
       this.context.setLineDash([5, 15]);
-      this.context.arc(0, 0, this.radius + 0.25 * this.radius, 0, Math.PI * 2);
+      this.context.arc(0, 0, this.outerRadius, 0, Math.PI * 2);
       this.context.stroke();
 
       this.context.restore();

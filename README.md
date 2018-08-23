@@ -145,6 +145,9 @@
 - end escene
   - show explosion of your ship then move to end screen with scores and such
   - overdo the explosion
+  - then move to scores scene
+- scoreboard
+  - saved in localstorage
 
 ## Art
 

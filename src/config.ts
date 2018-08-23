@@ -11,10 +11,10 @@ const Config = {
   initialNumberOfClusters: 10,
 
   // collisions
-  collidableTypes: ["asteroid", "bullet", "ship", "cell"],
+  collidableTypes: ["asteroid", "bullet", "ship", "cell", "planet"],
 
   // enable debug printouts
-  debug: false,
+  debug: true,
   verbose: false,
   typesToLog: ["asteroid", "ship"],
   logTheseProperties: (s: any) => ({

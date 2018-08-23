@@ -80,3 +80,9 @@ function cellTypeToColor(type: CellType, alpha: number): string {
   if (type === CellType.Life) return Color.rgba(255, 0, 0, alpha);
   return "yellow";
 }
+
+export function getRandomCellType(): CellType {
+  const cellTypes = [CellType.Energy, CellType.Life];
+  const index = Math.round(Math.random());
+  return cellTypes[index];
+}

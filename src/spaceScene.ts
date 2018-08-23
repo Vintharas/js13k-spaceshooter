@@ -25,12 +25,12 @@ export default function createSpaceScene() {
 
   return scene;
 
-  function update() {
+  function update(dt: number) {
     scene.sprites.map(sprite => {
       sprite.update();
     });
 
-    scene.processCollisions();
+    scene.processCollisions(dt);
 
     if (!ship.isAlive()) {
       Game.instance().goToGameOverScene();

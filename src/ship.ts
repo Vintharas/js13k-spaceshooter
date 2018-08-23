@@ -64,11 +64,14 @@ export default function createShip(scene: Scene) {
       this.context.rotate(degreesToRadians(this.rotation));
       // draw a right facing triangle
       this.context.beginPath();
+      this.context.strokeStyle = "white";
+      this.context.fillStyle = "white";
       this.context.moveTo(-3, -5);
       this.context.lineTo(12, 0);
       this.context.lineTo(-3, 5);
       this.context.closePath();
       this.context.stroke();
+      this.context.fill();
       this.context.restore();
 
       // draw ship energy and life bars

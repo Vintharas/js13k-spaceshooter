@@ -3,15 +3,19 @@ import { createAsteroid, Asteroid } from "./asteroid";
 import { Position, getValueInRange, Sprite, RGB } from "./utils";
 import Config from "./config";
 import { createParticle, createExplosionParticle } from "./particles";
-import createCell, { CellType, Cell } from "./cell";
+import createCell, { CellType, Cell, getRandomCellType } from "./cell";
 import { Ship } from "./ship";
 import createText from "./text";
+import { Planet } from "./planet";
 
 export default class CollisionsEngine {
   private ship: Ship;
+  private dt = 0;
   constructor(private scene: Scene) {}
 
-  processCollisions() {
+  processCollisions(dt: number) {
+    this.dt += dt;
+
     this.initializeShip();
     // temporary hack to test something
     let collidableObjects = this.scene.sprites
@@ -46,6 +50,11 @@ export default class CollisionsEngine {
         // circle vs. circle collision detection
         let cell = collidableObjects[i];
         this.handleCollisionBetweenCellAndShip(cell, this.ship);
+      }
+
+      if (collidableObjects[i].type === "planet" && this.ship) {
+        let planet = collidableObjects[i];
+        this.handleCollisionBetweenPlanetAndShip(planet, this.ship);
       }
     }
   }
@@ -192,6 +201,30 @@ export default class CollisionsEngine {
     );
     this.scene.sprites.push(cellText);
     if (Config.debug) console.log("Created cell text:", cellText);
+  }
+
+  handleCollisionBetweenPlanetAndShip(planet: Planet, ship: Ship): void {
+    let dx = planet.x - this.ship.x;
+    let dy = planet.y - this.ship.y;
+    if (
+      Math.sqrt(dx * dx + dy * dy) < planet.outerRadius + this.ship.width * 2 &&
+      this.dt > 0.4
+    ) {
+      this.dt = 0;
+      let cellType = getRandomCellType();
+      // add energy or life to the ship
+      if (cellType === CellType.Energy) {
+        let energyBoost = Math.ceil(
+          getValueInRange(0, Config.Cell.EnergyBoost)
+        );
+        this.ship.energy.recharge(energyBoost);
+        this.addBoostText(energyBoost, ship, ship, { r: 0, g: 255, b: 0 });
+      } else if (cellType === CellType.Life) {
+        let lifeBoost = Math.ceil(getValueInRange(0, Config.Cell.LifeBoost));
+        this.ship.life.repair(lifeBoost);
+        this.addBoostText(lifeBoost, ship, ship, { r: 255, g: 0, b: 0 });
+      }
+    }
   }
 }
 
