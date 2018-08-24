@@ -62,3 +62,14 @@ export default function createText(
     }
   });
 }
+
+export function createGameStatusText(text: string) {
+  // in order to center the text in the screen
+  let textOffset = (text.length * 12) / 2;
+  return createText(
+    text,
+    { x: 300 - textOffset, y: 400 },
+    { ttl: 120 },
+    { size: 18, family: "monospace" }
+  );
+}

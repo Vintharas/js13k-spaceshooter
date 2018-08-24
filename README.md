@@ -40,6 +40,8 @@
   - show speed indicator?
   - tinker with the max speed
   - enabling pressing back to diminish forward speed (less strong than forward but same amount of energy)
+  - make canvas BIGGER! Take the whole screen! :)
+  - save middle points in a config file and use them in the game
   - iteratively generate map boundaries!!!! CORE to gameplay
 - asteroids generation
   - [*] come from random location at random speed
@@ -109,7 +111,12 @@
     - also planets have a limited number of resources that regenerate over time
       - interesting if some types of planets have more of some resource
       - food could be a third resource
-  - give planets names
+  - [*] give planets names
+  - planets need to be claimed by the faction before they can be used to
+    gather resources! (cool xD)
+    - claim orbiting an unclaimed planet for some seconds
+    - claimed planets get a ring of your factions color
+    - over time a defense orbiting station is built on the planet
   - some planets have moons
   - cool ideas
     - get jobs

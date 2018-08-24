@@ -9,12 +9,14 @@ import Scene from "./scene";
 import createBullet from "./bullet";
 import { createParticle, createStaticParticle } from "./particles";
 import Config from "./config";
-import createText from "./text";
+import createText, { createGameStatusText } from "./text";
+import { Faction } from "./factions";
 
 export interface Ship extends Sprite {
   width: number;
   energy: ShipEnergy;
   life: ShipLife;
+  faction: Faction;
 }
 export interface ShipEnergy extends Sprite {
   recharge(value: number): void;
@@ -27,12 +29,13 @@ export default function createShip(scene: Scene) {
   const width = 6;
   const x = 300;
   const y = 300;
-  const energy = ShipEnergy(200, scene);
-  const life = ShipLife(100);
-  const shield = ShipShield(100, energy, { x, y }, width);
+  const energy = ShipEnergy(Config.Ship.Energy, scene);
+  const life = ShipLife(Config.Ship.Life);
+  const shield = ShipShield(Config.Ship.Shield, energy, { x, y }, width);
 
   const ship = kontra.sprite({
     type: "ship",
+    faction: Faction.Red,
 
     // position
     // this is actually the position of the camera
@@ -64,8 +67,8 @@ export default function createShip(scene: Scene) {
       this.context.rotate(degreesToRadians(this.rotation));
       // draw a right facing triangle
       this.context.beginPath();
-      this.context.strokeStyle = "white";
-      this.context.fillStyle = "white";
+      this.context.strokeStyle = "red";
+      this.context.fillStyle = "red";
       this.context.moveTo(-3, -5);
       this.context.lineTo(12, 0);
       this.context.lineTo(-3, 5);
@@ -237,12 +240,7 @@ function ShipEnergy(energy: number, scene: Scene) {
     },
 
     addOfflineText(text: string) {
-      let textSprite = createText(
-        text,
-        { x: 200, y: 400 },
-        { ttl: 120 },
-        { size: 18, family: "monospace" }
-      );
+      let textSprite = createGameStatusText(text);
       scene.sprites.push(textSprite);
     }
   });

@@ -27,6 +27,12 @@ const Config = {
   renderCollisionArea: true,
 
   // Game objects
+  Ship: {
+    Energy: 500,
+    Life: 200,
+    Shield: 300
+  },
+
   Cell: {
     OuterRadius: 8,
     InnerRadius: 2,
@@ -34,6 +40,10 @@ const Config = {
     Speed: 0.7,
     EnergyBoost: 20,
     LifeBoost: 10
+  },
+
+  Planet: {
+    Resources: 3000
   }
 };
 

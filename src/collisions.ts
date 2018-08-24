@@ -203,27 +203,39 @@ export default class CollisionsEngine {
     if (Config.debug) console.log("Created cell text:", cellText);
   }
 
+  // TODO: it's about time to extract this into something it's own object
+  // The collision engine could use collisionStrategies which would encapsulate
+  // collision logic between entities
   handleCollisionBetweenPlanetAndShip(planet: Planet, ship: Ship): void {
-    let dx = planet.x - this.ship.x;
-    let dy = planet.y - this.ship.y;
-    if (
-      Math.sqrt(dx * dx + dy * dy) < planet.outerRadius + this.ship.width * 2 &&
-      this.dt > 0.4
-    ) {
-      this.dt = 0;
-      let cellType = getRandomCellType();
-      // add energy or life to the ship
-      if (cellType === CellType.Energy) {
-        let energyBoost = Math.ceil(
-          getValueInRange(0, Config.Cell.EnergyBoost)
-        );
-        this.ship.energy.recharge(energyBoost);
-        this.addBoostText(energyBoost, ship, ship, { r: 0, g: 255, b: 0 });
-      } else if (cellType === CellType.Life) {
-        let lifeBoost = Math.ceil(getValueInRange(0, Config.Cell.LifeBoost));
-        this.ship.life.repair(lifeBoost);
-        this.addBoostText(lifeBoost, ship, ship, { r: 255, g: 0, b: 0 });
+    let dx = planet.x - ship.x;
+    let dy = planet.y - ship.y;
+
+    if (planetAndShipCollided(planet, ship)) {
+      if (planet.claimedBy === ship.faction) {
+        if (this.dt > 0.4) {
+          this.dt = 0;
+          this.provideBoosts(ship);
+        }
+      } else {
+        planet.increaseClaim(ship.faction, 1 / 2);
       }
+    }
+    function planetAndShipCollided(planet: Planet, ship: Ship) {
+      return Math.sqrt(dx * dx + dy * dy) < planet.outerRadius + ship.width * 2;
+    }
+  }
+
+  provideBoosts(ship: Ship) {
+    let cellType = getRandomCellType();
+    // add energy or life to the ship
+    if (cellType === CellType.Energy) {
+      let energyBoost = Math.ceil(getValueInRange(0, Config.Cell.EnergyBoost));
+      ship.energy.recharge(energyBoost);
+      this.addBoostText(energyBoost, ship, ship, { r: 0, g: 255, b: 0 });
+    } else if (cellType === CellType.Life) {
+      let lifeBoost = Math.ceil(getValueInRange(0, Config.Cell.LifeBoost));
+      ship.life.repair(lifeBoost);
+      this.addBoostText(lifeBoost, ship, ship, { r: 255, g: 0, b: 0 });
     }
   }
 }

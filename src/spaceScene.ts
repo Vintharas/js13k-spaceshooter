@@ -137,7 +137,7 @@ function addPlanets(scene: Scene, cameraPosition: Position) {
   for (let x = -1000; x <= 1000; x += spaceBetweenPlanets) {
     for (let y = -1000; y <= 1000; y += spaceBetweenPlanets) {
       let radius = getValueInRange(50, 100);
-      let planet = createPlanet({ x, y }, radius, cameraPosition);
+      let planet = createPlanet({ x, y }, radius, cameraPosition, scene);
       scene.addSprite(planet);
     }
   }

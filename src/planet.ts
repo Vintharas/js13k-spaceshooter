@@ -10,17 +10,24 @@ import OffscreenCanvas from "./canvas";
 import Config from "./config";
 import { getRandomCellType } from "./cell";
 import { generateName } from "./names";
+import { Faction } from "./factions";
+import { createGameStatusText } from "./text";
+import Scene from "./scene";
 
 export interface Planet extends Sprite {
   radius: number;
   outerRadius: number;
   dt: number;
+
+  claimedBy: Faction;
+  increaseClaim(faction: Faction, percentage: number): void;
 }
 
 export function createPlanet(
   position: Position,
   radius: number,
-  cameraPosition: Position
+  cameraPosition: Position,
+  scene: Scene
 ): Planet {
   let textureWidth = Math.round(getValueInRange(64, radius));
   let textureHeight = Math.round(getValueInRange(64, radius));
@@ -36,6 +43,42 @@ export function createPlanet(
     ttl: Infinity,
     dt: 0,
     rotation: 0,
+
+    // TODO: I could extract this into mixins
+    // claiming logic
+    claimedBy: undefined,
+    beingClaimed: false, // controls whether the claiming
+    claimedPercentage: 0,
+    isClaimed() {
+      return this.claimedBy !== undefined;
+    },
+    increaseClaim(faction: Faction, percentage: number): void {
+      if (!this.beingClaimed) {
+        // text
+        let textSprite = createGameStatusText(
+          `${faction} FACTION CLAIMING ${planetName}`
+        );
+        scene.sprites.push(textSprite);
+        this.beingClaimed = true;
+      }
+
+      this.claimedPercentage += percentage;
+
+      if (this.claimedPercentage >= 100) {
+        this.claimedPercentage = 100;
+        this.beingClaimed = false;
+        this.claimedBy = faction;
+        let textSprite = createGameStatusText(
+          `${faction} FACTION CLAIMED ${planetName}`
+        );
+        scene.sprites.push(textSprite);
+      }
+    },
+
+    // collecting logic
+    beingCollected: false,
+    resources: Config.Planet.Resources,
+
     update() {
       this.rotation += 1 / 4;
     },
@@ -102,6 +145,38 @@ export function createPlanet(
       this.context.restore();
 
       // #5. planet energy
+
+      // #6. planet being claimed
+      if (this.beingClaimed) {
+        // extract to separate function
+        // we can use the same bar for energy and claiming
+        // just different colors
+        // I can even use it for bars of energy, etc
+        // it should be a separate UI game component
+        let barWidth = radius * 2;
+        let width = (this.claimedPercentage / 100) * barWidth;
+        this.context.save();
+        this.context.translate(position.x - radius, position.y + radius + 35);
+        this.context.fillStyle = "white";
+        this.context.fillRect(0, 0, width, 5);
+        this.context.strokeStyle = "white";
+        this.context.strokeRect(0, 0, radius * 2, 5);
+        this.context.restore();
+      }
+
+      // #7. planet claimed
+      if (this.claimedBy !== undefined) {
+        let factionRadius = radius + 0.35 * radius;
+        this.context.save();
+        this.context.translate(position.x, position.y);
+        this.context.strokeStyle = Faction.Red.toLowerCase();
+        this.context.lineWidth = 5;
+        this.context.beginPath(); // start drawing a shape
+
+        this.context.arc(0, 0, factionRadius, 0, Math.PI * 2);
+        this.context.stroke();
+        this.context.restore();
+      }
 
       // Drawing asteroids as a circle
       // this is what we use for collision
