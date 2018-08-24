@@ -96,15 +96,31 @@
 - planets
   - [*] dotted circle and planet
   - create some patterns for planets (bigger pattern? better algorithm?)
+    - [*] green planet
+    - [*] red planet
+    - [*] blue ice planet
+    - earth like planet
   - resources
-    - you get resourcs if you get near the dotted circle
-    - more resources
-    - you can recharge resources by orbiting near planets
+    - [*] you get resources if you get near the dotted circle
+    - [*] more resources
+    - [*] you can recharge resources by orbiting near planets
+    - improve: give resources only until you've filled up
+      - if you have energy remaining, provide only energy
+    - also planets have a limited number of resources that regenerate over time
+      - interesting if some types of planets have more of some resource
+      - food could be a third resource
+  - give planets names
   - some planets have moons
   - cool ideas
     - get jobs
     - fullfill quests
     - sell resources (pillaging/asteroid mining/etc) in exchange for money/equipment/goods
+- suns
+  - proximity to sun hurts you
+  - proximity to sun boost normal rate of energy acquisition
+  - have two rings outer, inner (green/red) or something
+  - it'd be cool if we could arrange planets around a sun
+  - and make them orbit the sun slowly, that would be cool :D
 - stars
   - stars give you energy faster
   - but if you get too near you die
@@ -148,6 +164,10 @@
   - then move to scores scene
 - scoreboard
   - saved in localstorage
+- Initial screens
+  - title
+  - choose faction (see summary of story)
+    - factions have different looks and stats for the ship
 
 ## Art
 
@@ -164,7 +184,12 @@
     - I can write an equation so find the right location in a circle given an angle. And get the right length. (Although this will result in less egdy shapes)
   - rotate as well as translate
 - planets
-  - test generating a texture procedurally as well
+  - [*] test generating a texture procedurally as well
+  - I could approach it as using different patterns for different layers:
+    - seas
+    - then landmasses
+    - then clouds
+    - it'd be cool if the clouds would move
   - idem
 - enemy ships, etc
 - Music

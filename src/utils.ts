@@ -17,6 +17,11 @@ export interface RGB {
   g: number;
   b: number;
 }
+export interface HSL {
+  h: number;
+  s: number;
+  l: number;
+}
 
 export const Color = {
   get(alpha: number) {
@@ -90,4 +95,20 @@ export function getNumberWithVariance(n: number, variance: number): number {
 
 export function getValueInRange(bottom: number, top: number): number {
   return Math.random() * (top - bottom) + bottom;
+}
+
+export function getIntegerInRange(bottom: number, top: number): number {
+  // enlarging the max value by 1
+  // and using MAth.floor ensures that
+  // every integer will have the same probability of happening
+  // (since they're assigned a range of 1)
+  // (if we Math.round the limits could just get 0.5 e.g. 0 - 0.5 becomes 0
+  // while 0.5-1.5 becomes 1 )
+  return Math.floor(getValueInRange(bottom, top + 1));
+}
+
+export function getRandomValueOf(values: any[]) {
+  const max = values.length - 1;
+  const index = getIntegerInRange(0, max);
+  return values[index];
 }

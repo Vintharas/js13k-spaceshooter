@@ -1,5 +1,5 @@
 import Config from "./config";
-import { getValueInRange, Color } from "./utils";
+import { getValueInRange, Color, HSL, degreesToRadians } from "./utils";
 
 // don't like this name
 export default class OffscreenCanvas {
@@ -35,70 +35,149 @@ export default class OffscreenCanvas {
     return this.context.createPattern(this.canvas, "repeat");
   }
 
-  getPatternBasedOnColor(hue: number, saturation: number, light: number) {
+  getPatternBasedOnColor(
+    hue: number,
+    saturation: number,
+    light: number,
+    width: number = 16,
+    height: number = 16,
+    pixelSize: number = 2
+  ) {
     // memoize
     // TODO: extract to higher-order function
-    if (this.savedPatterns.has(key(hue, saturation, light))) {
-      return this.savedPatterns.get(key(hue, saturation, light));
+    if (this.savedPatterns.has(key(hue, saturation, light, width, height))) {
+      return this.savedPatterns.get(key(hue, saturation, light, width, height));
     }
+
+    this.canvas.width = width;
+    this.canvas.height = height;
 
     // 1. define color theme
     const baseColor = (a: number) => Color.hsla(hue, saturation, light, a);
+    const nearBaseColor = (a: number) =>
+      Color.hsla(hue, saturation, light - 5, a);
     const darkShade = (a: number) => Color.hsla(hue, saturation, light - 10, a);
+    const darkestShade = (a: number) =>
+      Color.hsla(hue, saturation, light - 20, a);
     const lightShade = (a: number) =>
       Color.hsla(hue, saturation, light + 10, a);
+    const lightestShade = (a: number) =>
+      Color.hsla(hue, saturation, light + 20, a);
+
     const colors = [baseColor, darkShade, lightShade];
     // 2. put colors in buckets with distributions (how much of color x)
-    // 80% base color, 20% of the other ones
+    // 50% base color, 30% dark, 20% light:
+    const innerBuckets = [
+      baseColor,
+      baseColor,
+      baseColor,
+      baseColor,
+      baseColor,
+      nearBaseColor,
+      nearBaseColor,
+      nearBaseColor,
+      lightShade,
+      darkShade
+    ];
+    const outerBuckets = [
+      baseColor,
+      baseColor,
+      baseColor,
+      darkShade,
+      lightShade,
+      darkShade,
+      darkShade,
+      darkestShade,
+      lightShade,
+      lightestShade
+    ];
 
-    // TODO: this is probably not working as I want it to be
-    // the Math.random still gets the distribution at 1/3 per item
-    // but at the end, there'll be only amount left of the biggest bucket
-    // and that will be the one used. I need to tweak this!
-    const buckets = [0.3, 0.3, 0.4];
-    const weightedBuckets = buckets.map(w =>
-      Math.floor(w * this.canvas.width * this.canvas.height)
-    );
     // 3. distribute randomly pixel by pixel see how it looks
-    for (let x = 0; x < this.canvas.width; x++) {
-      for (let y = 0; y < this.canvas.height; y++) {
-        let pickedColor = pickColor(colors, weightedBuckets);
+    let activeBuckets = outerBuckets;
+    for (let x = 0; x < this.canvas.width; x += pixelSize) {
+      for (let y = 0; y < this.canvas.height; y += pixelSize) {
+        if (
+          x >= this.canvas.width / 4 &&
+          x <= (this.canvas.width * 3) / 4 &&
+          y >= this.canvas.height / 4 &&
+          y <= (this.canvas.height * 3) / 4
+        )
+          activeBuckets = innerBuckets;
+        else activeBuckets = outerBuckets;
+
+        let pickedColor = pickColor(activeBuckets);
         //console.log(pickedColor);
         this.context.fillStyle = pickedColor;
-        this.context.fillRect(x, y, 1, 1);
+        this.context.fillRect(x, y, pixelSize, pixelSize);
       }
     }
 
     const pattern = this.context.createPattern(this.canvas, "repeat");
-    this.savedPatterns.set(key(hue, saturation, light), pattern);
+    this.savedPatterns.set(key(hue, saturation, light, width, height), pattern);
     return pattern;
+
     // TODO: (idea) I could play with alpha in the edges of a sprite to make
     // it have different shapes. That would mean painting the whole sprite
     // from scratch instead of using a pattern
+    // Also it would be interestin with different distributions in outer/inner
+    // parts. That would result in landmasses? for instance
+  }
 
-    function pickColor(colors: ((a: number) => string)[], buckets: number[]) {
-      //let alpha = getValueInRange(0.5, 1);
-      let alpha = 1;
+  getPatternWithTransparency(
+    color: HSL,
+    width: number = 16,
+    height: number = 16,
+    pixelSize: number = 2
+  ) {
+    // memoize
+    // TODO: extract to higher-order function
+    let key = tkey(color.h, color.s, color.l, width, height);
+    if (this.savedPatterns.has(key)) {
+      return this.savedPatterns.get(key);
+    }
+    this.canvas.width = width;
+    this.canvas.height = height;
 
-      if (buckets.some(n => n > 0)) {
-        // color left in some bucket, pick color from bucket
-        let pickedColor: string = "";
-        while (pickedColor === "") {
-          let index = Math.round(Math.random() * 2);
-          if (buckets[index] > 0) {
-            buckets[index]--;
-            pickedColor = colors[index](alpha);
-          }
-        }
-        return pickedColor;
-      } else {
-        // nothing left in buckets, then pick base color
-        return colors[0](alpha);
+    const baseColor = (a: number) => Color.hsla(color.h, color.s, color.l, a);
+    for (let x = 0; x < this.canvas.width; x += pixelSize) {
+      for (let y = 0; y <= this.canvas.height; y += pixelSize) {
+        let pickedColor = baseColor(
+          parseFloat(getValueInRange(0, 0.5).toFixed(2))
+        );
+        this.context.fillStyle = pickedColor;
+        this.context.fillRect(x, y, pixelSize, pixelSize);
       }
     }
+
+    this.context.rotate(degreesToRadians(30));
+    const pattern = this.context.createPattern(this.canvas, "repeat");
+    this.savedPatterns.set(key, pattern);
+
+    return pattern;
   }
 }
 
-function key(hue: number, saturation: number, light: number) {
-  return `${hue}/${saturation}/${light}`;
+function key(
+  hue: number,
+  saturation: number,
+  light: number,
+  width: number,
+  height: number
+) {
+  return `${hue}/${saturation}/${light}/${width}/${height}`;
+}
+function tkey(
+  hue: number,
+  saturation: number,
+  light: number,
+  width: number,
+  height: number
+) {
+  return `t/${key(hue, saturation, light, width, height)}`;
+}
+
+function pickColor(buckets: any) {
+  const index = Math.round(getValueInRange(0, 9));
+  const alpha = 1;
+  return buckets[index](alpha);
 }
