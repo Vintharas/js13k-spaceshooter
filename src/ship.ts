@@ -50,7 +50,7 @@ export default function createShip(scene: Scene) {
     faction: Faction.Red,
 
     // TODO: factions will have different ships
-    image: kontra.assets.images.redship2,
+    image: kontra.assets.images.redship,
 
     // position
     // this is actually the position of the camera
