@@ -68,7 +68,7 @@ export function createGameStatusText(text: string) {
   let textOffset = (text.length * 12) / 2;
   return createText(
     text,
-    { x: 300 - textOffset, y: 400 },
+    { x: Config.canvasWidth / 2 - textOffset, y: 400 },
     { ttl: 120 },
     { size: 18, family: "monospace" }
   );

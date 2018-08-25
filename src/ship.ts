@@ -33,8 +33,8 @@ export interface ShipSpeed extends Sprite {
 
 export default function createShip(scene: Scene) {
   const collisionWidth = 20;
-  const x = 300;
-  const y = 300;
+  const x = Config.canvasWidth / 2;
+  const y = Config.canvasHeight / 2;
   const energy = ShipEnergy(Config.Ship.Energy, scene);
   const life = ShipLife(Config.Ship.Life);
   const shield = ShipShield(
@@ -84,7 +84,7 @@ export default function createShip(scene: Scene) {
 
       // the ship is always in the middle of the canvas
       // we move the camera instead, which affects all other objects
-      this.context.translate(300, 300);
+      this.context.translate(x, y);
       this.context.rotate(degreesToRadians(this.rotation));
       /*
       // draw ship as a triangle
@@ -134,11 +134,17 @@ export default function createShip(scene: Scene) {
       // rotate the ship left or right
       if (kontra.keys.pressed("left")) {
         this.rotation += -4;
-        let particle = createShipParticle(ship.rotation + 75, { x: 5, y: -10 });
+        let particle = this.createShipParticle(ship.rotation + 75, {
+          x: 5,
+          y: -10
+        });
         scene.sprites.push(particle);
       } else if (kontra.keys.pressed("right")) {
         this.rotation += 4;
-        let particle = createShipParticle(ship.rotation - 75, { x: 5, y: 10 });
+        let particle = this.createShipParticle(ship.rotation - 75, {
+          x: 5,
+          y: 10
+        });
         scene.sprites.push(particle);
       }
       // move the ship forward in the direction it's facing
@@ -155,7 +161,7 @@ export default function createShip(scene: Scene) {
         this.energy.consume(EnergyCost.ThrustCost);
         // create particles from this position
         for (let i = 0; i < 2; i++) {
-          let particle = createShipParticle(ship.rotation + 180, {
+          let particle = this.createShipParticle(ship.rotation + 180, {
             x: 20,
             y: 0
           });
@@ -171,11 +177,11 @@ export default function createShip(scene: Scene) {
         this.energy.consume(EnergyCost.BrakeCost);
         // create particles from this position
 
-        let particleLeft = createShipParticle(ship.rotation + 75, {
+        let particleLeft = this.createShipParticle(ship.rotation + 75, {
           x: 5,
           y: -10
         });
-        let particleRight = createShipParticle(ship.rotation - 75, {
+        let particleRight = this.createShipParticle(ship.rotation - 75, {
           x: 5,
           y: 10
         });
@@ -217,6 +223,19 @@ export default function createShip(scene: Scene) {
         );
         scene.addSprite(bullet);
       }
+    },
+    createShipParticle(
+      particleAxis: number,
+      offset: Position = { x: 0, y: 0 }
+    ): Particle {
+      return createStaticParticle(
+        { x, y }, // ship position remains static in the canvas
+        { dx: 1, dy: 1 }, // base speed for particles
+        // the particle axis is opposite to the rotation
+        // of the ship (in the back)
+        particleAxis,
+        offset
+      );
     }
   });
 
@@ -490,18 +509,4 @@ function ShipSpeed() {
       this.context.fillText(text, this.x, this.y);
     }
   });
-}
-
-function createShipParticle(
-  particleAxis: number,
-  offset: Position = { x: 0, y: 0 }
-): Particle {
-  return createStaticParticle(
-    { x: 300, y: 300 }, // ship position remains static in the canvas
-    { dx: 1, dy: 1 }, // base speed for particles
-    // the particle axis is opposite to the rotation
-    // of the ship (in the back)
-    particleAxis,
-    offset
-  );
 }

@@ -187,8 +187,9 @@
   - [*] particle system for explosions/impacts
   - [*] animate collisions
   - [*] test creating a pixel on piksel
-  - make pixel moooore pixelated :)
+  - [*] make pixel moooore pixelated :) Looks better I think :)
   - show when the ship gets damage
+    - tink in red
 - asteroids
   - [*] test creating a texture procedurally
     - looks interesting but it doesn't work out so well with the circular shapes. I should try to create shapes that are less circular. Perhaps using paths of closing angles, with an arbitrary number of sides.

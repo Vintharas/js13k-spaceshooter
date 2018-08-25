@@ -1,6 +1,6 @@
 const Config = {
-  canvasWidth: 600,
-  canvasHeight: 600,
+  canvasWidth: kontra.canvas.width,
+  canvasHeight: kontra.canvas.height,
 
   // an object far from the camera
   // more than this constant will be recycled
