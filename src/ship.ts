@@ -7,7 +7,7 @@ import {
 } from "./utils";
 import Scene from "./scene";
 import createBullet from "./bullet";
-import { createParticle, createStaticParticle, Particle } from "./particles";
+import { createStaticParticle, Particle } from "./particles";
 import Config from "./config";
 import createText, { createGameStatusText } from "./text";
 import { Faction } from "./factions";
@@ -219,7 +219,8 @@ export default function createShip(scene: Scene) {
           velocity,
           cos,
           sin,
-          cameraPosition
+          cameraPosition,
+          scene
         );
         scene.addSprite(bullet);
       }

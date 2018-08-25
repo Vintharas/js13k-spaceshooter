@@ -1,11 +1,14 @@
 import { Position, getCanvasPosition, Velocity } from "./utils";
+import Scene from "./scene";
+import { createParticle } from "./particles";
 
 export default function createBullet(
   position: Position,
   velocity: Velocity,
   cos: number,
   sin: number,
-  cameraPosition: Position
+  cameraPosition: Position,
+  scene: Scene
 ) {
   return kontra.sprite({
     type: "bullet",
@@ -21,6 +24,17 @@ export default function createBullet(
     width: 2,
     height: 2,
     color: "white",
+    update() {
+      this.advance();
+      // add particles
+      let particle = createParticle(
+        { x: this.x, y: this.y },
+        { dx: 1, dy: 1 },
+        cameraPosition,
+        0
+      );
+      scene.sprites.push(particle);
+    },
     render() {
       let position = getCanvasPosition(this, cameraPosition);
       this.context.fillStyle = this.color;

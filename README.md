@@ -69,7 +69,7 @@
   - [*] add a sprite with a number that shows how much you got
     - [*] on top of the collision
     - in addition, it would be cool to show it beside the bar
-  - bullets should have particles behind
+  - [*] bullets should have particles behind
   - improvement in asteroids breaking
     - instead of destroying asteroid, makes asteroids smaller
     - energy moves towards the ship, when the ship is near
@@ -190,6 +190,12 @@
   - [*] make pixel moooore pixelated :) Looks better I think :)
   - show when the ship gets damage
     - tink in red
+- particles
+  - review particle system
+  - it would be could if i could experiment with an editor and
+    change the different parameters I have and see how the affect
+    the particles
+    - build this!
 - asteroids
   - [*] test creating a texture procedurally
     - looks interesting but it doesn't work out so well with the circular shapes. I should try to create shapes that are less circular. Perhaps using paths of closing angles, with an arbitrary number of sides.

@@ -56,7 +56,7 @@ export function createPlanet(
       if (!this.beingClaimed) {
         // text
         let textSprite = createGameStatusText(
-          `${faction} FACTION CLAIMING ${planetName}`.toUpperCase()
+          `${faction} FACTION CLAIMING ${planetName}`
         );
         scene.sprites.push(textSprite);
         this.beingClaimed = true;
@@ -136,7 +136,7 @@ export function createPlanet(
       this.context.save();
 
       // #4. planet name
-      this.context.translate(position.x, position.y - radius - 35);
+      this.context.translate(position.x, position.y - radius - 45);
       this.context.fillStyle = "rgba(255,255,255,0.8)";
       this.context.font = `normal normal 14px monospace`;
       let textOffset = (planetName.length / 2) * 10;

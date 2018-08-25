@@ -91,12 +91,15 @@ export function createParticle(
   velocity: Velocity,
   cameraPosition: Position,
   particleAxis: number,
-  options: ParticleOptions
+  {
+    ttl = 30,
+    color = { r: 255, g: 255, b: 255 },
+    magnitude = 5
+  }: ParticleOptions = {}
 ): any {
   let dxVariance = getValueInRange(0.5, 1.5);
   let dyVariance = getValueInRange(0.5, 1.5);
   let ParticleAxisVariance = getValueInRange(-15, 15);
-  let maxTTL = 30;
 
   const cos = Math.cos(degreesToRadians(particleAxis + ParticleAxisVariance));
   const sin = Math.sin(degreesToRadians(particleAxis + ParticleAxisVariance));
@@ -104,9 +107,7 @@ export function createParticle(
   return kontra.sprite({
     type: "particle",
 
-    // particles originate from the same point
-    // the always originate from the back of the ship
-    // which is in the center of the screen
+    // particles originate from a single point
     x: position.x,
     y: position.y,
 
@@ -117,7 +118,7 @@ export function createParticle(
 
     // each particle with have a slightly
     // different lifespan
-    ttl: getValueInRange(0, options.ttl || maxTTL),
+    ttl: getValueInRange(0, ttl),
     dt: 0,
 
     // particles are small
@@ -131,8 +132,8 @@ export function createParticle(
       let position = getCanvasPosition(this, cameraPosition);
       // as time passes the alpha increases until particles disappear
       let frames = this.dt * 60;
-      let alpha = 1 - frames / maxTTL;
-      this.context.fillStyle = Color.rgba(255, 255, 255, alpha);
+      let alpha = 1 - frames / ttl;
+      this.context.fillStyle = Color.rgba(color.r, color.g, color.b, alpha);
       this.context.fillRect(position.x, position.y, this.width, this.height);
     }
   });

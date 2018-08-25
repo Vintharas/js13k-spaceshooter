@@ -2,7 +2,7 @@ import Scene from "./scene";
 import { createAsteroid, Asteroid } from "./asteroid";
 import { Position, getValueInRange, Sprite, RGB } from "./utils";
 import Config from "./config";
-import { createParticle, createExplosionParticle } from "./particles";
+import { createExplosionParticle } from "./particles";
 import createCell, { CellType, Cell, getRandomCellType } from "./cell";
 import { Ship } from "./ship";
 import createText from "./text";
