@@ -1,5 +1,5 @@
 import { kontra } from "./libs/kontra.min.js";
-import RedShip from "./sprites/redship.png";
+import RedShip from "./sprites/redship2.png";
 
 kontra.init();
 
