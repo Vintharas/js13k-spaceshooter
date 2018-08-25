@@ -8,7 +8,7 @@ export default class Game {
   public currentScene: Scene;
 
   private constructor() {
-    kontra.init();
+    //kontra.init();
     this.currentScene = createOpenScene();
   }
 

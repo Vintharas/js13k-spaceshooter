@@ -38,6 +38,9 @@
     - (is canvas smart enough to do this or do I need to take it into account?)
   - [*] add particles to moving (back and front)
   - show speed indicator?
+    - create some speed indicator
+    - parsecs? (very huge speed units)
+    - make sure that it make sense (the numbers)
   - tinker with the max speed
   - enabling pressing back to diminish forward speed (less strong than forward but same amount of energy)
   - make canvas BIGGER! Take the whole screen! :)

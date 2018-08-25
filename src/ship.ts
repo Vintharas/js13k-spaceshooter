@@ -11,11 +11,13 @@ import { createParticle, createStaticParticle } from "./particles";
 import Config from "./config";
 import createText, { createGameStatusText } from "./text";
 import { Faction } from "./factions";
+import { Vector } from "./vector";
 
 export interface Ship extends Sprite {
   width: number;
   energy: ShipEnergy;
   life: ShipLife;
+  speed: ShipSpeed;
   faction: Faction;
 }
 export interface ShipEnergy extends Sprite {
@@ -23,6 +25,9 @@ export interface ShipEnergy extends Sprite {
 }
 export interface ShipLife extends Sprite {
   repair(value: number): void;
+}
+export interface ShipSpeed extends Sprite {
+  updateSpeed(dx: number, dy: number): void;
 }
 
 export default function createShip(scene: Scene) {
@@ -32,6 +37,7 @@ export default function createShip(scene: Scene) {
   const energy = ShipEnergy(Config.Ship.Energy, scene);
   const life = ShipLife(Config.Ship.Life);
   const shield = ShipShield(Config.Ship.Shield, energy, { x, y }, width);
+  const speed = ShipSpeed();
 
   const ship = kontra.sprite({
     type: "ship",
@@ -52,6 +58,7 @@ export default function createShip(scene: Scene) {
     energy,
     life,
     shield,
+    speed,
 
     dt: 0, // track how much time has passed
     ttl: Infinity,
@@ -81,6 +88,7 @@ export default function createShip(scene: Scene) {
       this.energy.render();
       this.life.render();
       this.shield.render();
+      this.speed.render();
     },
     update() {
       // update ship energy
@@ -89,6 +97,8 @@ export default function createShip(scene: Scene) {
       this.life.update();
       // recharge shield
       this.shield.update();
+      // update speed (should move this to the end of update probably)
+      this.speed.updateSpeed(this.dx, this.dy);
 
       // rotate the ship left or right
       if (kontra.keys.pressed("left")) {
@@ -408,4 +418,24 @@ function ShipShield(
   energy.shield = shipShield;
 
   return shipShield;
+}
+
+function ShipSpeed() {
+  return kontra.sprite({
+    x: Config.canvasWidth - 70,
+    y: Config.canvasHeight - 10,
+    speed: 0,
+    updateSpeed(dx: number, dy: number) {
+      let magnitude = Vector.getMagnitude(dx, dy);
+      this.speed = magnitude;
+    },
+    render() {
+      let formattedSpeed = (this.speed * 100).toFixed(0);
+      let text = `${formattedSpeed} km/s`;
+
+      this.context.fillStyle = "white";
+      this.context.font = `normal normal 12px monospace`;
+      this.context.fillText(text, this.x, this.y);
+    }
+  });
 }

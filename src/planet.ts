@@ -56,7 +56,7 @@ export function createPlanet(
       if (!this.beingClaimed) {
         // text
         let textSprite = createGameStatusText(
-          `${faction} FACTION CLAIMING ${planetName}`
+          `${faction} FACTION CLAIMING ${planetName}`.toUpperCase()
         );
         scene.sprites.push(textSprite);
         this.beingClaimed = true;

@@ -32,7 +32,8 @@
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.5",
     "webpack-merge": "^4.1.4",
-    "zopfli-webpack-plugin": "^0.1.0"
+    "zopfli-webpack-plugin": "^0.1.0",
+    "imports-loader": "^0.8.0"
   },
   "dependencies": {
     "kontra": "^4.0.0"
