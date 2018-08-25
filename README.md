@@ -20,9 +20,159 @@
 ## BUILD - minimize assets to 13K
 
 - Optimize build
-  - Kontra is included as an unminifed raw string :/
-  - styles loader takes 10K minified
-  - right not it seems I'm about ~8Kb only framework and stuff
+  - test closure compiler
+  - test removing all the parts of kontra that I don't need
+
+## CORE GAME MECHANICS
+
+- ship energy
+  - when you get near to a sun you get more energy faster
+- move
+  - show speed indicator?
+    - [*] create some speed indicator
+    - parsecs? (very huge speed units)
+    - make sure that it make sense (the numbers)
+  - tinker with the max speed
+- map
+  - iteratively generate map boundaries!!!! CORE to gameplay
+  - generate some part of the galaxy as the game starts and then iteratively generate more as the player moves (planets, suns, etc)
+  - large objects should have a fixed position and the plater should be able
+    to come back to them
+- asteroids generation
+  - improve clusters to be x-close, or y-close, that will look cooler :D (I think, they will look more like a cluster)
+  - add new clusters every so often (outside of the current camera view)
+- ship life/collisions
+  - when you collide with something or lose life, move the canvas with css like you're shaking. Add some reddish color in the actual screen.
+  - collision decreases speed
+  - improve collision algorithm to take types into account instead of requiring sorting
+- shoot
+  - add a sprite with a number that shows how much you got
+    - in addition, it would be cool to show it beside the bar, as it increases
+  - improvement in asteroids breaking
+    - instead of destroying asteroid, makes asteroids smaller
+    - energy moves towards the ship, when the ship is near
+- energy and life cells
+  - make energy, life be attracted by the ship
+  - make the little energy ball do circular transitions
+- shield
+  - improve art and flickering animation
+    - flicker when it goes off/on (perhaps we can flicker with low energy)
+    - when enabled more around a little bit. Perhaps the origin can describe a circle itself
+- planets
+  - create some patterns for planets (bigger pattern? better algorithm?)
+    - earth like planet
+  - resources
+    - improve: give resources only until you've filled up
+      - if you have energy remaining, provide only energy
+    - also planets have a limited number of resources that regenerate over time
+      - interesting if some types of planets have more of some resource
+      - food could be a third resource
+  - planets need to be claimed by the faction before they can be used to
+    gather resources! (cool xD)
+    - [*] over time a defense orbiting station is built on the planet
+  - some planets have moons
+  - cool ideas
+    - get jobs
+    - fullfill quests
+    - sell resources (pillaging/asteroid mining/etc) in exchange for money/equipment/goods
+- suns
+  - proximity to sun hurts you
+  - proximity to sun boost normal rate of energy acquisition
+  - have two rings outer, inner (green/red) or something
+  - it'd be cool if we could arrange planets around a sun
+  - and make them orbit the sun slowly, that would be cool :D
+- radar
+  - show interesting stuff (like a minimap)
+- vision
+  - diminish range of vision (player sees less space, rest becomes darker)
+- enable/disable systems based on energy left
+  - radar
+  - vision
+  - shoot
+  - thrust
+  - life support?
+- game messages
+  - implement so that not two overlapping texts appear at the same time (offline/online). Add some sort of message queueing system
+- ways to lose
+  - crushed by an asteroid
+  - been too near a sun
+  - black holes?
+  - beasts and enemies attack you
+  - too low energy? Life support disabled for a long period of time?
+- smart enemies:
+  - other factions
+  - reapers
+  - galatic empire, etc
+  - AIs
+  - creatures
+- a way to deliver story. what story? :)
+- game engine
+  - extract all variables so they're configurable from a single point
+  - this could be altered by a UI in realtime and allow me to tweak the game
+- different difficulty levels
+  - higher cost for actions
+- end escene
+  - show explosion of your ship then move to end screen with scores and such
+  - overdo the explosion
+  - then move to scores scene
+- scoreboard
+  - saved in localstorage
+- Initial screens
+  - title
+  - choose faction (see summary of story)
+    - factions have different looks and stats for the ship
+
+## Art
+
+- pixel art for everything
+- ship
+  - [*] particle systems for ship thrust
+  - [*] particle system for explosions/impacts
+  - [*] animate collisions
+  - [*] test creating a pixel on piksel
+  - [*] make pixel moooore pixelated :) Looks better I think :)
+  - show when the ship gets damage
+    - tink in red
+- particles
+  - review particle system
+  - it would be could if i could experiment with an editor and
+    change the different parameters I have and see how the affect
+    the particles
+    - build this!
+- asteroids
+  - [*] test creating a texture procedurally
+    - looks interesting but it doesn't work out so well with the circular shapes. I should try to create shapes that are less circular. Perhaps using paths of closing angles, with an arbitrary number of sides.
+  - [*] wrote algorithm to generate polygonal shapes
+  - continue improving algorithm so it matches the collision detection
+    - I can write an equation so find the right location in a circle given an angle. And get the right length. (Although this will result in less egdy shapes)
+  - rotate as well as translate
+- planets
+  - [*] test generating a texture procedurally as well
+  - I could approach it as using different patterns for different layers:
+    - seas
+    - then landmasses
+    - then clouds
+    - it'd be cool if the clouds would move
+  - idem
+- enemy ships, etc
+- Music
+  - ?
+- Find a name for the game :D
+
+## BUGS
+
+- for some reason, a broken down asteroid doesn't collide with the ship, although it does collide with bullets. #wat
+
+# HISTORY 25 AUGUST
+
+## BUILD - minimize assets to 13K
+
+- Optimize build
+  - [*] Kontra is included as an unminifed raw string :/ - included min.js as part of the game source code
+  - [*] styles loader takes 10K minified - removed and inlined styles
+  - [*] right not it seems I'm about ~8Kb only framework and stuff
+  - test closure compiler
+  - test removing all the parts of kontra that I don't need
 
 ## CORE GAME MECHANICS
 
@@ -38,14 +188,18 @@
     - (is canvas smart enough to do this or do I need to take it into account?)
   - [*] add particles to moving (back and front)
   - show speed indicator?
-    - create some speed indicator
+    - [*] create some speed indicator
     - parsecs? (very huge speed units)
     - make sure that it make sense (the numbers)
   - tinker with the max speed
-  - enabling pressing back to diminish forward speed (less strong than forward but same amount of energy)
-  - make canvas BIGGER! Take the whole screen! :)
-  - save middle points in a config file and use them in the game
+  - [*] enabling pressing back to diminish forward speed (less strong than forward but same amount of energy)
+  - [*] make canvas BIGGER! Take the whole screen! :)
+  - [*] save middle points in a config file and use them in the game
+- map
   - iteratively generate map boundaries!!!! CORE to gameplay
+  - generate some part of the galaxy as the game starts and then iteratively generate more as the player moves (planets, suns, etc)
+  - large objects should have a fixed position and the plater should be able
+    to come back to them
 - asteroids generation
   - [*] come from random location at random speed
   - [*] different size
