@@ -183,9 +183,12 @@
 
 - pixel art for everything
 - ship
-  - particle systems for ship thrust
-  - particle system for explosions/impacts
-  - animate collisions
+  - [*] particle systems for ship thrust
+  - [*] particle system for explosions/impacts
+  - [*] animate collisions
+  - [*] test creating a pixel on piksel
+  - make pixel moooore pixelated :)
+  - show when the ship gets damage
 - asteroids
   - [*] test creating a texture procedurally
     - looks interesting but it doesn't work out so well with the circular shapes. I should try to create shapes that are less circular. Perhaps using paths of closing angles, with an arbitrary number of sides.

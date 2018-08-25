@@ -53,6 +53,20 @@ module.exports = {
       {
         test: require.resolve("./src/libs/kontra.min.js"),
         use: "exports-loader?kontra=this.kontra"
+      },
+      // Actual sprites
+      // Using Piksel thus far to create sprites manually
+      // it saves stuff as PNG, that may not be super optimal
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]"
+            }
+          }
+        ]
       }
     ]
   },

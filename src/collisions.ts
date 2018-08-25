@@ -164,7 +164,7 @@ export default class CollisionsEngine {
     let dy = cell.y - this.ship.y;
     if (
       Math.sqrt(dx * dx + dy * dy) <
-      Config.Cell.OuterRadius + this.ship.width * 2
+      Config.Cell.OuterRadius + this.ship.collisionWidth * 2
     ) {
       cell.ttl = 0;
       // add energy or life to the ship
@@ -221,7 +221,10 @@ export default class CollisionsEngine {
       }
     }
     function planetAndShipCollided(planet: Planet, ship: Ship) {
-      return Math.sqrt(dx * dx + dy * dy) < planet.outerRadius + ship.width * 2;
+      return (
+        Math.sqrt(dx * dx + dy * dy) <
+        planet.outerRadius + ship.collisionWidth * 2
+      );
     }
   }
 

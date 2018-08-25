@@ -15,6 +15,7 @@ import { Vector } from "./vector";
 
 export interface Ship extends Sprite {
   width: number;
+  collisionWidth: number;
   energy: ShipEnergy;
   life: ShipLife;
   speed: ShipSpeed;
@@ -31,17 +32,25 @@ export interface ShipSpeed extends Sprite {
 }
 
 export default function createShip(scene: Scene) {
-  const width = 6;
+  const collisionWidth = 20;
   const x = 300;
   const y = 300;
   const energy = ShipEnergy(Config.Ship.Energy, scene);
   const life = ShipLife(Config.Ship.Life);
-  const shield = ShipShield(Config.Ship.Shield, energy, { x, y }, width);
+  const shield = ShipShield(
+    Config.Ship.Shield,
+    energy,
+    { x, y },
+    collisionWidth
+  );
   const speed = ShipSpeed();
 
   const ship = kontra.sprite({
     type: "ship",
     faction: Faction.Red,
+
+    // TODO: factions will have different ships
+    image: kontra.assets.images.redship,
 
     // position
     // this is actually the position of the camera
@@ -52,7 +61,12 @@ export default function createShip(scene: Scene) {
     rotation: 0,
 
     // collisions
-    width,
+    // INFO: the width is automatically setup by the image sprite
+    // in image sprites. So it'll be 32 regardless what I set here
+    // that's why I need to use a separate variable to store
+    // the actual collision width I want to use
+    //width,
+    collisionWidth,
 
     // energy
     energy,
@@ -72,6 +86,8 @@ export default function createShip(scene: Scene) {
       // we move the camera instead, which affects all other objects
       this.context.translate(300, 300);
       this.context.rotate(degreesToRadians(this.rotation));
+      /*
+      // draw ship as a triangle
       // draw a right facing triangle
       this.context.beginPath();
       this.context.strokeStyle = "red";
@@ -82,6 +98,21 @@ export default function createShip(scene: Scene) {
       this.context.closePath();
       this.context.stroke();
       this.context.fill();
+      */
+      // tell kontra to draw the image sprite
+      this.context.drawImage(this.image, -16, -16);
+
+      // Drawing asteroids as a circle
+      // this is what we use for collision
+      // useful for debugging
+      if (Config.debug && Config.renderCollisionArea) {
+        this.context.strokeStyle = "red";
+        this.context.beginPath(); // start drawing a shape
+        this.context.arc(0, 0, this.collisionWidth, 0, Math.PI * 2);
+        this.context.stroke(); // outline the circle
+        console.log(this.width);
+      }
+
       this.context.restore();
 
       // draw ship energy and life bars
@@ -125,7 +156,7 @@ export default function createShip(scene: Scene) {
         // create particles from this position
         for (let i = 0; i < 2; i++) {
           let particle = createShipParticle(ship.rotation + 180, {
-            x: 5,
+            x: 20,
             y: 0
           });
           scene.sprites.push(particle);
@@ -397,7 +428,7 @@ function ShipShield(
       this.context.arc(
         this.shieldPosition.x + getValueInRange(-0.5, 0.5),
         this.shieldPosition.y + getValueInRange(-0.5, 0.5),
-        this.radius * 2.2,
+        this.radius * 1.1,
         0,
         Math.PI * 2
       );
