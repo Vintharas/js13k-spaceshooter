@@ -5,8 +5,11 @@ import {
   getCanvasPosition,
   Color,
   degreesToRadians,
-  RGB
+  RGB,
+  Sprite
 } from "./utils";
+
+export interface Particle extends Sprite {}
 
 export interface ParticleOptions {
   ttl?: number;
@@ -20,8 +23,9 @@ export interface ParticleOptions {
 export function createStaticParticle(
   position: Position,
   velocity: Velocity,
-  particleAxis: number
-): any {
+  particleAxis: number,
+  offset: Position = { x: 4, y: 0 }
+): Particle {
   let dxVariance = getValueInRange(0.5, 1.5);
   let dyVariance = getValueInRange(0.5, 1.5);
   let ParticleAxisVariance = getValueInRange(-20, 20);
@@ -70,7 +74,12 @@ export function createStaticParticle(
       this.context.translate(this.x, this.y);
       this.context.rotate(degreesToRadians(particleAxis));
       this.context.fillStyle = Color.rgba(255, 255, 255, alpha);
-      this.context.fillRect(4, this.thicknessVariance, this.width, this.height);
+      this.context.fillRect(
+        offset.x,
+        offset.y + this.thicknessVariance,
+        this.width,
+        this.height
+      );
       this.context.restore();
     }
   });
