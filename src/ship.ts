@@ -5,11 +5,11 @@ import {
   getValueInRange,
   Sprite
 } from "./utils";
-import Scene from "./scene";
+import Scene from "./scenes/scene";
 import createBullet from "./bullet";
 import { createStaticParticle, Particle } from "./particles";
 import Config from "./config";
-import createText, { createGameStatusText } from "./text";
+import { createGameStatusText } from "./text";
 import { Faction } from "./factions";
 import { Vector } from "./vector";
 

@@ -1,6 +1,6 @@
-import { Position, Positions } from "./utils";
-import Config from "./config";
-import CollisionsEngine from "./collisions";
+import { Position, Positions } from "../utils";
+import Config from "../config";
+import CollisionsEngine from "../collisions";
 
 // manages sprites and game loop within
 // a single scene

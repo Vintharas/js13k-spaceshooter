@@ -12,7 +12,7 @@ import { getRandomCellType } from "./cell";
 import { generateName } from "./names";
 import { Faction } from "./factions";
 import { createGameStatusText } from "./text";
-import Scene from "./scene";
+import Scene from "./scenes/scene";
 
 export interface Planet extends Sprite {
   radius: number;
@@ -214,7 +214,10 @@ export function createPlanet(
 export enum PlanetType {
   Red = 0,
   Green = 1,
-  Blue = 2
+  Blue = 2,
+  Desert = 3,
+  Barren = 4,
+  Paradise = 5
 }
 export const PlanetBaseColors = [
   /*Red*/ { h: 0, s: 70, l: 45 },

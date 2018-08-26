@@ -121,6 +121,15 @@
   - title
   - choose faction (see summary of story)
     - factions have different looks and stats for the ship
+- Ilumination
+  - it would be cool to do something with ilumination
+  - moving objects being illuminated by larger objects like suns/planets which either produce or reflect light. That would add some dynamism to the ships.
+- Performance
+  - profile and review performance
+  - think of stuff you can do to improve performance and memory consumption
+- More offline theme (use workbox)
+  - PWA with precaching of game assets
+  - Add application manifest so it can be installed
 
 ## Art
 

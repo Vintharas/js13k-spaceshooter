@@ -14,7 +14,7 @@ export interface TextOptions {
   cameraPosition?: Position;
 }
 
-export default function createText(
+export function createText(
   text: string,
   { x, y }: Position,
   {
@@ -27,9 +27,14 @@ export default function createText(
     style = "normal",
     weight = "normal",
     size = 24,
-    family = "serif"
+    family = "monospace"
   }: FontOptions = {}
 ) {
+  if (x === undefined) {
+    // center in x
+    x = Config.canvasWidth / 2 - (text.length * size * 0.65) / 2;
+  }
+
   return kontra.sprite({
     x,
     y,

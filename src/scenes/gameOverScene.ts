@@ -1,6 +1,6 @@
 import Scene from "./scene";
-import createText from "./text";
-import Game from "./game";
+import { createText } from "../text";
+import Game from "../game";
 
 export default function createGameOverScene() {
   let loop = kontra.gameLoop({
@@ -23,7 +23,7 @@ export default function createGameOverScene() {
 
   function update() {
     if (kontra.keys.pressed("enter")) {
-      Game.instance().goToSpaceScene();
+      Game.instance().goToOpenScene();
     }
   }
 

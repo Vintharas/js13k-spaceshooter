@@ -1,3 +1,6 @@
+import { Faction } from "./factions";
+import { PlanetType } from "./planet";
+
 const Config = {
   get canvasWidth() {
     return kontra.canvas.width / this.scale;
@@ -52,6 +55,24 @@ const Config = {
 
   Planet: {
     Resources: 3000
+  },
+
+  Factions: {
+    [Faction.Red]: {
+      Name: "Harkonnen",
+      Planet: PlanetType.Red,
+      Description: "Deadly soldiers..."
+    },
+    [Faction.Blue]: {
+      Name: "Atreides",
+      Planet: PlanetType.Paradise,
+      Description: "Brave..."
+    },
+    [Faction.Green]: {
+      Name: "Corrino",
+      Planet: PlanetType.Green,
+      Description: "Empire..."
+    }
   }
 };
 

@@ -1,11 +1,11 @@
-import Scene from "./scene";
+import Scene from "./scenes/scene";
 import { createAsteroid, Asteroid } from "./asteroid";
 import { Position, getValueInRange, Sprite, RGB } from "./utils";
 import Config from "./config";
 import { createExplosionParticle } from "./particles";
 import createCell, { CellType, Cell, getRandomCellType } from "./cell";
 import { Ship } from "./ship";
-import createText from "./text";
+import { createText } from "./text";
 import { Planet } from "./planet";
 
 export default class CollisionsEngine {
@@ -164,7 +164,7 @@ export default class CollisionsEngine {
     let dy = cell.y - this.ship.y;
     if (
       Math.sqrt(dx * dx + dy * dy) <
-      Config.Cell.OuterRadius + this.ship.collisionWidth * 2
+      Config.Cell.OuterRadius + this.ship.collisionWidth
     ) {
       cell.ttl = 0;
       // add energy or life to the ship
