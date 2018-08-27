@@ -22,12 +22,16 @@ export interface Planet extends Sprite {
   claimedBy: Faction;
   increaseClaim(faction: Faction, percentage: number): void;
 }
+export interface PlanetOptions {
+  drawOuterRadius?: boolean;
+}
 
 export function createPlanet(
   position: Position,
   radius: number,
   cameraPosition: Position,
   scene: Scene,
+  { drawOuterRadius = true }: PlanetOptions = {},
   planetType: PlanetType = getPlanetType(),
   planetName: string = generateName()
 ): Planet {
@@ -125,23 +129,22 @@ export function createPlanet(
       this.context.fill();
 
       // #3. radius where you can start collecting stuff
-      this.context.beginPath(); // start drawing a shape
-      this.context.strokeStyle = "turquoise";
-      this.context.setLineDash([3, 7]);
-      this.context.arc(0, 0, this.outerRadius, 0, Math.PI * 2);
-      this.context.stroke();
-
+      if (drawOuterRadius) {
+        this.context.beginPath(); // start drawing a shape
+        this.context.strokeStyle = "turquoise";
+        this.context.setLineDash([3, 7]);
+        this.context.arc(0, 0, this.outerRadius, 0, Math.PI * 2);
+        this.context.stroke();
+      }
       this.context.restore();
 
-      this.context.save();
-
       // #4. planet name
+      this.context.save();
       this.context.translate(position.x, position.y - radius - 45);
       this.context.fillStyle = "rgba(255,255,255,0.8)";
       this.context.font = `normal normal 14px monospace`;
       let textOffset = (planetName.length / 2) * 10;
       this.context.fillText(planetName.toUpperCase(), -textOffset, 0);
-
       this.context.restore();
 
       // #5. planet energy

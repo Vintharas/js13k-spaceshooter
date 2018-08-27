@@ -27,9 +27,13 @@
 
 - ship energy
   - when you get near to a sun you get more energy faster
+- shoot
+  - support for other weapons:
+  - bomb (explodes)
+  - mine (leave it behind)
+  - slower rate of shooting but stronger missile
 - move
   - show speed indicator?
-    - [*] create some speed indicator
     - parsecs? (very huge speed units)
     - make sure that it make sense (the numbers)
   - tinker with the max speed
@@ -93,6 +97,7 @@
   - life support?
 - game messages
   - implement so that not two overlapping texts appear at the same time (offline/online). Add some sort of message queueing system
+  - have a queue with 3 slots that can be filled with text (f.i.)
 - ways to lose
   - crushed by an asteroid
   - been too near a sun

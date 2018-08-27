@@ -1,4 +1,4 @@
-import Scene from "./scene";
+import Scene, { createScene } from "./scene";
 import { createAsteroid } from "../asteroid";
 import createShip from "../ship";
 import { isObjectOutOfBounds, Position, getValueInRange } from "../utils";
@@ -6,15 +6,20 @@ import createStar from "../star";
 import Config from "../config";
 import Game from "../game";
 import { createPlanet } from "../planet";
+import { createCamera } from "./camera";
 
 export default function createSpaceScene() {
+  /*const scene = new Scene([], loop);
   let loop = kontra.gameLoop({
     update,
     render
   });
+  */
 
-  const scene = new Scene([], loop);
+  const camera = createCamera();
+  const scene = createScene({ camera, update });
   const ship = createShip(scene);
+  camera.position = ship;
 
   // initial state
   addStars(scene, ship);
@@ -26,30 +31,17 @@ export default function createSpaceScene() {
   return scene;
 
   function update(dt: number) {
-    scene.sprites.map(sprite => {
-      sprite.update(dt);
-    });
-
-    scene.processCollisions(dt);
-
     if (!ship.isAlive()) {
       Game.instance().goToGameOverScene();
     }
-
     // remove sprites too far from camera
-    cleanupObjectIfOutOfBounds(scene, this);
-    scene.sprites = scene.sprites.filter(sprite => sprite.isAlive());
-  }
-
-  // TODO: extract to scene
-  function render() {
-    scene.sprites.forEach(s => s.render());
+    cleanupObjectIfOutOfBounds(scene);
   }
 }
 
-function cleanupObjectIfOutOfBounds(scene: Scene, cameraPosition: Position) {
+function cleanupObjectIfOutOfBounds(scene: Scene) {
   scene.sprites.forEach((s: any) => {
-    if (isObjectOutOfBounds(s, cameraPosition)) {
+    if (isObjectOutOfBounds(s, scene.cameraPosition)) {
       s.ttl = 0;
       if (Config.debug) console.log(`Object ${s.type} out of bounds`, s);
     }

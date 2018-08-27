@@ -9,5 +9,6 @@ export enum Faction {
 export interface FactionConfig {
   Name: string;
   Planet: PlanetType;
+  PlanetName: string;
   Description: string;
 }

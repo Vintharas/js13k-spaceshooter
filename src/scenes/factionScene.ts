@@ -2,12 +2,12 @@ import Scene, { createScene } from "./scene";
 import { createText } from "../text";
 import Game from "../game";
 import Config from "../config";
-import { Faction, FactionConfig } from "../factions";
+import { Faction } from "../factions";
 import { Sprite } from "../utils";
 import { createPlanet } from "../planet";
 
 export function createChooseFactionScene() {
-  const scene = createScene(update, render);
+  const scene = createScene({ update });
 
   const titleText = createText(
     "CHOOSE YOUR FACTION",
@@ -27,11 +27,6 @@ export function createChooseFactionScene() {
       Game.instance().goToSpaceScene(factionSelector.selectedFaction());
     }
   }
-
-  function render() {
-    // no need to render all sprites in the scene
-    // cause it's already done, in base class
-  }
 }
 
 interface FactionSelector extends Sprite {
@@ -41,10 +36,10 @@ interface FactionSelector extends Sprite {
 function createFactionSelector(scene: Scene): FactionSelector {
   let factionWidth = Config.canvasWidth / 4;
   let outerMargin = factionWidth / 2;
-  let innerMargin = 50;
 
   return kontra.sprite({
     dt: 0,
+    ttl: Infinity,
     selectedFaction() {
       if (this.selectedIndex !== undefined)
         return this.factions[this.selectedIndex];
@@ -52,6 +47,7 @@ function createFactionSelector(scene: Scene): FactionSelector {
     selectedIndex: undefined,
     factions: [Faction.Blue, Faction.Green, Faction.Red],
     planets: [],
+    emblems: [],
     update(dt: number) {
       this.dt += 1 / 60;
 
@@ -105,11 +101,28 @@ function createFactionSelector(scene: Scene): FactionSelector {
           radius,
           { x: Config.canvasWidth / 2, y: Config.canvasHeight / 2 },
           scene,
+          { drawOuterRadius: false },
           factionConfig.Planet,
-          ""
+          factionConfig.PlanetName
         );
       }
       this.planets[index].render();
+
+      // emblems
+      /*
+      if (!this.emblems[index]) {
+        this.emblems[index] = kontra.sprite({
+          image: kontra.assets.images.blueemblem,
+          x: index * factionWidth + outerMargin + factionWidth / 2,
+          y: 300,
+          render() {
+            let context: CanvasRenderingContext2D = this.context;
+            context.drawImage(this.image, this.x, this.y, 128, 128);
+          }
+        });
+      }
+      this.emblems[index].render();
+      */
 
       // description
       this.context.font = "normal normal 12px monospace";

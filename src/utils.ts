@@ -11,9 +11,10 @@ export interface Velocity {
 export interface Sprite extends Position, Velocity {
   type: string;
   ttl?: number;
-  update(dt: number): void;
+  update(dt?: number): void;
   render(): void;
   isAlive(): boolean;
+  context: CanvasRenderingContext2D;
 }
 export interface RGB {
   r: number;
