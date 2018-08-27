@@ -27,7 +27,7 @@ export default function createSpaceScene() {
 
   function update(dt: number) {
     scene.sprites.map(sprite => {
-      sprite.update();
+      sprite.update(dt);
     });
 
     scene.processCollisions(dt);

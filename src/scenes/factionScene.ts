@@ -1,16 +1,13 @@
-import Scene from "./scene";
+import Scene, { createScene } from "./scene";
 import { createText } from "../text";
 import Game from "../game";
 import Config from "../config";
 import { Faction, FactionConfig } from "../factions";
 import { Sprite } from "../utils";
+import { createPlanet } from "../planet";
 
 export function createChooseFactionScene() {
-  let loop = kontra.gameLoop({
-    update,
-    render
-  });
-  const scene = new Scene([], loop);
+  const scene = createScene(update, render);
 
   const titleText = createText(
     "CHOOSE YOUR FACTION",
@@ -20,21 +17,20 @@ export function createChooseFactionScene() {
   );
   scene.addSprite(titleText);
 
-  const factionSelector = createFactionSelector();
+  const factionSelector = createFactionSelector(scene);
   scene.addSprite(factionSelector);
 
   return scene;
 
-  function update() {
+  function update(dt: number) {
     if (kontra.keys.pressed("enter") && factionSelector.selectedFaction()) {
       Game.instance().goToSpaceScene(factionSelector.selectedFaction());
     }
-    scene.sprites.forEach(s => s.update());
   }
 
-  //TODO: This logic can be common to all scenes
   function render() {
-    scene.sprites.forEach(s => s.render());
+    // no need to render all sprites in the scene
+    // cause it's already done, in base class
   }
 }
 
@@ -42,7 +38,11 @@ interface FactionSelector extends Sprite {
   selectedFaction(): Faction;
 }
 
-function createFactionSelector(): FactionSelector {
+function createFactionSelector(scene: Scene): FactionSelector {
+  let factionWidth = Config.canvasWidth / 4;
+  let outerMargin = factionWidth / 2;
+  let innerMargin = 50;
+
   return kontra.sprite({
     dt: 0,
     selectedFaction() {
@@ -51,7 +51,8 @@ function createFactionSelector(): FactionSelector {
     },
     selectedIndex: undefined,
     factions: [Faction.Blue, Faction.Green, Faction.Red],
-    update() {
+    planets: [],
+    update(dt: number) {
       this.dt += 1 / 60;
 
       // this delay is necessary so that the first time the user
@@ -72,6 +73,8 @@ function createFactionSelector(): FactionSelector {
         this.selectedIndex++;
         if (this.selectedIndex >= this.factions.length) this.selectedIndex = 0;
       }
+
+      this.planets.forEach((s: Sprite) => s.update(dt));
     },
     render() {
       this.factions.forEach((faction: Faction, index: number) =>
@@ -80,24 +83,46 @@ function createFactionSelector(): FactionSelector {
     },
     renderFaction(faction: Faction, index: number) {
       let factionConfig = Config.Factions[faction];
-      let factionWidth = Config.canvasWidth / 4;
-      let outerMargin = factionWidth / 2;
-      let innerMargin = 50;
 
       this.context.font = "normal normal 24px monospace";
       this.context.fillText(
         factionConfig.Name.toUpperCase(),
-        index * factionWidth + outerMargin + innerMargin,
+        index * factionWidth +
+          outerMargin +
+          (factionWidth / 2 - (factionConfig.Name.length / 2) * 0.63 * 24),
         200
       );
+
       // planet
+      if (!this.planets[index]) {
+        // create planet
+        let radius = 50;
+        this.planets[index] = createPlanet(
+          {
+            x: index * factionWidth + outerMargin + factionWidth / 2,
+            y: 300
+          },
+          radius,
+          { x: Config.canvasWidth / 2, y: Config.canvasHeight / 2 },
+          scene,
+          factionConfig.Planet,
+          ""
+        );
+      }
+      this.planets[index].render();
+
+      // description
       this.context.font = "normal normal 12px monospace";
       this.context.fillText(
-        factionConfig.Description.toUpperCase(),
-        index * factionWidth + outerMargin + innerMargin,
+        factionConfig.Objective.toUpperCase(),
+        index * factionWidth +
+          outerMargin +
+          factionWidth / 2 -
+          (factionConfig.Objective.length / 2) * 12 * 0.63,
         400
       );
 
+      // selected rectangle
       if (faction === this.selectedFaction()) {
         console.log("render selected faction: ", faction);
         this.context.strokeStyle = "white";

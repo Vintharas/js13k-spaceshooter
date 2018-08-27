@@ -11,8 +11,9 @@ export interface Velocity {
 export interface Sprite extends Position, Velocity {
   type: string;
   ttl?: number;
-  update(): void;
+  update(dt: number): void;
   render(): void;
+  isAlive(): boolean;
 }
 export interface RGB {
   r: number;

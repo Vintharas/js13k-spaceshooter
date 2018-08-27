@@ -120,7 +120,11 @@
 - Initial screens
   - title
   - choose faction (see summary of story)
-    - factions have different looks and stats for the ship
+    - select one of the three, then panel slides with story, ship info, goal
+    - factions have different looks and stats for the ship and different game goals
+    - blue/science/find orion
+    - green/commerce/gather x amount of energy
+    - red/dominion/control x amount of planets
 - Ilumination
   - it would be cool to do something with ilumination
   - moving objects being illuminated by larger objects like suns/planets which either produce or reflect light. That would add some dynamism to the ships.

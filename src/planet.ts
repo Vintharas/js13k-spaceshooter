@@ -27,12 +27,12 @@ export function createPlanet(
   position: Position,
   radius: number,
   cameraPosition: Position,
-  scene: Scene
+  scene: Scene,
+  planetType: PlanetType = getPlanetType(),
+  planetName: string = generateName()
 ): Planet {
   let textureWidth = Math.round(getValueInRange(64, radius));
   let textureHeight = Math.round(getValueInRange(64, radius));
-  let planetType = getPlanetType();
-  let planetName = generateName();
 
   let planet = kontra.sprite({
     type: "planet",
@@ -222,7 +222,10 @@ export enum PlanetType {
 export const PlanetBaseColors = [
   /*Red*/ { h: 0, s: 70, l: 45 },
   /*Green*/ { h: 120, s: 100, l: 39 },
-  /*Blue*/ { h: 195, s: 100, l: 50 }
+  /*Blue*/ { h: 195, s: 100, l: 50 },
+  /*Desert*/ { h: 195, s: 100, l: 50 }, //TODO
+  /*Barren*/ { h: 195, s: 100, l: 50 }, //TODO
+  /*Paradise*/ { h: 195, s: 100, l: 50 } //TODO
 ];
 
 function getPlanetType(): PlanetType {

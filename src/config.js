@@ -61,17 +61,20 @@ const Config = {
     [Faction.Red]: {
       Name: "Harkonnen",
       Planet: PlanetType.Red,
-      Description: "Deadly soldiers..."
+      Objective: "War & Conquest",
+      Description: "House Harkonnen..."
     },
     [Faction.Blue]: {
       Name: "Atreides",
       Planet: PlanetType.Paradise,
-      Description: "Brave..."
+      Objective: "Freedom & Liberty",
+      Description: "House Atreides..."
     },
     [Faction.Green]: {
       Name: "Corrino",
       Planet: PlanetType.Green,
-      Description: "Empire..."
+      Objective: "Wealth & Power",
+      Description: "House Corrino..."
     }
   }
 };

@@ -31,7 +31,7 @@ export function createText(
   }: FontOptions = {}
 ) {
   if (x === undefined) {
-    // center in x
+    // centered in x
     x = Config.canvasWidth / 2 - (text.length * size * 0.65) / 2;
   }
 

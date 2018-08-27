@@ -48,12 +48,12 @@ export default class CollisionsEngine {
       if (collidableObjects[i].type === "cell" && this.ship) {
         // did it collide with the ship?
         // circle vs. circle collision detection
-        let cell = collidableObjects[i];
+        let cell = collidableObjects[i] as Cell;
         this.handleCollisionBetweenCellAndShip(cell, this.ship);
       }
 
       if (collidableObjects[i].type === "planet" && this.ship) {
-        let planet = collidableObjects[i];
+        let planet = collidableObjects[i] as Planet;
         this.handleCollisionBetweenPlanetAndShip(planet, this.ship);
       }
     }
@@ -66,7 +66,7 @@ export default class CollisionsEngine {
 
     let shipTypedSprites = this.scene.sprites.filter(
       (s: Sprite) => s.type === "ship"
-    );
+    ) as Ship[];
     if (shipTypedSprites.length > 0) [this.ship] = shipTypedSprites;
   }
 
