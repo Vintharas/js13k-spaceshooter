@@ -5,8 +5,7 @@ import {
   getCanvasPosition,
   Color,
   degreesToRadians,
-  RGB,
-  Sprite
+  RGB
 } from "./utils";
 
 export interface Particle extends Sprite {}

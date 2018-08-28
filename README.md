@@ -33,9 +33,15 @@
 
 ## BUILD - minimize assets to 13K
 
+- Game engine improvements
+  - scenes.
+    - Separate background and foreground objects. There's no need to check
+    - extract checking whether an object is viewable to the render method within the scene. We no longer need to do it per sprite? As I've been doing it
 - Optimize build
   - test closure compiler
   - test removing all the parts of kontra that I don't need
+- TypeScript
+  - use generics for kontra types
 
 ## CORE GAME MECHANICS
 
@@ -104,7 +110,7 @@
 - vision
   - diminish range of vision (player sees less space, rest becomes darker)
 - enable/disable systems based on energy left
-  - shield 4/5
+  - [*] shield 4/5
   - radar (needs to be implemented yet) 3/5
     - make simple implementation
   - vision 2/5
@@ -403,6 +409,9 @@
 - Music
   - ?
 - Find a name for the game :D
+- Fonts
+  - try using more pixelated font with generally browser supported fonts
+  - or figure something out with doesn't take so much space
 
 ## BUGS
 

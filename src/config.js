@@ -36,12 +36,18 @@ const Config = {
   }),
   onlyLogInProximityToShip: true, // great for debugging collisions
   renderCollisionArea: true,
+  debugRadar: true,
 
   // Game objects
   Ship: {
     Energy: 500,
     Life: 200,
-    Shield: 300
+    Shield: 300,
+    Radar: {
+      Size: 100,
+      Radius: 45,
+      Range: 1000
+    }
   },
 
   Cell: {

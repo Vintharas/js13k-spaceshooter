@@ -3,7 +3,6 @@ import {
   getCanvasPosition,
   isObjectOutOfBounds,
   Velocity,
-  Sprite,
   getValueInRange,
   degreesToRadians,
   Color

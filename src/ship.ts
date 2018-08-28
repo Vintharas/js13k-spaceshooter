@@ -3,7 +3,8 @@ import {
   Velocity,
   Position,
   getValueInRange,
-  Sprite
+  Color,
+  RGB
 } from "./utils";
 import { Scene } from "./scenes/scene";
 import createBullet from "./bullet";
@@ -21,6 +22,7 @@ export interface Ship extends Sprite {
   life: ShipLife;
   speed: ShipSpeed;
   faction: Faction;
+  radar: ShipRadar;
 }
 export interface ShipEnergy extends Sprite {
   recharge(value: number): void;
@@ -30,6 +32,9 @@ export interface ShipLife extends Sprite {
 }
 export interface ShipSpeed extends Sprite {
   updateSpeed(dx: number, dy: number): void;
+}
+export interface ShipRadar extends Sprite {
+  isInRange(s: Sprite, cameraPosition: Position): boolean;
 }
 
 export default function createShip(scene: Scene) {
@@ -45,6 +50,7 @@ export default function createShip(scene: Scene) {
     collisionWidth
   );
   const speed = ShipSpeed();
+  const radar = ShipRadar(scene);
 
   const ship = kontra.sprite({
     type: "ship",
@@ -69,11 +75,12 @@ export default function createShip(scene: Scene) {
     //width,
     collisionWidth,
 
-    // energy
+    // energy, life and ship systems
     energy,
     life,
     shield,
     speed,
+    radar,
 
     dt: 0, // track how much time has passed
     ttl: Infinity,
@@ -121,6 +128,7 @@ export default function createShip(scene: Scene) {
       this.life.render();
       this.shield.render();
       this.speed.render();
+      this.radar.render();
     },
     update() {
       // update ship energy
@@ -131,6 +139,8 @@ export default function createShip(scene: Scene) {
       this.shield.update();
       // update speed (should move this to the end of update probably)
       this.speed.updateSpeed(this.dx, this.dy);
+      // update radar
+      this.radar.update();
 
       // rotate the ship left or right
       if (kontra.keys.pressed("left")) {
@@ -504,4 +514,122 @@ function ShipSpeed() {
       this.context.fillText(text, this.x, this.y);
     }
   });
+}
+
+// TODO: I should be able to optimize
+// the performance of this when I divide
+// the game into Galaxy/Sectors, etc
+function ShipRadar(scene: Scene) {
+  return kontra.sprite({
+    // center of radar
+    x: Config.canvasWidth - Config.Ship.Radar.Size / 2,
+    y: Config.Ship.Radar.Size / 2,
+    dt: 0,
+    targetsInRadar: [],
+    update() {
+      this.dt += 1 / 60;
+      // updates targets every second
+      if (this.dt > 1) {
+        this.dt = 0;
+        this.targetsInRadar = scene.sprites
+          .filter((s: Sprite) => this.isInRange(s, scene.cameraPosition))
+          .filter((s: Sprite) => s.radius > 15 || s.size > 10 || s.width > 10)
+          .map((s: Sprite) => mapToTarget(s, scene.cameraPosition));
+
+        if (Config.debug && Config.debugRadar)
+          console.log(`Targets in radar: `, this.targetsInRadar);
+      }
+    },
+    render() {
+      this.context.save();
+      this.context.translate(this.x, this.y);
+      // #1. render radar as concentric circles
+      for (let r = Config.Ship.Radar.Radius; r > 0; r -= 5) {
+        this.context.beginPath();
+        this.context.strokeStyle = Color.rgba(255, 255, 255, 0.5);
+        this.context.arc(0, 0, r, 0, 2 * Math.PI);
+        this.context.stroke();
+      }
+      this.context.closePath();
+
+      // and two lines
+      this.context.translate(-Config.Ship.Radar.Size / 2, 0);
+      this.context.beginPath();
+      this.context.moveTo(0, 0);
+      this.context.lineTo(Config.Ship.Radar.Size, 0);
+      this.context.stroke();
+      this.context.closePath();
+
+      this.context.translate(
+        Config.Ship.Radar.Size / 2,
+        -Config.Ship.Radar.Size / 2
+      );
+      this.context.beginPath();
+      this.context.moveTo(0, 0);
+      this.context.lineTo(0, Config.Ship.Radar.Size);
+      this.context.stroke();
+      this.context.closePath();
+
+      // #2. render targets
+      this.context.translate(0, Config.Ship.Radar.Size / 2);
+      this.targetsInRadar.forEach((t: RadarTarget) => {
+        this.context.fillStyle = t.color;
+        //this.context.fillRect(t.x, t.y, t.size, t.size);
+        this.context.beginPath();
+        this.context.arc(t.x, t.y, t.size / 2, 0, 2 * Math.PI);
+        this.context.fill();
+      });
+
+      this.context.restore();
+    },
+    isInRange(sprite: Sprite, cameraPosition: Position) {
+      let relativePosition = {
+        x: sprite.x - cameraPosition.x,
+        y: sprite.y - cameraPosition.y
+      };
+      let magnitude = Vector.getMagnitude(
+        relativePosition.x,
+        relativePosition.y
+      );
+      return magnitude < Config.Ship.Radar.Range;
+    }
+  });
+}
+
+interface RadarTarget extends Position {
+  color: string;
+  size: number;
+}
+
+function mapToTarget(sprite: Sprite, cameraPosition: Position): RadarTarget {
+  let relativePosition = {
+    x: sprite.x - cameraPosition.x,
+    y: sprite.y - cameraPosition.y
+  };
+  let normalizedRelativePosition = {
+    x: relativePosition.x / Config.Ship.Radar.Range,
+    y: relativePosition.y / Config.Ship.Radar.Range
+  };
+
+  return {
+    x: normalizedRelativePosition.x * Config.Ship.Radar.Radius,
+    y: normalizedRelativePosition.y * Config.Ship.Radar.Radius,
+    color: typeToColor(sprite.type),
+    size: toSize(sprite)
+  };
+
+  // TODO: Why not use enums for types?
+  function typeToColor(type: string): string {
+    if (type === "planet") return Color.rgba(0, 255, 0, 0.7);
+    if (type === "asteroid") return Color.rgba(200, 200, 200, 0.7);
+    else return Color.rgba(150, 150, 150, 0.7);
+  }
+  function toSize(sprite: Sprite) {
+    let maxTargetSize = 6;
+    let maxRealSize = 100; // planet size, extract to config
+
+    // TODO: remove this duplication
+    let size = sprite.radius || sprite.size || sprite.width;
+    return Math.ceil((size / maxRealSize) * maxTargetSize);
+  }
 }

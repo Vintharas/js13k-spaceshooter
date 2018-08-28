@@ -5,8 +5,7 @@ import {
   degreesToRadians,
   isObjectOutOfBounds,
   getCanvasPosition,
-  Color,
-  Sprite
+  Color
 } from "./utils";
 import Config from "./config";
 

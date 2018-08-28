@@ -2,7 +2,6 @@ import {
   Position,
   getCanvasPosition,
   isObjectOutOfBounds,
-  Sprite,
   degreesToRadians,
   getValueInRange
 } from "./utils";

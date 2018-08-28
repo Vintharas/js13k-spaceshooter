@@ -3,7 +3,6 @@ import { createText } from "../text";
 import Game from "../game";
 import Config from "../config";
 import { Faction } from "../factions";
-import { Sprite } from "../utils";
 import { createPlanet } from "../planet";
 
 export function createChooseFactionScene() {

@@ -1,4 +1,4 @@
-import { Position, Positions, Sprite } from "../utils";
+import { Position, Positions } from "../utils";
 import Config from "../config";
 import CollisionsEngine from "../collisions";
 import { Camera, createCamera } from "./camera";

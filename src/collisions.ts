@@ -1,6 +1,6 @@
 import { Scene } from "./scenes/scene";
 import { createAsteroid, Asteroid } from "./asteroid";
-import { Position, getValueInRange, Sprite, RGB } from "./utils";
+import { Position, getValueInRange, RGB } from "./utils";
 import Config from "./config";
 import { createExplosionParticle } from "./particles";
 import createCell, { CellType, Cell, getRandomCellType } from "./cell";
