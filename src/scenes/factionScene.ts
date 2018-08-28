@@ -1,4 +1,4 @@
-import Scene, { createScene } from "./scene";
+import { Scene, createScene } from "./scene";
 import { createText } from "../text";
 import Game from "../game";
 import Config from "../config";

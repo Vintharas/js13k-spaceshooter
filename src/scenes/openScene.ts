@@ -1,14 +1,10 @@
-import Scene from "./scene";
+import { createScene } from "./scene";
 import { createText } from "../text";
 import Game from "../game";
 import Config from "../config";
 
 export default function createOpenScene() {
-  let loop = kontra.gameLoop({
-    update,
-    render
-  });
-  const scene = new Scene([], loop);
+  const scene = createScene({ update });
 
   const titleText = createText(
     "JS13K SPACE SHOOTER",
@@ -30,10 +26,5 @@ export default function createOpenScene() {
     if (kontra.keys.pressed("enter")) {
       Game.instance().goToChooseFaction();
     }
-  }
-
-  //TODO: This logic can be common to all scenes
-  function render() {
-    scene.sprites.forEach(s => s.render());
   }
 }

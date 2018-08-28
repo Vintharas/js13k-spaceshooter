@@ -1,4 +1,4 @@
-import Scene from "./scenes/scene";
+import { Scene } from "./scenes/scene";
 import { createAsteroid, Asteroid } from "./asteroid";
 import { Position, getValueInRange, Sprite, RGB } from "./utils";
 import Config from "./config";

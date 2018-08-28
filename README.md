@@ -17,6 +17,20 @@
         - thrust
         - solar slowly recharges your energy
 
+## Prioritize
+
+- complete basic offline mechanics
+- complete faction selection process
+  - 3 different ships
+    - create art for two more ships
+  - ships have slightly different stats
+    - faction ship modifiers
+  - 3 victory conditions
+    - way to store game data
+- suns recharge energy faster
+- all types of planets
+- support for multiple weapons
+
 ## BUILD - minimize assets to 13K
 
 - Optimize build
@@ -29,9 +43,9 @@
   - when you get near to a sun you get more energy faster
 - shoot
   - support for other weapons:
-  - bomb (explodes)
-  - mine (leave it behind)
-  - slower rate of shooting but stronger missile
+    - bomb (explodes)
+    - mine (leave it behind)
+    - slower rate of shooting but stronger missile
 - move
   - show speed indicator?
     - parsecs? (very huge speed units)
@@ -90,9 +104,11 @@
 - vision
   - diminish range of vision (player sees less space, rest becomes darker)
 - enable/disable systems based on energy left
-  - radar
-  - vision
-  - shoot
+  - shield 4/5
+  - radar (needs to be implemented yet) 3/5
+    - make simple implementation
+  - vision 2/5
+  - shoot 1/5
   - thrust
   - life support?
 - game messages

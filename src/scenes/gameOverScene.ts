@@ -1,13 +1,9 @@
-import Scene from "./scene";
+import { createScene } from "./scene";
 import { createText } from "../text";
 import Game from "../game";
 
 export default function createGameOverScene() {
-  let loop = kontra.gameLoop({
-    update,
-    render
-  });
-  const scene = new Scene([], loop);
+  const scene = createScene({ update });
 
   // TODO: we may be able to extract this into some common
   // text based scene
@@ -25,10 +21,5 @@ export default function createGameOverScene() {
     if (kontra.keys.pressed("enter")) {
       Game.instance().goToOpenScene();
     }
-  }
-
-  //TODO: This logic can be common to all scenes
-  function render() {
-    scene.sprites.forEach(s => s.render());
   }
 }

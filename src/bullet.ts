@@ -1,5 +1,5 @@
 import { Position, getCanvasPosition, Velocity } from "./utils";
-import Scene from "./scenes/scene";
+import { Scene } from "./scenes/scene";
 import { createParticle } from "./particles";
 
 export default function createBullet(

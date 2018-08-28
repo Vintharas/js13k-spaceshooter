@@ -1,4 +1,4 @@
-import Scene, { createScene } from "./scene";
+import { Scene, createScene } from "./scene";
 import { createAsteroid } from "../asteroid";
 import createShip from "../ship";
 import { isObjectOutOfBounds, Position, getValueInRange } from "../utils";
@@ -9,13 +9,6 @@ import { createPlanet } from "../planet";
 import { createCamera } from "./camera";
 
 export default function createSpaceScene() {
-  /*const scene = new Scene([], loop);
-  let loop = kontra.gameLoop({
-    update,
-    render
-  });
-  */
-
   const camera = createCamera();
   const scene = createScene({ camera, update });
   const ship = createShip(scene);
@@ -40,6 +33,8 @@ export default function createSpaceScene() {
 }
 
 function cleanupObjectIfOutOfBounds(scene: Scene) {
+  // TODO: see how I can make better use of object pool
+  // from kontra.js. This could be something I could take advantage of here
   scene.sprites.forEach((s: any) => {
     if (isObjectOutOfBounds(s, scene.cameraPosition)) {
       s.ttl = 0;

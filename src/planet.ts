@@ -8,11 +8,10 @@ import {
 } from "./utils";
 import OffscreenCanvas from "./canvas";
 import Config from "./config";
-import { getRandomCellType } from "./cell";
 import { generateName } from "./names";
 import { Faction } from "./factions";
 import { createGameStatusText } from "./text";
-import Scene from "./scenes/scene";
+import { Scene } from "./scenes/scene";
 
 export interface Planet extends Sprite {
   radius: number;

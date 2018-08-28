@@ -5,7 +5,7 @@ import {
   getValueInRange,
   Sprite
 } from "./utils";
-import Scene from "./scenes/scene";
+import { Scene } from "./scenes/scene";
 import createBullet from "./bullet";
 import { createStaticParticle, Particle } from "./particles";
 import Config from "./config";

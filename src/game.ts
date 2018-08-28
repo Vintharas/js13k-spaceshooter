@@ -1,5 +1,5 @@
 import createSpaceScene from "./scenes/spaceScene";
-import Scene from "./scenes/scene";
+import { Scene } from "./scenes/scene";
 import createOpenScene from "./scenes/openScene";
 import createGameOverScene from "./scenes/gameOverScene";
 import { createChooseFactionScene } from "./scenes/factionScene";
