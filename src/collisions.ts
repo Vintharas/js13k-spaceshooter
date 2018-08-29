@@ -18,7 +18,7 @@ export default class CollisionsEngine {
 
     this.initializeShip();
     // temporary hack to test something
-    let collidableObjects = this.scene.sprites
+    let collidableObjects = this.scene.sprites.foreground
       .filter(s => Config.collidableTypes.includes(s.type))
       // with the current algorithm that
       // checks whether an asteroid has collided with X
@@ -64,7 +64,7 @@ export default class CollisionsEngine {
     // if I untangle the dependency mess
     if (this.ship) return;
 
-    let shipTypedSprites = this.scene.sprites.filter(
+    let shipTypedSprites = this.scene.sprites.foreground.filter(
       (s: Sprite) => s.type === "ship"
     ) as Ship[];
     if (shipTypedSprites.length > 0) [this.ship] = shipTypedSprites;
@@ -136,7 +136,7 @@ export default class CollisionsEngine {
         color: explosionColors[colorIndex],
         magnitude: asteroid.radius / 2
       });
-      scene.sprites.push(particle);
+      scene.addSprite(particle);
     }
   }
 
@@ -148,14 +148,14 @@ export default class CollisionsEngine {
     // Energy Cells
     for (let i = 0; i < numberOfEnergyCells; i++) {
       let newCell = createCell(asteroid, scene.cameraPosition, CellType.Energy);
-      scene.sprites.push(newCell);
+      scene.addSprite(newCell);
     }
 
     //Life Cells
     let numerOfLifeCells = Math.round(getValueInRange(0, 1));
     for (let i = 0; i < numerOfLifeCells; i++) {
       let newCell = createCell(asteroid, scene.cameraPosition, CellType.Life);
-      scene.sprites.push(newCell);
+      scene.addSprite(newCell);
     }
   }
 
@@ -199,7 +199,7 @@ export default class CollisionsEngine {
       },
       { size: 12, family: "monospace" }
     );
-    this.scene.sprites.push(cellText);
+    this.scene.addSprite(cellText);
     if (Config.debug) console.log("Created cell text:", cellText);
   }
 
@@ -254,7 +254,7 @@ function breakAsteroidInSmallerOnes(asteroid: any, scene: Scene) {
       asteroid.radius / 2.5,
       scene.cameraPosition
     );
-    scene.sprites.push(newAsteroid);
+    scene.addSprite(newAsteroid);
     if (Config.debug) console.log("New Asteroid", newAsteroid);
   }
 }

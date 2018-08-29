@@ -106,7 +106,11 @@
   - it'd be cool if we could arrange planets around a sun
   - and make them orbit the sun slowly, that would be cool :D
 - radar
-  - show interesting stuff (like a minimap)
+  - [*] show interesting stuff (like a minimap)
+  - separate scene background from foreground sprites!!
+  - deactivate when energy is not sufficient
+  - activate when energy sufficient
+  - add ships/sun/enemies, etc
 - vision
   - diminish range of vision (player sees less space, rest becomes darker)
 - enable/disable systems based on energy left

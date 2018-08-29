@@ -60,7 +60,7 @@ export function createPlanet(
         let textSprite = createGameStatusText(
           `${faction} FACTION CLAIMING ${planetName}`
         );
-        scene.sprites.push(textSprite);
+        scene.addSprite(textSprite);
         this.beingClaimed = true;
       }
 
@@ -73,7 +73,7 @@ export function createPlanet(
         let textSprite = createGameStatusText(
           `${faction} FACTION CLAIMED ${planetName}`
         );
-        scene.sprites.push(textSprite);
+        scene.addSprite(textSprite);
       }
     },
 

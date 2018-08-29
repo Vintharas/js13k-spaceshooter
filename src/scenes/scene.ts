@@ -1,16 +1,26 @@
-import { Position, Positions } from "../utils";
+import { Position, Positions, isObjectOutOfBounds } from "../utils";
 import Config from "../config";
 import CollisionsEngine from "../collisions";
 import { Camera, createCamera } from "./camera";
 
+export interface Sprites {
+  background: Sprite[];
+  foreground: Sprite[];
+}
+
+export interface SpriteOptions {
+  isInForeground?: boolean;
+}
+
 export interface Scene {
-  sprites: Sprite[];
+  sprites: Sprites;
   update(dt: number): void;
-  addSprite(sprite: Sprite): void;
+  addSprite(this: Scene, sprite: Sprite, options?: SpriteOptions): void;
   start(): void;
   stop(): void;
   cameraPosition: Position;
 }
+
 export interface SceneOptions {
   camera?: Camera;
   update?(dt: number): void;
@@ -24,21 +34,35 @@ export function createScene({
   update = () => {},
   render = () => {}
 }: SceneOptions = {}): Scene {
-  const sprites: Sprite[] = [];
+  const sprites: Sprites = { foreground: [], background: [] };
 
   let loop = kontra.gameLoop({
     update(dt: number) {
       update.bind(this)(dt);
-      this.sprites.forEach((s: Sprite) => s.update());
+
+      // TODO: provide custom iterator to
+      // allow to easy traverse all sprites
+      // without having to create a new array
+      this.sprites.background.forEach((s: Sprite) => s.update());
+      this.sprites.foreground.forEach((s: Sprite) => s.update());
+
       this.collisionEngine.processCollisions(dt);
       if (Config.debug && Config.verbose) {
         this.logGameObjects();
       }
-      this.sprites = this.sprites.filter((sprite: Sprite) => sprite.isAlive());
+
+      this.sprites.foreground = this.sprites.foreground.filter(
+        (sprite: Sprite) => sprite.isAlive()
+      );
     },
     render() {
       render.bind(this)();
-      this.sprites.forEach((s: Sprite) => s.render());
+      this.sprites.background
+        .filter((s: Sprite) => !isObjectOutOfBounds(s, camera))
+        .forEach((s: Sprite) => s.render());
+      this.sprites.foreground
+        .filter((s: Sprite) => !isObjectOutOfBounds(s, camera))
+        .forEach((s: Sprite) => s.render());
     }
   });
 
@@ -48,8 +72,13 @@ export function createScene({
     sprites,
     // TODO: this may not be necessary
     // consider removing to save space
-    addSprite(sprite: Sprite) {
-      this.sprites.push(sprite);
+    addSprite(
+      this: Scene,
+      sprite: Sprite,
+      { isInForeground = true }: SpriteOptions = {}
+    ) {
+      if (isInForeground) this.sprites.foreground.push(sprite);
+      else this.sprites.background.push(sprite);
     },
     cameraPosition: camera,
     logGameObjects

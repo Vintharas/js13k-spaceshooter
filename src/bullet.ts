@@ -33,7 +33,7 @@ export default function createBullet(
         cameraPosition,
         0
       );
-      scene.sprites.push(particle);
+      scene.addSprite(particle);
     },
     render() {
       let position = getCanvasPosition(this, cameraPosition);

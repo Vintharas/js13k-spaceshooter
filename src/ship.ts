@@ -149,14 +149,14 @@ export default function createShip(scene: Scene) {
           x: 5,
           y: -10
         });
-        scene.sprites.push(particle);
+        scene.addSprite(particle);
       } else if (kontra.keys.pressed("right")) {
         this.rotation += 4;
         let particle = this.createShipParticle(ship.rotation - 75, {
           x: 5,
           y: 10
         });
-        scene.sprites.push(particle);
+        scene.addSprite(particle);
       }
       // move the ship forward in the direction it's facing
       const cos = Math.cos(degreesToRadians(this.rotation));
@@ -176,7 +176,7 @@ export default function createShip(scene: Scene) {
             x: 20,
             y: 0
           });
-          scene.sprites.push(particle);
+          scene.addSprite(particle);
         }
       } else if (
         kontra.keys.pressed("down") &&
@@ -196,8 +196,8 @@ export default function createShip(scene: Scene) {
           x: 5,
           y: 10
         });
-        scene.sprites.push(particleLeft);
-        scene.sprites.push(particleRight);
+        scene.addSprite(particleLeft);
+        scene.addSprite(particleRight);
       } else {
         this.ddx = this.ddy = 0;
       }
@@ -327,7 +327,7 @@ function ShipEnergy(energy: number, scene: Scene) {
 
     addOfflineText(text: string) {
       let textSprite = createGameStatusText(text);
-      scene.sprites.push(textSprite);
+      scene.addSprite(textSprite);
     }
   });
 }
@@ -531,7 +531,7 @@ function ShipRadar(scene: Scene) {
       // updates targets every second
       if (this.dt > 1) {
         this.dt = 0;
-        this.targetsInRadar = scene.sprites
+        this.targetsInRadar = scene.sprites.foreground
           .filter((s: Sprite) => this.isInRange(s, scene.cameraPosition))
           .filter((s: Sprite) => s.radius > 15 || s.size > 10 || s.width > 10)
           .map((s: Sprite) => mapToTarget(s, scene.cameraPosition));
