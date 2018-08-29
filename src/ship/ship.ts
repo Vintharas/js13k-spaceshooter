@@ -144,14 +144,14 @@ export default function createShip(scene: Scene) {
 
       // rotate the ship left or right
       if (kontra.keys.pressed("left")) {
-        this.rotation += -4;
+        this.rotation += -3;
         let particle = this.createShipParticle(ship.rotation + 75, {
           x: 5,
           y: -10
         });
         scene.addSprite(particle);
       } else if (kontra.keys.pressed("right")) {
-        this.rotation += 4;
+        this.rotation += 3;
         let particle = this.createShipParticle(ship.rotation - 75, {
           x: 5,
           y: 10

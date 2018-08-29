@@ -35,7 +35,11 @@ export function ShipEnergy(energy: number, scene: Scene) {
         // baseline for recharging energy
         // TODO: change baseline based on systems that are enabled!
         // when less systems are enabled recharge faster (probably more playable)
-        this.recharge(1);
+        let energyToRecharge = 1;
+        if (this.energy < (this.maxEnergy * 2) / 5) energyToRecharge = 4;
+        else if (this.energy < (this.maxEnergy * 3) / 5) energyToRecharge = 3;
+        else if (this.energy < (this.maxEnergy * 4) / 5) energyToRecharge = 2;
+        this.recharge(energyToRecharge);
         this.dt = 0;
       }
     },
