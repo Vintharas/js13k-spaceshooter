@@ -1,17 +1,9 @@
 import { Faction } from "./factions";
 import { PlanetType } from "./planet";
+import { CanvasConfig } from "./canvas.config";
 
 const Config = {
-  get canvasWidth() {
-    return kontra.canvas.width / this.scale;
-  },
-  get canvasHeight() {
-    return kontra.canvas.height / this.scale;
-  },
-  // TODO: test with different scales
-  // double scale makes it look more pixelated :D
-  // which I like
-  scale: 1.5,
+  ...CanvasConfig,
 
   // an object far from the camera
   // more than this constant will be recycled
@@ -28,7 +20,7 @@ const Config = {
   debug: false,
   verbose: false,
   typesToLog: ["asteroid", "ship"],
-  logTheseProperties: s => ({
+  logTheseProperties: (s: Sprite) => ({
     type: s.type,
     x: s.x,
     y: s.y,

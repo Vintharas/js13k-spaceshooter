@@ -1,6 +1,12 @@
 import { Position, getValueInRange } from "../utils";
 import Config from "../config";
 
+export interface ShipShield {
+  isEnabled: boolean;
+  damage(damage: number): void;
+  disable(): void;
+}
+
 export function ShipShield(
   shield: number,
   energy: any,

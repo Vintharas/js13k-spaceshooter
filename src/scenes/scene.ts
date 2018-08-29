@@ -1,6 +1,6 @@
 import { Position, Positions, isObjectOutOfBounds } from "../utils";
-import Config from "../config";
 import CollisionsEngine from "../collisions";
+import Config from "../config";
 import { Camera, createCamera } from "./camera";
 
 export interface Sprites {

@@ -14,11 +14,12 @@ import { createGameStatusText } from "../text";
 import { Faction } from "../factions";
 import { Vector } from "../vector";
 import { Camera } from "../scenes/camera";
-import { ShipRadar } from "./shipradar";
+import { ShipRadar } from "./shipRadar";
 import { ShipSpeed } from "./shipSpeed";
 import { ShipShield } from "./shipShield";
 import { ShipEnergy } from "./shipEnergy";
 import { ShipLife } from "./shipLife";
+import { ShipWeapons } from "./shipWeapons";
 
 export interface Ship extends Sprite {
   width: number;
@@ -28,6 +29,7 @@ export interface Ship extends Sprite {
   speed: ShipSpeed;
   faction: Faction;
   radar: ShipRadar;
+  weapons: ShipWeapons;
 }
 export default function createShip(scene: Scene) {
   const collisionWidth = 20;
@@ -43,6 +45,7 @@ export default function createShip(scene: Scene) {
   );
   const speed = ShipSpeed();
   const radar = ShipRadar(scene, energy);
+  const weapons = ShipWeapons(scene, energy);
 
   const ship = kontra.sprite({
     type: "ship",
@@ -73,6 +76,7 @@ export default function createShip(scene: Scene) {
     shield,
     speed,
     radar,
+    weapons,
 
     dt: 0, // track how much time has passed
     ttl: Infinity,
@@ -121,8 +125,9 @@ export default function createShip(scene: Scene) {
       this.shield.render();
       this.speed.render();
       this.radar.render();
+      this.weapons.render();
     },
-    update() {
+    update(this: Ship) {
       // update ship energy
       this.energy.update();
       // slowly recover life
@@ -133,6 +138,9 @@ export default function createShip(scene: Scene) {
       this.speed.updateSpeed(this.dx, this.dy);
       // update radar
       this.radar.update();
+      // update weapons
+      this.weapons.updateShipInformation(this, this, this.rotation);
+      this.weapons.update();
 
       // rotate the ship left or right
       if (kontra.keys.pressed("left")) {
@@ -200,32 +208,6 @@ export default function createShip(scene: Scene) {
       if (magnitude > 10) {
         this.dx *= 0.95;
         this.dy *= 0.95;
-      }
-
-      // allow the player to fire no more than 1 bullet every 1/4 second
-      this.dt += 1 / 60;
-      if (
-        kontra.keys.pressed("space") &&
-        this.dt > 0.25 &&
-        this.energy.hasEnoughEnergy(Config.Ship.EnergyCost.Shoot)
-      ) {
-        this.dt = 0;
-        // reduce energy
-        this.energy.consume(Config.Ship.EnergyCost.Shoot);
-
-        let position: Position = this;
-        let velocity: Velocity = this;
-        let cameraPosition: Position = this;
-
-        const bullet = createBullet(
-          position,
-          velocity,
-          cos,
-          sin,
-          cameraPosition,
-          scene
-        );
-        scene.addSprite(bullet);
       }
     },
     createShipParticle(

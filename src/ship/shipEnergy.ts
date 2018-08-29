@@ -1,11 +1,18 @@
 import { Scene } from "../scenes/scene";
-
 import Config from "../config";
-
 import { createGameStatusText } from "../text";
+import { ShipWeapons } from "./shipWeapons";
+import { ShipRadar } from "./shipradar";
+import { ShipShield } from "./shipShield";
 
 export interface ShipEnergy extends Sprite {
+  consume(energy: number): void;
   recharge(value: number): void;
+  hasEnoughEnergy(energy: number): boolean;
+
+  shield: ShipShield;
+  radar: ShipRadar;
+  weapons: ShipWeapons;
 }
 
 // TODO: shipEnergy and shipLife
@@ -65,6 +72,11 @@ export function ShipEnergy(energy: number, scene: Scene) {
         this.shield.disable();
         this.addOfflineText("- SHIELD OFFLINE -");
       }
+      if (this.energy < (this.maxEnergy * 2) / 5 && this.weapons.isEnabled) {
+        if (Config.debug) console.log("Low on energy. Disabling weapons");
+        this.weapons.disable();
+        this.addOfflineText("- WEAPONS OFFLINE -");
+      }
     },
 
     recharge(energyBoost: number) {
@@ -81,6 +93,10 @@ export function ShipEnergy(energy: number, scene: Scene) {
       if (this.energy > (this.maxEnergy * 3) / 5 && !this.shield.isEnabled) {
         this.shield.isEnabled = true;
         this.addOfflineText("- SHIELD ONLINE -");
+      }
+      if (this.energy > (this.maxEnergy * 2) / 5 && !this.weapons.isEnabled) {
+        this.weapons.isEnabled = true;
+        this.addOfflineText("- WEAPONS ONLINE -");
       }
     },
 

@@ -20,8 +20,12 @@
 ## Prioritize
 
 - complete basic offline mechanics
-  - radar
+  - [*] radar
   - disable stuff when no energy
+    - [*] radar 4/5
+    - [*] shield 3/5
+    - [] weapons 2/5
+    - [] vision 1/5 (reduce range of vision)
   - reorganize ships systems
     - there's a little bit of a mambo jambo and circular dependencies there
     - extract ShipsSystems object which enables/disables/makes sure you can perform a task
@@ -33,8 +37,10 @@
     - faction ship modifiers
   - 3 victory conditions
     - way to store game data
+- all types of planets, suns
 - suns recharge energy faster
-- all types of planets
+- game engine
+  - preload patterns for planets in loading screen so it won't affect fps in game
 - support for multiple weapons
 
 ## BUILD - minimize assets to 13K
@@ -45,6 +51,10 @@
     - extract checking whether an object is viewable to the render method within the scene. We no longer need to do it per sprite? As I've been doing it
 - Optimize build
   - test closure compiler
+    - this is going to be a pain in the ass
+    - consider loading kontra just by copying file as is to the dist folder
+      and including it as is in the index.html template
+    - setup compressor to just compress everything in dist/
   - test removing all the parts of kontra that I don't need
 - TypeScript
   - use generics for kontra types
