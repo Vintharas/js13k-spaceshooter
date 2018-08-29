@@ -1,6 +1,6 @@
 import { Scene, createScene } from "./scene";
 import { createAsteroid } from "../asteroid";
-import createShip from "../ship";
+import createShip from "../ship/ship";
 import { isObjectOutOfBounds, Position, getValueInRange } from "../utils";
 import createStar from "../star";
 import Config from "../config";

@@ -4,7 +4,7 @@ import { Position, getValueInRange, RGB } from "./utils";
 import Config from "./config";
 import { createExplosionParticle } from "./particles";
 import createCell, { CellType, Cell, getRandomCellType } from "./cell";
-import { Ship } from "./ship";
+import { Ship } from "./ship/ship";
 import { createText } from "./text";
 import { Planet } from "./planet";
 
