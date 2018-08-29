@@ -20,6 +20,12 @@
 ## Prioritize
 
 - complete basic offline mechanics
+  - radar
+  - disable stuff when no energy
+  - reorganize ships systems
+    - there's a little bit of a mambo jambo and circular dependencies there
+    - extract ShipsSystems object which enables/disables/makes sure you can perform a task
+    - extract ShipWeapon to wrap shooting, etc
 - complete faction selection process
   - 3 different ships
     - create art for two more ships

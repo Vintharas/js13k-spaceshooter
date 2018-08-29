@@ -17,7 +17,7 @@ import { Camera } from "../scenes/camera";
 import { ShipRadar } from "./shipradar";
 import { ShipSpeed } from "./shipSpeed";
 import { ShipShield } from "./shipShield";
-import { ShipEnergy, EnergyCost } from "./shipEnergy";
+import { ShipEnergy } from "./shipEnergy";
 import { ShipLife } from "./shipLife";
 
 export interface Ship extends Sprite {
@@ -42,7 +42,7 @@ export default function createShip(scene: Scene) {
     collisionWidth
   );
   const speed = ShipSpeed();
-  const radar = ShipRadar(scene);
+  const radar = ShipRadar(scene, energy);
 
   const ship = kontra.sprite({
     type: "ship",
@@ -156,12 +156,12 @@ export default function createShip(scene: Scene) {
 
       if (
         kontra.keys.pressed("up") &&
-        this.energy.hasEnoughEnergy(EnergyCost.ThrustCost)
+        this.energy.hasEnoughEnergy(Config.Ship.EnergyCost.Thrust)
       ) {
         this.ddx = cos * 0.1;
         this.ddy = sin * 0.1;
         // reduce energy
-        this.energy.consume(EnergyCost.ThrustCost);
+        this.energy.consume(Config.Ship.EnergyCost.Thrust);
         // create particles from this position
         for (let i = 0; i < 2; i++) {
           let particle = this.createShipParticle(ship.rotation + 180, {
@@ -172,12 +172,12 @@ export default function createShip(scene: Scene) {
         }
       } else if (
         kontra.keys.pressed("down") &&
-        this.energy.hasEnoughEnergy(EnergyCost.BrakeCost)
+        this.energy.hasEnoughEnergy(Config.Ship.EnergyCost.Brake)
       ) {
         this.ddx = (cos * -0.1) / 2;
         this.ddy = (sin * -0.1) / 2;
         // reduce energy
-        this.energy.consume(EnergyCost.BrakeCost);
+        this.energy.consume(Config.Ship.EnergyCost.Brake);
         // create particles from this position
 
         let particleLeft = this.createShipParticle(ship.rotation + 75, {
@@ -207,11 +207,11 @@ export default function createShip(scene: Scene) {
       if (
         kontra.keys.pressed("space") &&
         this.dt > 0.25 &&
-        this.energy.hasEnoughEnergy(EnergyCost.ShootCost)
+        this.energy.hasEnoughEnergy(Config.Ship.EnergyCost.Shoot)
       ) {
         this.dt = 0;
         // reduce energy
-        this.energy.consume(EnergyCost.ShootCost);
+        this.energy.consume(Config.Ship.EnergyCost.Shoot);
 
         let position: Position = this;
         let velocity: Velocity = this;

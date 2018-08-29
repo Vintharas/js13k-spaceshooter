@@ -26,19 +26,28 @@ export function ShipEnergy(energy: number, scene: Scene) {
       this.dt += 1 / 60;
       if (this.dt > 0.25) {
         // baseline for recharging energy
+        // TODO: change baseline based on systems that are enabled!
+        // when less systems are enabled recharge faster (probably more playable)
         this.recharge(1);
         this.dt = 0;
       }
     },
     render() {
       // energy bar
-      let energyWidth = Math.ceil((this.energy * barWidth) / this.maxEnergy);
+      let energyWidth = Math.ceil(
+        (this.energy * Config.UI.Bar.Width) / this.maxEnergy
+      );
 
       this.context.fillStyle = "green";
-      this.context.fillRect(this.x, this.y, energyWidth, barHeight);
+      this.context.fillRect(this.x, this.y, energyWidth, Config.UI.Bar.Height);
       // energy bar container
       this.context.strokeStyle = "white";
-      this.context.strokeRect(this.x, this.y, barWidth, barHeight);
+      this.context.strokeRect(
+        this.x,
+        this.y,
+        Config.UI.Bar.Width,
+        Config.UI.Bar.Height
+      );
     },
 
     consume(energyCost: number) {
@@ -46,7 +55,12 @@ export function ShipEnergy(energy: number, scene: Scene) {
 
       // review systems that need to be disabled
       // when energy increases
-      if (this.energy < (this.maxEnergy * 4) / 5 && this.shield.isEnabled) {
+      if (this.energy < (this.maxEnergy * 4) / 5 && this.radar.isEnabled) {
+        if (Config.debug) console.log("Low on energy. Disabling radar");
+        this.radar.disable();
+        this.addOfflineText("- RADAR OFFLINE -");
+      }
+      if (this.energy < (this.maxEnergy * 3) / 5 && this.shield.isEnabled) {
         if (Config.debug) console.log("Low on energy. Disabling shield");
         this.shield.disable();
         this.addOfflineText("- SHIELD OFFLINE -");
@@ -59,7 +73,12 @@ export function ShipEnergy(energy: number, scene: Scene) {
       if (this.energy > this.maxEnergy) this.energy = this.maxEnergy;
       // review systems that need to be enabled
       // when energy increases
-      if (this.energy > (this.maxEnergy * 4) / 5 && !this.shield.isEnabled) {
+
+      if (this.energy > (this.maxEnergy * 4) / 5 && !this.radar.isEnabled) {
+        this.radar.isEnabled = true;
+        this.addOfflineText("- RADAR ONLINE -");
+      }
+      if (this.energy > (this.maxEnergy * 3) / 5 && !this.shield.isEnabled) {
         this.shield.isEnabled = true;
         this.addOfflineText("- SHIELD ONLINE -");
       }
@@ -75,13 +94,3 @@ export function ShipEnergy(energy: number, scene: Scene) {
     }
   });
 }
-
-// TODO: extract to config
-const barWidth = 100;
-const barHeight = 5;
-export const EnergyCost = {
-  ThrustCost: 1,
-  BrakeCost: 1,
-  ShootCost: 10,
-  ShieldRechargeCost: 1
-};

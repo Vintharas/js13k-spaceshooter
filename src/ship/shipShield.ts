@@ -1,5 +1,4 @@
 import { Position, getValueInRange } from "../utils";
-import { EnergyCost } from "./shipEnergy";
 import Config from "../config";
 
 export function ShipShield(
@@ -29,7 +28,7 @@ export function ShipShield(
         if (this.isEnabled) {
           // baseline for recharging energy
           if (this.shield < this.maxShield) this.shield++;
-          energy.consume(EnergyCost.ShieldRechargeCost);
+          energy.consume(Config.Ship.EnergyCost.ShieldRecharge);
         } else {
           // discharge shield
           this.damage(3);
@@ -40,13 +39,20 @@ export function ShipShield(
 
     render() {
       // render bar
-      let shieldWidth = Math.ceil((this.shield * barWidth) / this.maxShield);
+      let shieldWidth = Math.ceil(
+        (this.shield * Config.UI.Bar.Width) / this.maxShield
+      );
 
       this.context.fillStyle = "#00edff";
-      this.context.fillRect(this.x, this.y, shieldWidth, barHeight);
+      this.context.fillRect(this.x, this.y, shieldWidth, Config.UI.Bar.Height);
       // bar container
       this.context.strokeStyle = "white";
-      this.context.strokeRect(this.x, this.y, barWidth, barHeight);
+      this.context.strokeRect(
+        this.x,
+        this.y,
+        Config.UI.Bar.Width,
+        Config.UI.Bar.Height
+      );
 
       // actual shield
       if (this.shield === 0) return;
@@ -116,7 +122,3 @@ export function ShipShield(
 
   return shipShield;
 }
-
-// TODO: extract to config
-const barWidth = 100;
-const barHeight = 5;

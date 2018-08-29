@@ -2,6 +2,7 @@ import { Scene } from "../scenes/scene";
 import Config from "../config";
 import { Color, Position } from "../utils";
 import { Vector } from "../vector";
+import { ShipEnergy } from "./shipEnergy";
 
 export interface ShipRadar extends Sprite {
   isInRange(s: Sprite, cameraPosition: Position): boolean;
@@ -10,14 +11,22 @@ export interface ShipRadar extends Sprite {
 // TODO: I should be able to optimize
 // the performance of this when I divide
 // the game into Galaxy/Sectors, etc
-export function ShipRadar(scene: Scene) {
-  return kontra.sprite({
+export function ShipRadar(scene: Scene, energy: ShipEnergy) {
+  let radar = kontra.sprite({
     // center of radar
     x: Config.canvasWidth - Config.Ship.Radar.Size / 2,
     y: Config.Ship.Radar.Size / 2,
     dt: 0,
     targetsInRadar: [],
+    isEnabled: true,
+    disable() {
+      this.isEnabled = false;
+      this.dt = 0;
+      this.targetsInRadar = [];
+    },
     update() {
+      if (!this.isEnabled) return;
+
       this.dt += 1 / 60;
       // updates targets every second
       if (this.dt > 1) {
@@ -62,14 +71,16 @@ export function ShipRadar(scene: Scene) {
       this.context.closePath();
 
       // #2. render targets
-      this.context.translate(0, Config.Ship.Radar.Size / 2);
-      this.targetsInRadar.forEach((t: RadarTarget) => {
-        this.context.fillStyle = t.color;
-        //this.context.fillRect(t.x, t.y, t.size, t.size);
-        this.context.beginPath();
-        this.context.arc(t.x, t.y, t.size / 2, 0, 2 * Math.PI);
-        this.context.fill();
-      });
+      if (this.isEnabled) {
+        this.context.translate(0, Config.Ship.Radar.Size / 2);
+        this.targetsInRadar.forEach((t: RadarTarget) => {
+          this.context.fillStyle = t.color;
+          //this.context.fillRect(t.x, t.y, t.size, t.size);
+          this.context.beginPath();
+          this.context.arc(t.x, t.y, t.size / 2, 0, 2 * Math.PI);
+          this.context.fill();
+        });
+      }
 
       this.context.restore();
     },
@@ -85,6 +96,12 @@ export function ShipRadar(scene: Scene) {
       return magnitude < Config.Ship.Radar.Range;
     }
   });
+
+  // TODO: refactor
+  // use ShipSystems instead
+  energy.radar = radar;
+
+  return radar;
 }
 
 interface RadarTarget extends Position {

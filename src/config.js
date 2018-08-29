@@ -38,11 +38,25 @@ const Config = {
   renderCollisionArea: true,
   debugRadar: true,
 
-  // Game objects
+  // UI
+  UI: {
+    Bar: {
+      Width: 100,
+      Height: 5
+    }
+  },
+
+  // Game Objects
   Ship: {
     Energy: 500,
     Life: 200,
     Shield: 300,
+    EnergyCost: {
+      Thrust: 1,
+      Brake: 1,
+      Shoot: 10,
+      ShieldRecharge: 1
+    },
     Radar: {
       Size: 100,
       Radius: 45,
