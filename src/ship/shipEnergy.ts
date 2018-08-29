@@ -4,6 +4,7 @@ import { createGameStatusText } from "../text";
 import { ShipWeapons } from "./shipWeapons";
 import { ShipRadar } from "./shipradar";
 import { ShipShield } from "./shipShield";
+import { ShipVision } from "./ShipVision";
 
 export interface ShipEnergy extends Sprite {
   consume(energy: number): void;
@@ -13,6 +14,7 @@ export interface ShipEnergy extends Sprite {
   shield: ShipShield;
   radar: ShipRadar;
   weapons: ShipWeapons;
+  vision: ShipVision;
 }
 
 // TODO: shipEnergy and shipLife
@@ -81,6 +83,11 @@ export function ShipEnergy(energy: number, scene: Scene) {
         this.weapons.disable();
         this.addOfflineText("- WEAPONS OFFLINE -");
       }
+      if (this.energy < (this.maxEnergy * 1) / 5 && this.vision.isEnabled) {
+        if (Config.debug) console.log("Low on energy. Disabling vision");
+        this.vision.disable();
+        this.addOfflineText("- NEAR SPACE RADAR OFFLINE -");
+      }
     },
 
     recharge(energyBoost: number) {
@@ -101,6 +108,10 @@ export function ShipEnergy(energy: number, scene: Scene) {
       if (this.energy > (this.maxEnergy * 2) / 5 && !this.weapons.isEnabled) {
         this.weapons.isEnabled = true;
         this.addOfflineText("- WEAPONS ONLINE -");
+      }
+      if (this.energy > (this.maxEnergy * 1) / 5 && !this.vision.isEnabled) {
+        this.vision.isEnabled = true;
+        this.addOfflineText("- NEAR SPACE RADAR ONLINE -");
       }
     },
 

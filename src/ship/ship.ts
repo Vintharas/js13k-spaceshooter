@@ -20,6 +20,7 @@ import { ShipShield } from "./shipShield";
 import { ShipEnergy } from "./shipEnergy";
 import { ShipLife } from "./shipLife";
 import { ShipWeapons } from "./shipWeapons";
+import { ShipVision } from "./ShipVision";
 
 export interface Ship extends Sprite {
   width: number;
@@ -46,6 +47,7 @@ export default function createShip(scene: Scene) {
   const speed = ShipSpeed();
   const radar = ShipRadar(scene, energy);
   const weapons = ShipWeapons(scene, energy);
+  const vision = ShipVision(energy);
 
   const ship = kontra.sprite({
     type: "ship",
@@ -77,6 +79,7 @@ export default function createShip(scene: Scene) {
     speed,
     radar,
     weapons,
+    vision,
 
     dt: 0, // track how much time has passed
     ttl: Infinity,
@@ -126,6 +129,7 @@ export default function createShip(scene: Scene) {
       this.speed.render();
       this.radar.render();
       this.weapons.render();
+      this.vision.render();
     },
     update(this: Ship) {
       // update ship energy
