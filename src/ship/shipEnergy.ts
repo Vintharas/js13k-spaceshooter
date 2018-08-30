@@ -1,10 +1,6 @@
 import { Scene } from "../scenes/scene";
 import Config from "../config";
 import { createGameStatusText } from "../text";
-import { ShipWeapons } from "./shipWeapons";
-import { ShipRadar } from "./shipradar";
-import { ShipShield } from "./shipShield";
-import { ShipVision } from "./ShipVision";
 import { ShipSystem } from "./shipSystems";
 
 export interface ShipEnergy extends Sprite {
@@ -14,9 +10,6 @@ export interface ShipEnergy extends Sprite {
 
   subscribe(system: ShipSystem): void;
   systems: ShipSystem[];
-
-  weapons: ShipWeapons;
-  vision: ShipVision;
 }
 
 // TODO: shipEnergy and shipLife
@@ -67,23 +60,12 @@ export function ShipEnergy(energy: number, scene: Scene) {
 
     consume(energyCost: number) {
       if (this.energy > 0) this.energy -= energyCost;
-
-      if (this.energy < (this.maxEnergy * 2) / 5 && this.weapons.isEnabled) {
-        if (Config.debug) console.log("Low on energy. Disabling weapons");
-        this.weapons.disable();
-        this.addOfflineText("- WEAPONS OFFLINE -");
-      }
     },
 
     recharge(this: ShipEnergy, energyBoost: number) {
       // TODO: Extra this increase-value-but-not-past-this-value in a function
       if (this.energy < this.maxEnergy) this.energy += energyBoost;
       if (this.energy > this.maxEnergy) this.energy = this.maxEnergy;
-
-      if (this.energy > (this.maxEnergy * 2) / 5 && !this.weapons.isEnabled) {
-        this.weapons.isEnabled = true;
-        this.addOfflineText("- WEAPONS ONLINE -");
-      }
 
       this.systems.forEach(s => s.onEnergyIncreased(this.energy));
     },

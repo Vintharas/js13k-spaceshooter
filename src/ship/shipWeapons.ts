@@ -3,8 +3,10 @@ import { ShipEnergy } from "./shipEnergy";
 import Config from "../config";
 import { degreesToRadians, Position } from "../utils";
 import createBullet from "../bullet";
+import { ShipSystem } from "./shipSystems";
+import { createGameStatusText } from "../text";
 
-export interface ShipWeapons extends Sprite {
+export interface ShipWeapons extends Sprite, ShipSystem {
   isEnabled: boolean;
   disable(): void;
   updateShipInformation(
@@ -34,6 +36,13 @@ export function ShipWeapons(scene: Scene, energy: ShipEnergy): ShipWeapons {
       this.velocity = velocity;
       this.rotation = rotation;
     },
+    onEnergyIncreased(currentEnergy: number) {
+      if (currentEnergy > (energy.maxEnergy * 2) / 5 && !this.isEnabled) {
+        this.isEnabled = true;
+        let textSprite = createGameStatusText("- WEAPONS ONLINE -");
+        scene.addSprite(textSprite);
+      }
+    },
     update() {
       if (!this.isEnabled) return;
       // allow the player to fire no more than 1 bullet every 1/4 second
@@ -51,6 +60,13 @@ export function ShipWeapons(scene: Scene, energy: ShipEnergy): ShipWeapons {
         // reduce energy
         energy.consume(Config.Ship.EnergyCost.Shoot);
 
+        if (energy.energy < (energy.maxEnergy * 2) / 5 && this.isEnabled) {
+          if (Config.debug) console.log("Low on energy. Disabling weapons");
+          this.disable();
+          let textSprite = createGameStatusText("- WEAPONS OFFLINE -");
+          scene.addSprite(textSprite);
+        }
+
         const bullet = createBullet(
           this.position,
           this.velocity,
@@ -64,7 +80,7 @@ export function ShipWeapons(scene: Scene, energy: ShipEnergy): ShipWeapons {
     }
   });
 
-  energy.weapons = weapons;
+  energy.subscribe(weapons);
 
   return weapons;
 }

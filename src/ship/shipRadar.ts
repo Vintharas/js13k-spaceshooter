@@ -4,6 +4,7 @@ import { Color, Position } from "../utils";
 import { Vector } from "../vector";
 import { ShipEnergy } from "./shipEnergy";
 import { createGameStatusText } from "../text";
+import { ShipSystem } from "./shipSystems";
 
 export interface ShipRadar extends Sprite, ShipSystem {
   isInRange(s: Sprite, cameraPosition: Position): boolean;
