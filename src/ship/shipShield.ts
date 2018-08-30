@@ -3,9 +3,9 @@ import Config from "../config";
 import { createGameStatusText } from "../text";
 import { Scene } from "../scenes/scene";
 import { ShipEnergy } from "./shipEnergy";
-import { ShipSystem } from "./shipSystems";
+import { ShipSystem, ShipSystemMixin } from "./shipSystems";
 
-export interface ShipShield extends ShipSystem {
+export interface ShipShield extends Sprite, ShipSystem {
   isEnabled: boolean;
   damage(damage: number): void;
   disable(): void;
@@ -19,9 +19,10 @@ export function ShipShield(
   scene: Scene
 ) {
   let shipShield = kontra.sprite({
+    ...ShipSystemMixin(scene, "SHIELD", (energy.maxEnergy * 3) / 5),
+
     maxShield: shield,
     shield,
-    isEnabled: true,
 
     // shield bar position
     x: 5,
@@ -33,32 +34,18 @@ export function ShipShield(
     dt: 0,
     dtr: 0,
 
-    update() {
+    update(this: ShipShield) {
       this.dt += 1 / 60;
       if (this.dt > 0.25) {
         if (this.isEnabled) {
           // baseline for recharging energy
           if (this.shield < this.maxShield) this.shield++;
-
-          if (energy.energy < (energy.maxEnergy * 3) / 5 && this.isEnabled) {
-            if (Config.debug) console.log("Low on energy. Disabling shield");
-            this.disable();
-            let textSprite = createGameStatusText("- SHIELD OFFLINE -");
-            scene.addSprite(textSprite);
-          }
+          this.checkEnergyLeftAndDisable(energy.energy);
         } else {
           // discharge shield
           this.damage(3);
         }
         this.dt = 0;
-      }
-    },
-
-    onEnergyIncreased(currentEnergy: number) {
-      if (currentEnergy > (energy.maxEnergy * 3) / 5 && !this.isEnabled) {
-        this.isEnabled = true;
-        let textSprite = createGameStatusText("- SHIELD ONLINE -");
-        scene.addSprite(textSprite);
       }
     },
 

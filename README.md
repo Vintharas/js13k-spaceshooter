@@ -38,6 +38,8 @@
       - share systems between Ship and ShipEnergy instead of needing to
         subscribe explicitly
       - max energy in config. Less dependencies on energy
+      - UNIFY enable/disable in a single function? Why call it on update and then on a subscription? Hmm can I remove the subscriptions and just call
+        it on update?
 - complete faction selection process
   - 3 different ships
     - create art for two more ships

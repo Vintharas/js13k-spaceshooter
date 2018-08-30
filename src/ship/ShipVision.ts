@@ -2,35 +2,20 @@ import Config from "../config";
 import { ShipEnergy } from "./shipEnergy";
 import { Scene } from "../scenes/scene";
 import { createGameStatusText } from "../text";
-import { ShipSystem } from "./shipSystems";
+import { ShipSystem, ShipSystemMixin } from "./shipSystems";
 
 export interface ShipVision extends Sprite, ShipSystem {}
 
 export function ShipVision(scene: Scene, energy: ShipEnergy) {
   let vision = kontra.sprite({
-    isEnabled: true,
+    ...ShipSystemMixin(scene, "NEAR SPACE RADAR", (energy.maxEnergy * 1) / 5),
+
     dt: 0,
-    disable() {
-      this.isEnabled = false;
-      this.dt = 0;
-    },
-    update() {
+    update(this: ShipVision) {
       this.dt += 1 / 60;
       if (this.dt > 0.25) {
         this.dt = 0;
-        if (energy.energy < (energy.maxEnergy * 1) / 5 && this.isEnabled) {
-          if (Config.debug) console.log("Low on energy. Disabling vision");
-          this.disable();
-          let textSprite = createGameStatusText("- NEAR SPACE RADAR OFFLINE -");
-          scene.addSprite(textSprite);
-        }
-      }
-    },
-    onEnergyIncreased(currentEnergy: number) {
-      if (currentEnergy > (energy.maxEnergy * 1) / 5 && !this.isEnabled) {
-        this.isEnabled = true;
-        let textSprite = createGameStatusText("- NEAR SPACE RADAR ONLINE -");
-        scene.addSprite(textSprite);
+        this.checkEnergyLeftAndDisable(energy.energy);
       }
     },
     render(this: Sprite) {
