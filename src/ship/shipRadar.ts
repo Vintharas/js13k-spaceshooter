@@ -3,8 +3,9 @@ import Config from "../config";
 import { Color, Position } from "../utils";
 import { Vector } from "../vector";
 import { ShipEnergy } from "./shipEnergy";
+import { createGameStatusText } from "../text";
 
-export interface ShipRadar extends Sprite {
+export interface ShipRadar extends Sprite, ShipSystem {
   isInRange(s: Sprite, cameraPosition: Position): boolean;
 }
 
@@ -24,7 +25,14 @@ export function ShipRadar(scene: Scene, energy: ShipEnergy) {
       this.dt = 0;
       this.targetsInRadar = [];
     },
-    update() {
+    onEnergyIncreased(this: ShipRadar, currentEnergy: number) {
+      if (currentEnergy > (energy.maxEnergy * 4) / 5 && !this.isEnabled) {
+        this.isEnabled = true;
+        let textSprite = createGameStatusText("- RADAR ONLINE -");
+        scene.addSprite(textSprite);
+      }
+    },
+    update(this: ShipRadar) {
       if (!this.isEnabled) return;
 
       this.dt += 1 / 60;
@@ -38,6 +46,15 @@ export function ShipRadar(scene: Scene, energy: ShipEnergy) {
 
         if (Config.debug && Config.debugRadar)
           console.log(`Targets in radar: `, this.targetsInRadar);
+
+        energy.consume(Config.Ship.EnergyCost.Radar);
+
+        if (energy.energy < (energy.maxEnergy * 4) / 5 && this.isEnabled) {
+          if (Config.debug) console.log("Low on energy. Disabling radar");
+          this.disable();
+          let textSprite = createGameStatusText("- RADAR OFFLINE -");
+          scene.addSprite(textSprite);
+        }
       }
     },
     render() {
@@ -97,9 +114,7 @@ export function ShipRadar(scene: Scene, energy: ShipEnergy) {
     }
   });
 
-  // TODO: refactor
-  // use ShipSystems instead
-  energy.radar = radar;
+  energy.subscribe(radar);
 
   return radar;
 }

@@ -15,7 +15,6 @@ export interface ShipEnergy extends Sprite {
   subscribe(system: ShipSystem): void;
   systems: ShipSystem[];
 
-  radar: ShipRadar;
   weapons: ShipWeapons;
   vision: ShipVision;
 }
@@ -69,13 +68,6 @@ export function ShipEnergy(energy: number, scene: Scene) {
     consume(energyCost: number) {
       if (this.energy > 0) this.energy -= energyCost;
 
-      // review systems that need to be disabled
-      // when energy increases
-      if (this.energy < (this.maxEnergy * 4) / 5 && this.radar.isEnabled) {
-        if (Config.debug) console.log("Low on energy. Disabling radar");
-        this.radar.disable();
-        this.addOfflineText("- RADAR OFFLINE -");
-      }
       if (this.energy < (this.maxEnergy * 2) / 5 && this.weapons.isEnabled) {
         if (Config.debug) console.log("Low on energy. Disabling weapons");
         this.weapons.disable();
@@ -87,13 +79,7 @@ export function ShipEnergy(energy: number, scene: Scene) {
       // TODO: Extra this increase-value-but-not-past-this-value in a function
       if (this.energy < this.maxEnergy) this.energy += energyBoost;
       if (this.energy > this.maxEnergy) this.energy = this.maxEnergy;
-      // review systems that need to be enabled
-      // when energy increases
 
-      if (this.energy > (this.maxEnergy * 4) / 5 && !this.radar.isEnabled) {
-        this.radar.isEnabled = true;
-        this.addOfflineText("- RADAR ONLINE -");
-      }
       if (this.energy > (this.maxEnergy * 2) / 5 && !this.weapons.isEnabled) {
         this.weapons.isEnabled = true;
         this.addOfflineText("- WEAPONS ONLINE -");
