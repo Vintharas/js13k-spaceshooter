@@ -1,4 +1,5 @@
 import Config from "../config";
+import { ShipSystem } from "./shipSystems";
 
 export interface ShipLife extends Sprite {
   repair(value: number): void;

@@ -48,8 +48,6 @@ export function ShipRadar(scene: Scene, energy: ShipEnergy) {
         if (Config.debug && Config.debugRadar)
           console.log(`Targets in radar: `, this.targetsInRadar);
 
-        energy.consume(Config.Ship.EnergyCost.Radar);
-
         if (energy.energy < (energy.maxEnergy * 4) / 5 && this.isEnabled) {
           if (Config.debug) console.log("Low on energy. Disabling radar");
           this.disable();

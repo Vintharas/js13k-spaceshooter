@@ -12,15 +12,13 @@ export interface ShipVision extends Sprite, ShipSystem {
 export function ShipVision(scene: Scene, energy: ShipEnergy) {
   let vision = kontra.sprite({
     isEnabled: true,
+    dt: 0,
     disable() {
       this.isEnabled = false;
     },
     update() {
       this.dt += 1 / 60;
       if (this.dt > 0.25) {
-        if (this.isEnabled) {
-          energy.consume(Config.Ship.EnergyCost.Vision);
-        }
         this.dt = 0;
         if (energy.energy < (energy.maxEnergy * 1) / 5 && this.isEnabled) {
           if (Config.debug) console.log("Low on energy. Disabling vision");

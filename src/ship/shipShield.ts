@@ -39,7 +39,6 @@ export function ShipShield(
         if (this.isEnabled) {
           // baseline for recharging energy
           if (this.shield < this.maxShield) this.shield++;
-          energy.consume(Config.Ship.EnergyCost.ShieldRecharge);
 
           if (energy.energy < (energy.maxEnergy * 3) / 5 && this.isEnabled) {
             if (Config.debug) console.log("Low on energy. Disabling shield");

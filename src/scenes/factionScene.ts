@@ -136,7 +136,6 @@ function createFactionSelector(scene: Scene): FactionSelector {
 
       // selected rectangle
       if (faction === this.selectedFaction()) {
-        console.log("render selected faction: ", faction);
         this.context.strokeStyle = "white";
         this.context.strokeRect(
           index * factionWidth + outerMargin,

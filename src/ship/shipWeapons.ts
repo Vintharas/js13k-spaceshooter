@@ -57,15 +57,6 @@ export function ShipWeapons(scene: Scene, energy: ShipEnergy): ShipWeapons {
         // fire in the direction the ship is looking
         const cos = Math.cos(degreesToRadians(this.rotation));
         const sin = Math.sin(degreesToRadians(this.rotation));
-        // reduce energy
-        energy.consume(Config.Ship.EnergyCost.Shoot);
-
-        if (energy.energy < (energy.maxEnergy * 2) / 5 && this.isEnabled) {
-          if (Config.debug) console.log("Low on energy. Disabling weapons");
-          this.disable();
-          let textSprite = createGameStatusText("- WEAPONS OFFLINE -");
-          scene.addSprite(textSprite);
-        }
 
         const bullet = createBullet(
           this.position,
@@ -76,6 +67,13 @@ export function ShipWeapons(scene: Scene, energy: ShipEnergy): ShipWeapons {
           scene
         );
         scene.addSprite(bullet);
+      }
+
+      if (energy.energy < (energy.maxEnergy * 2) / 5 && this.isEnabled) {
+        if (Config.debug) console.log("Low on energy. Disabling weapons");
+        this.disable();
+        let textSprite = createGameStatusText("- WEAPONS OFFLINE -");
+        scene.addSprite(textSprite);
       }
     }
   });

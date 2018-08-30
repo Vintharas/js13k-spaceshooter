@@ -26,11 +26,17 @@
     - [*] shield 3/5
     - [*] weapons 2/5
     - [*] vision 1/5 (reduce range of vision)
-  - reorganize ships systems
-    - there's a little bit of a mambo jambo and circular dependencies there
-    - extract ShipsSystems object which enables/disables/makes sure you can perform a task
-    - extract ShipWeapon to wrap shooting, etc
+  - [*] reorganize ships systems
+    - [*] there's a little bit of a mambo jambo and circular dependencies there
+    - [*] extract ShipsSystems object which enables/disables/makes sure you can perform a task
+    - [*] extract ShipWeapon to wrap shooting, etc
     - extract common functionality in ShipSystems mixin
+    - energy:
+      - control recharge from ShipEnergy based on active systems
+        instead of adding/recharging at different times with makes
+        the energy bar yank back and forth without user interaction
+      - share systems between Ship and ShipEnergy instead of needing to
+        subscribe explicitly
 - complete faction selection process
   - 3 different ships
     - create art for two more ships
@@ -179,6 +185,8 @@
 - Performance
   - profile and review performance
   - think of stuff you can do to improve performance and memory consumption
+  - make sure that scenes are garbaged collected
+  - make sure inactie scenes aren't updated/rendered
 - More offline theme (use workbox)
   - PWA with precaching of game assets
   - Add application manifest so it can be installed

@@ -1,19 +1,8 @@
-import {
-  degreesToRadians,
-  Velocity,
-  Position,
-  getValueInRange,
-  Color,
-  RGB
-} from "../utils";
+import { degreesToRadians, Position } from "../utils";
 import { Scene } from "../scenes/scene";
-import createBullet from "../bullet";
 import { createStaticParticle, Particle } from "../particles";
 import Config from "../config";
-import { createGameStatusText } from "../text";
 import { Faction } from "../factions";
-import { Vector } from "../vector";
-import { Camera } from "../scenes/camera";
 import { ShipRadar } from "./shipRadar";
 import { ShipSpeed } from "./shipSpeed";
 import { ShipShield } from "./shipShield";
@@ -53,6 +42,7 @@ export default function createShip(scene: Scene) {
   const ship = kontra.sprite({
     type: "ship",
     faction: Faction.Red,
+    parts: [energy, life, shield, speed, radar, weapons, vision],
 
     // TODO: factions will have different ships
     image: kontra.assets.images.redship,
@@ -120,32 +110,14 @@ export default function createShip(scene: Scene) {
         this.context.stroke(); // outline the circle
         console.log(this.width);
       }
-
       this.context.restore();
 
-      // draw ship energy and life bars
-      this.energy.render();
-      this.life.render();
-      this.shield.render();
-      this.speed.render();
-      this.radar.render();
-      this.weapons.render();
-      this.vision.render();
+      this.parts.forEach((s: Sprite) => s.render());
     },
     update(this: Ship) {
-      // update ship energy
-      this.energy.update();
-      // slowly recover life
-      this.life.update();
-      // recharge shield
-      this.shield.update();
-      // update speed (should move this to the end of update probably)
-      this.speed.updateSpeed(this.dx, this.dy);
-      // update radar
-      this.radar.update();
-      // update weapons
       this.weapons.updateShipInformation(this, this, this.rotation);
-      this.weapons.update();
+      this.speed.updateSpeed(this.dx, this.dy);
+      this.parts.forEach((s: Sprite) => s.update());
 
       // rotate the ship left or right
       if (kontra.keys.pressed("left")) {
