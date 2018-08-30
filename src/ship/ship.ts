@@ -48,7 +48,7 @@ export default function createShip(scene: Scene) {
   const speed = ShipSpeed();
   const radar = ShipRadar(scene, energy);
   const weapons = ShipWeapons(scene, energy);
-  const vision = ShipVision(energy);
+  const vision = ShipVision(scene, energy);
 
   const ship = kontra.sprite({
     type: "ship",

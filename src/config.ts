@@ -47,7 +47,8 @@ const Config = {
       Thrust: 1,
       Brake: 1,
       Shoot: 10,
-      ShieldRecharge: 1
+      ShieldRecharge: 1,
+      Vision: 1
     },
     Radar: {
       Size: 100,

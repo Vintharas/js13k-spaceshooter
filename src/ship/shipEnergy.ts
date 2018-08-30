@@ -42,12 +42,8 @@ export function ShipEnergy(energy: number, scene: Scene) {
       this.dt += 1 / 60;
       if (this.dt > 0.25) {
         // baseline for recharging energy
-        // TODO: change baseline based on systems that are enabled!
-        // when less systems are enabled recharge faster (probably more playable)
-        let energyToRecharge = 1;
-        if (this.energy < (this.maxEnergy * 2) / 5) energyToRecharge = 4;
-        else if (this.energy < (this.maxEnergy * 3) / 5) energyToRecharge = 3;
-        else if (this.energy < (this.maxEnergy * 4) / 5) energyToRecharge = 2;
+        // TODO: can be affected by proximity to sun
+        let energyToRecharge = 10;
         this.recharge(energyToRecharge);
         this.dt = 0;
       }
@@ -85,11 +81,6 @@ export function ShipEnergy(energy: number, scene: Scene) {
         this.weapons.disable();
         this.addOfflineText("- WEAPONS OFFLINE -");
       }
-      if (this.energy < (this.maxEnergy * 1) / 5 && this.vision.isEnabled) {
-        if (Config.debug) console.log("Low on energy. Disabling vision");
-        this.vision.disable();
-        this.addOfflineText("- NEAR SPACE RADAR OFFLINE -");
-      }
     },
 
     recharge(this: ShipEnergy, energyBoost: number) {
@@ -106,10 +97,6 @@ export function ShipEnergy(energy: number, scene: Scene) {
       if (this.energy > (this.maxEnergy * 2) / 5 && !this.weapons.isEnabled) {
         this.weapons.isEnabled = true;
         this.addOfflineText("- WEAPONS ONLINE -");
-      }
-      if (this.energy > (this.maxEnergy * 1) / 5 && !this.vision.isEnabled) {
-        this.vision.isEnabled = true;
-        this.addOfflineText("- NEAR SPACE RADAR ONLINE -");
       }
 
       this.systems.forEach(s => s.onEnergyIncreased(this.energy));

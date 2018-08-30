@@ -30,6 +30,7 @@
     - there's a little bit of a mambo jambo and circular dependencies there
     - extract ShipsSystems object which enables/disables/makes sure you can perform a task
     - extract ShipWeapon to wrap shooting, etc
+    - extract common functionality in ShipSystems mixin
 - complete faction selection process
   - 3 different ships
     - create art for two more ships
