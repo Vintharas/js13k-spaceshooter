@@ -21,13 +21,13 @@ export function ShipVision(energy: ShipEnergy) {
         let gradient = this.context.createRadialGradient(
           0,
           0,
-          Math.max(Config.canvasWidth, Config.canvasHeight) / 2,
+          Math.min(Config.canvasWidth, Config.canvasHeight) / 8,
           0,
           0,
-          Math.max(Config.canvasWidth, Config.canvasHeight)
+          (Math.max(Config.canvasWidth, Config.canvasHeight) * 3) / 4
         );
-        gradient.addColorStop(0, "rgba(0,0,0,0.5)");
-        gradient.addColorStop(1, "rgba(0,0,0,0.9)");
+        gradient.addColorStop(0, "rgba(0,0,0,0.2)");
+        gradient.addColorStop(1, "rgba(0,0,0,1)");
         this.context.fillStyle = gradient;
         this.context.arc(
           0,

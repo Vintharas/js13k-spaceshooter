@@ -181,6 +181,8 @@
 - More offline theme (use workbox)
   - PWA with precaching of game assets
   - Add application manifest so it can be installed
+- Canvas
+  - resize canvas on windows change
 
 ## Art
 
