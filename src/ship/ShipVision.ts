@@ -4,10 +4,7 @@ import { Scene } from "../scenes/scene";
 import { createGameStatusText } from "../text";
 import { ShipSystem } from "./shipSystems";
 
-export interface ShipVision extends Sprite, ShipSystem {
-  isEnabled: boolean;
-  disable(): void;
-}
+export interface ShipVision extends Sprite, ShipSystem {}
 
 export function ShipVision(scene: Scene, energy: ShipEnergy) {
   let vision = kontra.sprite({
@@ -15,6 +12,7 @@ export function ShipVision(scene: Scene, energy: ShipEnergy) {
     dt: 0,
     disable() {
       this.isEnabled = false;
+      this.dt = 0;
     },
     update() {
       this.dt += 1 / 60;

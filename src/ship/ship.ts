@@ -9,7 +9,7 @@ import { ShipShield } from "./shipShield";
 import { ShipEnergy } from "./shipEnergy";
 import { ShipLife } from "./shipLife";
 import { ShipWeapons } from "./shipWeapons";
-import { ShipVision } from "./ShipVision";
+import { ShipVision } from "./shipVision";
 
 export interface Ship extends Sprite {
   width: number;

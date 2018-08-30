@@ -37,6 +37,7 @@
         the energy bar yank back and forth without user interaction
       - share systems between Ship and ShipEnergy instead of needing to
         subscribe explicitly
+      - max energy in config. Less dependencies on energy
 - complete faction selection process
   - 3 different ships
     - create art for two more ships
