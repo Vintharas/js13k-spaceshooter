@@ -36,8 +36,6 @@ export function ShipRadar(scene: Scene, energy: ShipEnergy) {
 
         if (Config.debug && Config.debugRadar)
           console.log(`Targets in radar: `, this.targetsInRadar);
-
-        this.checkEnergyLeftAndDisable(energy.energy);
       }
     },
     render() {

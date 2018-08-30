@@ -40,7 +40,6 @@ export function ShipShield(
         if (this.isEnabled) {
           // baseline for recharging energy
           if (this.shield < this.maxShield) this.shield++;
-          this.checkEnergyLeftAndDisable(energy.energy);
         } else {
           // discharge shield
           this.damage(3);

@@ -11,13 +11,6 @@ export function ShipVision(scene: Scene, energy: ShipEnergy) {
     ...ShipSystemMixin(scene, "NEAR SPACE RADAR", (energy.maxEnergy * 1) / 5),
 
     dt: 0,
-    update(this: ShipVision) {
-      this.dt += 1 / 60;
-      if (this.dt > 0.25) {
-        this.dt = 0;
-        this.checkEnergyLeftAndDisable(energy.energy);
-      }
-    },
     render(this: Sprite) {
       if (!this.isEnabled) {
         this.context.save();

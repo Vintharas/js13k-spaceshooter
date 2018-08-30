@@ -5,8 +5,7 @@ import { Scene } from "../scenes/scene";
 export interface ShipSystem {
   isEnabled: boolean;
   disable(): void;
-  onEnergyIncreased?(energy: number): void;
-  checkEnergyLeftAndDisable?(energy: number): void;
+  onEnergyChanged(energy: number): void;
 }
 
 export function ShipSystemMixin(
@@ -20,20 +19,17 @@ export function ShipSystemMixin(
       this.isEnabled = false;
       this.dt = 0;
     },
-    checkEnergyLeftAndDisable(energy) {
-      if (energy < energyThreshold && this.isEnabled) {
-        this.disable();
-        let textSprite = createGameStatusText(
-          `- ${name.toUpperCase()} OFFLINE -`
-        );
-        scene.addSprite(textSprite);
-      }
-    },
-    onEnergyIncreased(currentEnergy: number) {
+    onEnergyChanged(currentEnergy: number) {
       if (currentEnergy > energyThreshold && !this.isEnabled) {
         this.isEnabled = true;
         let textSprite = createGameStatusText(
           `- ${name.toUpperCase()} ONLINE -`
+        );
+        scene.addSprite(textSprite);
+      } else if (currentEnergy < energyThreshold && this.isEnabled) {
+        this.disable();
+        let textSprite = createGameStatusText(
+          `- ${name.toUpperCase()} OFFLINE -`
         );
         scene.addSprite(textSprite);
       }

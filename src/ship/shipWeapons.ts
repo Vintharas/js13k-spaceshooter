@@ -58,8 +58,6 @@ export function ShipWeapons(scene: Scene, energy: ShipEnergy): ShipWeapons {
         );
         scene.addSprite(bullet);
       }
-
-      this.checkEnergyLeftAndDisable(energy.energy);
     }
   });
 

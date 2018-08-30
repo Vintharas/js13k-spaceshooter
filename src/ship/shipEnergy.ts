@@ -59,16 +59,16 @@ export function ShipEnergy(energy: number, scene: Scene): ShipEnergy {
       );
     },
 
-    consume(energyCost: number) {
+    consume(this: ShipEnergy, energyCost: number) {
       if (this.energy > 0) this.energy -= energyCost;
+      this.systems.forEach(s => s.onEnergyChanged(this.energy));
     },
 
     recharge(this: ShipEnergy, energyBoost: number) {
       // TODO: Extra this increase-value-but-not-past-this-value in a function
       if (this.energy < this.maxEnergy) this.energy += energyBoost;
       if (this.energy > this.maxEnergy) this.energy = this.maxEnergy;
-
-      this.systems.forEach(s => s.onEnergyIncreased(this.energy));
+      this.systems.forEach(s => s.onEnergyChanged(this.energy));
     },
 
     hasEnoughEnergy(energyCost: number) {
