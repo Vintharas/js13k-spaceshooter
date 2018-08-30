@@ -5,13 +5,16 @@ import { ShipWeapons } from "./shipWeapons";
 import { ShipRadar } from "./shipradar";
 import { ShipShield } from "./shipShield";
 import { ShipVision } from "./ShipVision";
+import { ShipSystem } from "./shipSystems";
 
 export interface ShipEnergy extends Sprite {
   consume(energy: number): void;
   recharge(value: number): void;
   hasEnoughEnergy(energy: number): boolean;
 
-  shield: ShipShield;
+  subscribe(system: ShipSystem): void;
+  systems: ShipSystem[];
+
   radar: ShipRadar;
   weapons: ShipWeapons;
   vision: ShipVision;
@@ -25,13 +28,17 @@ export function ShipEnergy(energy: number, scene: Scene) {
   return kontra.sprite({
     maxEnergy: energy,
     energy,
+    systems: [],
+    subscribe(shipSystem: ShipSystem) {
+      this.systems.push(shipSystem);
+    },
 
     x: 5,
     y: 5,
 
     dt: 0,
 
-    update() {
+    update(this: ShipEnergy) {
       this.dt += 1 / 60;
       if (this.dt > 0.25) {
         // baseline for recharging energy
@@ -73,11 +80,6 @@ export function ShipEnergy(energy: number, scene: Scene) {
         this.radar.disable();
         this.addOfflineText("- RADAR OFFLINE -");
       }
-      if (this.energy < (this.maxEnergy * 3) / 5 && this.shield.isEnabled) {
-        if (Config.debug) console.log("Low on energy. Disabling shield");
-        this.shield.disable();
-        this.addOfflineText("- SHIELD OFFLINE -");
-      }
       if (this.energy < (this.maxEnergy * 2) / 5 && this.weapons.isEnabled) {
         if (Config.debug) console.log("Low on energy. Disabling weapons");
         this.weapons.disable();
@@ -90,7 +92,7 @@ export function ShipEnergy(energy: number, scene: Scene) {
       }
     },
 
-    recharge(energyBoost: number) {
+    recharge(this: ShipEnergy, energyBoost: number) {
       // TODO: Extra this increase-value-but-not-past-this-value in a function
       if (this.energy < this.maxEnergy) this.energy += energyBoost;
       if (this.energy > this.maxEnergy) this.energy = this.maxEnergy;
@@ -101,10 +103,6 @@ export function ShipEnergy(energy: number, scene: Scene) {
         this.radar.isEnabled = true;
         this.addOfflineText("- RADAR ONLINE -");
       }
-      if (this.energy > (this.maxEnergy * 3) / 5 && !this.shield.isEnabled) {
-        this.shield.isEnabled = true;
-        this.addOfflineText("- SHIELD ONLINE -");
-      }
       if (this.energy > (this.maxEnergy * 2) / 5 && !this.weapons.isEnabled) {
         this.weapons.isEnabled = true;
         this.addOfflineText("- WEAPONS ONLINE -");
@@ -113,6 +111,8 @@ export function ShipEnergy(energy: number, scene: Scene) {
         this.vision.isEnabled = true;
         this.addOfflineText("- NEAR SPACE RADAR ONLINE -");
       }
+
+      this.systems.forEach(s => s.onEnergyIncreased(this.energy));
     },
 
     hasEnoughEnergy(energyCost: number) {

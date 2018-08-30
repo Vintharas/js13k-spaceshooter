@@ -42,7 +42,8 @@ export default function createShip(scene: Scene) {
     Config.Ship.Shield,
     energy,
     { x, y },
-    collisionWidth
+    collisionWidth,
+    scene
   );
   const speed = ShipSpeed();
   const radar = ShipRadar(scene, energy);

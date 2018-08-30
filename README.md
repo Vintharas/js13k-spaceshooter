@@ -21,11 +21,11 @@
 
 - complete basic offline mechanics
   - [*] radar
-  - disable stuff when no energy
+  - [*] disable stuff when no energy
     - [*] radar 4/5
     - [*] shield 3/5
-    - [] weapons 2/5
-    - [] vision 1/5 (reduce range of vision)
+    - [*] weapons 2/5
+    - [*] vision 1/5 (reduce range of vision)
   - reorganize ships systems
     - there's a little bit of a mambo jambo and circular dependencies there
     - extract ShipsSystems object which enables/disables/makes sure you can perform a task
