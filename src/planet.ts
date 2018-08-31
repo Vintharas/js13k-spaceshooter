@@ -93,7 +93,7 @@ export function createPlanet(
       this.context.translate(position.x, position.y);
       this.context.rotate(degreesToRadians(this.rotation));
 
-      this.context.fillStyle = this.getPattern(
+      this.context.fillStyle = getPattern(
         textureWidth,
         textureHeight,
         planetType
@@ -178,23 +178,6 @@ export function createPlanet(
         this.context.stroke();
         this.context.restore();
       }
-
-      // Drawing asteroids as a circle
-      // this is what we use for collision
-      // useful for debugging
-      if (Config.debug && Config.renderCollisionArea) {
-      }
-    },
-    getPattern(width: number, height: number, type: PlanetType) {
-      let color = PlanetBaseColors[type];
-      return OffscreenCanvas.instance().getPatternBasedOnColor(
-        color.h,
-        color.s,
-        color.l,
-        textureWidth,
-        textureHeight,
-        3
-      );
     },
     getCloudPattern(type: PlanetType) {
       let color = PlanetBaseColors[type];
@@ -218,7 +201,8 @@ export enum PlanetType {
   Blue = 2,
   Desert = 3,
   Barren = 4,
-  Paradise = 5
+  Paradise = 5,
+  Sun = 6
 }
 export const PlanetBaseColors = [
   /*Red*/ { h: 0, s: 70, l: 45 },
@@ -226,7 +210,8 @@ export const PlanetBaseColors = [
   /*Blue*/ { h: 195, s: 100, l: 50 },
   /*Desert*/ { h: 195, s: 100, l: 50 }, //TODO
   /*Barren*/ { h: 195, s: 100, l: 50 }, //TODO
-  /*Paradise*/ { h: 195, s: 100, l: 50 } //TODO
+  /*Paradise*/ { h: 195, s: 100, l: 50 }, //TODO
+  /*Sun*/ { h: 60, s: 100, l: 50 }
 ];
 
 function getPlanetType(): PlanetType {
@@ -234,4 +219,16 @@ function getPlanetType(): PlanetType {
   const index = Math.round(getValueInRange(0, 2));
   const types = [PlanetType.Red, PlanetType.Green, PlanetType.Blue];
   return types[index];
+}
+
+export function getPattern(width: number, height: number, type: PlanetType) {
+  let color = PlanetBaseColors[type];
+  return OffscreenCanvas.instance().getPatternBasedOnColor(
+    color.h,
+    color.s,
+    color.l,
+    width,
+    height,
+    3
+  );
 }

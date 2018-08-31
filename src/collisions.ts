@@ -7,6 +7,7 @@ import createCell, { CellType, Cell, getRandomCellType } from "./cell";
 import { Ship } from "./ship/ship";
 import { createText } from "./text";
 import { Planet } from "./planet";
+import { Sun } from "./sun";
 
 export default class CollisionsEngine {
   private ship: Ship;
@@ -55,6 +56,11 @@ export default class CollisionsEngine {
       if (collidableObjects[i].type === "planet" && this.ship) {
         let planet = collidableObjects[i] as Planet;
         this.handleCollisionBetweenPlanetAndShip(planet, this.ship);
+      }
+
+      if (collidableObjects[i].type === "planet-sun" && this.ship) {
+        let sun = collidableObjects[i] as Sun;
+        this.handleCollisionBetweenSunAndShip(sun, this.ship);
       }
     }
   }
@@ -107,19 +113,7 @@ export default class CollisionsEngine {
     // the damage produced in the ship depends
     // on the size of the asteroid
     let damage = asteroid.radius * 4;
-    if (ship.shield.get() > 0) {
-      ship.shield.damage(damage);
-      if (ship.shield.get() <= 0) {
-        // do some remaining damage to ship but less
-        ship.life.damage(damage / 4);
-      }
-    } else {
-      ship.life.damage(damage);
-    }
-    if (ship.life.get() <= 0) {
-      if (Config.debug) console.log("SHIP DIED");
-      ship.ttl = 0; // game over mothafucka!
-    }
+    ship.takeDamage(damage);
   }
 
   addExplosion(scene: Scene, asteroid: Asteroid) {
@@ -207,10 +201,7 @@ export default class CollisionsEngine {
   // The collision engine could use collisionStrategies which would encapsulate
   // collision logic between entities
   handleCollisionBetweenPlanetAndShip(planet: Planet, ship: Ship): void {
-    let dx = planet.x - ship.x;
-    let dy = planet.y - ship.y;
-
-    if (planetAndShipCollided(planet, ship)) {
+    if (shipWithinRadius(ship, planet, planet.outerRadius)) {
       if (planet.claimedBy === ship.faction) {
         if (this.dt > 0.4) {
           this.dt = 0;
@@ -220,11 +211,20 @@ export default class CollisionsEngine {
         planet.increaseClaim(ship.faction, 1 / 2);
       }
     }
-    function planetAndShipCollided(planet: Planet, ship: Ship) {
-      return (
-        Math.sqrt(dx * dx + dy * dy) <
-        planet.outerRadius + ship.collisionWidth * 2
-      );
+  }
+
+  handleCollisionBetweenSunAndShip(sun: Sun, ship: Ship): void {
+    if (shipWithinRadius(ship, sun, sun.damageOuterRadius)) {
+      if (this.dt > 0.4) {
+        this.dt = 0;
+        ship.takeDamage(100);
+      }
+    } else if (shipWithinRadius(ship, sun, sun.energyOuterRadius)) {
+      if (this.dt > 0.4) {
+        this.dt = 0;
+        // provide energy boost
+        this.provideEnergyBoost(ship, /*modifier*/ 3);
+      }
     }
   }
 
@@ -232,14 +232,22 @@ export default class CollisionsEngine {
     let cellType = getRandomCellType();
     // add energy or life to the ship
     if (cellType === CellType.Energy) {
-      let energyBoost = Math.ceil(getValueInRange(0, Config.Cell.EnergyBoost));
-      ship.energy.recharge(energyBoost);
-      this.addBoostText(energyBoost, ship, ship, { r: 0, g: 255, b: 0 });
+      this.provideEnergyBoost(ship);
     } else if (cellType === CellType.Life) {
-      let lifeBoost = Math.ceil(getValueInRange(0, Config.Cell.LifeBoost));
-      ship.life.repair(lifeBoost);
-      this.addBoostText(lifeBoost, ship, ship, { r: 255, g: 0, b: 0 });
+      this.provideLifeBoost(ship);
     }
+  }
+  provideEnergyBoost(ship: Ship, modifier = 1) {
+    let energyBoost = Math.ceil(
+      getValueInRange(0, Config.Cell.EnergyBoost * modifier)
+    );
+    ship.energy.recharge(energyBoost);
+    this.addBoostText(energyBoost, ship, ship, { r: 0, g: 255, b: 0 });
+  }
+  provideLifeBoost(ship: Ship) {
+    let lifeBoost = Math.ceil(getValueInRange(0, Config.Cell.LifeBoost));
+    ship.life.repair(lifeBoost);
+    this.addBoostText(lifeBoost, ship, ship, { r: 255, g: 0, b: 0 });
   }
 }
 
@@ -257,4 +265,10 @@ function breakAsteroidInSmallerOnes(asteroid: any, scene: Scene) {
     scene.addSprite(newAsteroid);
     if (Config.debug) console.log("New Asteroid", newAsteroid);
   }
+}
+
+function shipWithinRadius(ship: Ship, sprite: Sprite, radius: number) {
+  let dx = sprite.x - ship.x;
+  let dy = sprite.y - ship.y;
+  return Math.sqrt(dx * dx + dy * dy) < radius + ship.collisionWidth * 2;
 }

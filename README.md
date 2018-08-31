@@ -19,27 +19,14 @@
 
 ## Prioritize
 
-- complete basic offline mechanics
-  - [*] radar
-  - [*] disable stuff when no energy
-    - [*] radar 4/5
-    - [*] shield 3/5
-    - [*] weapons 2/5
-    - [*] vision 1/5 (reduce range of vision)
-  - [*] reorganize ships systems
-    - [*] there's a little bit of a mambo jambo and circular dependencies there
-    - [*] extract ShipsSystems object which enables/disables/makes sure you can perform a task
-    - [*] extract ShipWeapon to wrap shooting, etc
-    - extract common functionality in ShipSystems mixin
-    - energy:
-      - control recharge from ShipEnergy based on active systems
-        instead of adding/recharging at different times with makes
-        the energy bar yank back and forth without user interaction
-      - share systems between Ship and ShipEnergy instead of needing to
-        subscribe explicitly
-      - max energy in config. Less dependencies on energy
-      - UNIFY enable/disable in a single function? Why call it on update and then on a subscription? Hmm can I remove the subscriptions and just call
-        it on update?
+- [*] all types of planets, suns
+- Map generation
+  - work on this
+  - divide map in sectors
+  - generate sectors with a star and some planets
+  - separate sectors by some distance of "empty" space
+  - reuse objects using object pool
+  - save state in an object
 - complete faction selection process
   - 3 different ships
     - create art for two more ships
@@ -47,8 +34,7 @@
     - faction ship modifiers
   - 3 victory conditions
     - way to store game data
-- all types of planets, suns
-- suns recharge energy faster
+- proximity to a sun recharges energy faster?
 - game engine
   - preload patterns for planets in loading screen so it won't affect fps in game
 - support for multiple weapons
@@ -237,7 +223,33 @@
 
 - for some reason, a broken down asteroid doesn't collide with the ship, although it does collide with bullets. #wat
 
-# HISTORY 25 AUGUST
+# OLD NOTES
+
+# 30 AUGUST
+
+- [*] complete basic offline mechanics
+  - [*] radar
+  - [*] disable stuff when no energy
+    - [*] radar 4/5
+    - [*] shield 3/5
+    - [*] weapons 2/5
+    - [*] vision 1/5 (reduce range of vision)
+  - [*] reorganize ships systems
+    - [*] there's a little bit of a mambo jambo and circular dependencies there
+    - [*] extract ShipsSystems object which enables/disables/makes sure you can perform a task
+    - [*] extract ShipWeapon to wrap shooting, etc
+    - [*]extract common functionality in ShipSystems mixin
+    - [*]energy:
+      - control recharge from ShipEnergy based on active systems
+        instead of adding/recharging at different times with makes
+        the energy bar yank back and forth without user interaction
+      - share systems between Ship and ShipEnergy instead of needing to
+        subscribe explicitly
+      - max energy in config. Less dependencies on energy
+      - UNIFY enable/disable in a single function? Why call it on update and then on a subscription? Hmm can I remove the subscriptions and just call
+        it on update?
+
+# 25 AUGUST
 
 ## BUILD - minimize assets to 13K
 

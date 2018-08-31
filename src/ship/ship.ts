@@ -20,7 +20,10 @@ export interface Ship extends Sprite {
   faction: Faction;
   radar: ShipRadar;
   weapons: ShipWeapons;
+
+  takeDamage(damage: number): void;
 }
+
 export default function createShip(scene: Scene) {
   const collisionWidth = 20;
   const x = Config.canvasWidth / 2;
@@ -74,6 +77,22 @@ export default function createShip(scene: Scene) {
 
     dt: 0, // track how much time has passed
     ttl: Infinity,
+
+    takeDamage(this: Ship, damage: number) {
+      if (this.shield.get() > 0) {
+        this.shield.damage(damage);
+        if (this.shield.get() <= 0) {
+          // do some remaining damage to ship but less
+          this.life.damage(damage / 4);
+        }
+      } else {
+        this.life.damage(damage);
+      }
+      if (this.life.get() <= 0) {
+        if (Config.debug) console.log("SHIP DIED");
+        this.ttl = 0; // game over mothafucka!
+      }
+    },
 
     render() {
       this.context.save();

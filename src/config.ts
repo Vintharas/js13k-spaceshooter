@@ -14,7 +14,14 @@ const Config = {
   initialNumberOfClusters: 10,
 
   // collisions
-  collidableTypes: ["asteroid", "bullet", "ship", "cell", "planet"],
+  collidableTypes: [
+    "asteroid",
+    "bullet",
+    "ship",
+    "cell",
+    "planet",
+    "planet-sun"
+  ],
 
   // enable debug printouts
   debug: false,
