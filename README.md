@@ -27,6 +27,11 @@
   - separate sectors by some distance of "empty" space
   - reuse objects using object pool
   - save state in an object
+- use game pool
+  - with stars
+  - with particles
+  - with asteroids
+  - with planets
 - complete faction selection process
   - 3 different ships
     - create art for two more ships

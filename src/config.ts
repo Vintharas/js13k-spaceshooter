@@ -7,7 +7,9 @@ const Config = {
 
   // an object far from the camera
   // more than this constant will be recycled
-  mapBoundary: 3000,
+  // TODO: make this smaller, temporarily increasing for
+  // debugging's sake
+  mapBoundary: 10000,
 
   // game objects
   maxAsteroidClusterSize: 10,
@@ -102,6 +104,9 @@ const Config = {
       Description: "House Corrino...",
       Emblem: ""
     }
+  },
+  Sector: {
+    Size: 10000
   }
 };
 

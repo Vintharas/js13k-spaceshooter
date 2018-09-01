@@ -1,3 +1,4 @@
+import { Position } from "../utils";
 import { Scene, createScene } from "./scene";
 import { createText } from "../text";
 import Game from "../game";
@@ -92,11 +93,13 @@ function createFactionSelector(scene: Scene): FactionSelector {
       if (!this.planets[index]) {
         // create planet
         let radius = 50;
+        let sunPosition: Position = {
+          x: index * factionWidth + outerMargin + factionWidth / 2,
+          y: 300
+        };
         this.planets[index] = createPlanet(
-          {
-            x: index * factionWidth + outerMargin + factionWidth / 2,
-            y: 300
-          },
+          /* origin */ sunPosition,
+          /* orbit */ 0,
           radius,
           { x: Config.canvasWidth / 2, y: Config.canvasHeight / 2 },
           scene,

@@ -8,6 +8,7 @@ import Config from "../config";
 import { createPlanet } from "../planet";
 import { createCamera } from "./camera";
 import { createSun } from "../sun";
+import { Sector } from "../map/sector";
 
 export default function createSpaceScene() {
   const camera = createCamera();
@@ -17,8 +18,9 @@ export default function createSpaceScene() {
 
   // initial state
   addStars(scene, ship);
-  addPlanets(scene, ship);
-  addSun(scene, ship);
+  //addPlanets(scene, ship);
+  //addSun(scene, ship);
+  addSector(scene, ship);
   addAsteroids(scene, ship);
   addStaticAsteroids(scene, ship);
   scene.addSprite(ship);
@@ -121,6 +123,7 @@ function addAsteroidCluster(
   }
 }
 
+/*
 function addPlanets(scene: Scene, cameraPosition: Position) {
   let spaceBetweenPlanets = 900;
   for (let x = -1000; x <= 1000; x += spaceBetweenPlanets) {
@@ -135,4 +138,15 @@ function addPlanets(scene: Scene, cameraPosition: Position) {
 function addSun(scene: Scene, cameraPosition: Position) {
   let sun = createSun({ x: 0, y: 0 }, 150, cameraPosition);
   scene.addSprite(sun);
+}
+
+*/
+
+function addSector(scene: Scene, cameraPosition: Position) {
+  let sector = Sector(
+    scene,
+    { x: -Config.Sector.Size / 2, y: -Config.Sector.Size / 2 },
+    cameraPosition
+  );
+  sector.bodies.forEach(s => scene.addSprite(s));
 }

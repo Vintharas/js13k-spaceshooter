@@ -3,7 +3,8 @@ import {
   getCanvasPosition,
   isObjectOutOfBounds,
   degreesToRadians,
-  getValueInRange
+  getValueInRange,
+  Positions
 } from "./utils";
 import OffscreenCanvas from "./canvas";
 import Config from "./config";
@@ -11,11 +12,15 @@ import { generateName } from "./names";
 import { Faction } from "./factions";
 import { createGameStatusText } from "./text";
 import { Scene } from "./scenes/scene";
+import { Sun } from "./sun";
 
 export interface Planet extends Sprite {
   radius: number;
   outerRadius: number;
+
   dt: number;
+  origin: Position;
+  angle: number;
 
   claimedBy: Faction;
   increaseClaim(faction: Faction, percentage: number): void;
@@ -25,7 +30,8 @@ export interface PlanetOptions {
 }
 
 export function createPlanet(
-  position: Position,
+  origin: Position,
+  orbit: number,
   radius: number,
   cameraPosition: Position,
   scene: Scene,
@@ -36,15 +42,31 @@ export function createPlanet(
   let textureWidth = Math.round(getValueInRange(64, radius));
   let textureHeight = Math.round(getValueInRange(64, radius));
 
+  // sun orbit
+  let startingAngle = getValueInRange(0, 360);
+  let startingPosition = Positions.inCircleGivenAngle(
+    origin,
+    orbit,
+    startingAngle
+  );
+  let da = getValueInRange(0, 0.05);
+
   let planet = kontra.sprite({
     type: "planet",
-    x: position.x,
-    y: position.y,
+
+    origin,
+    orbit,
+    x: startingPosition.x,
+    y: startingPosition.y,
     radius,
     outerRadius: radius + 0.25 * radius,
+
     ttl: Infinity,
     dt: 0,
-    rotation: 0,
+
+    angle: startingAngle,
+    da,
+    rotation: getValueInRange(0, Math.PI),
 
     // TODO: I could extract this into mixins
     // claiming logic
@@ -82,7 +104,24 @@ export function createPlanet(
     resources: Config.Planet.Resources,
 
     update() {
+      this.dt += 1 / 60;
       this.rotation += 1 / 4;
+      // TODO: this pattern I can extract in a function
+      // and reuse it across most sprites
+      /*if (this.dt > 0.25) {
+        this.dt = 0;
+        this.angle += this.da;
+      }
+      */
+      this.angle += this.da;
+
+      let newPosition = Positions.inCircleGivenAngle(
+        this.origin,
+        orbit,
+        this.angle
+      );
+      this.x = newPosition.x;
+      this.y = newPosition.y;
     },
     render() {
       if (isObjectOutOfBounds(this, cameraPosition)) return;

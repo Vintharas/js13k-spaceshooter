@@ -41,6 +41,12 @@ export const Positions = {
       Math.abs(pos1.x - pos2.x) < distance &&
       Math.abs(pos1.y - pos2.y) < distance
     );
+  },
+  inCircleGivenAngle(origin: Position, radius: number, angle: number) {
+    return {
+      x: origin.x + Math.cos(degreesToRadians(angle)) * radius,
+      y: origin.y + Math.sin(degreesToRadians(angle)) * radius
+    };
   }
 };
 
