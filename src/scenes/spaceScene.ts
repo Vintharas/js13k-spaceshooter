@@ -50,19 +50,6 @@ function cleanupObjectIfOutOfBounds(scene: Scene) {
   });
 }
 
-// creates initial amount of stars surrounding the spaceship
-/*
-function addStars(scene: Scene, cameraPosition: Position) {
-  let spaceBetweenStars = 50;
-  for (var i = -1000; i <= 1000; i += spaceBetweenStars) {
-    for (var j = -1000; j <= 1000; j += spaceBetweenStars) {
-      let star = createStar({ x: i, y: j, cameraPosition });
-      scene.addSprite(star, { isInForeground: false });
-    }
-  }
-}
-*/
-
 function addBackground(scene: Scene, cameraPosition: Position) {
   let background = SpaceBackground(cameraPosition);
   scene.addSprite(background, { isInForeground: false });

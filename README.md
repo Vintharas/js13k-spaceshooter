@@ -23,20 +23,41 @@
 - Map generation
   - [*] divide map in sectors
   - [*] generate sectors with a star and some planets
+  - [*] cover background with stars. Considered using game pool
+    from kontra but in the end I created a custom sort of pool
+    cuz I didn't want to handle it via ttl/get (just update the
+    position of the farthest stars)
+    - BUG: there appears to be an issue where stars aren't displayed
+      after the ship has been moving for a while. PROBABLY due to
+      the position reaching maxInteger. We can solve this by using
+      both position and sectors. (so we never go over the position maxInteger)
   - create a map of a starting number of sectors
   - separate sectors by some distance of "empty" space
   - reuse objects using object pool
   - save state in an object
 - use game pool
-  - with stars
   - with particles
   - with asteroids
   - with planets
+- planets orbiting around sun
+  - add gradient using the sun in the center as source of illumination
 - complete faction selection process
   - 3 different ships
     - create art for two more ships
   - ships have slightly different stats
     - faction ship modifiers
+    - blue
+      - faster, more maneuverability, less hull/shields
+      - positive modifier for paradise planets
+      - victory condition freedom
+    - green
+      - middle ground
+      - positive modifier for green plantes
+      - victory condition collecting
+    - red
+      - slower, less maneuverable, more hull/shields
+      - positive modifier for red planets
+      - victory condition conquest
   - 3 victory conditions
     - way to store game data
 - proximity to a sun recharges energy faster?
