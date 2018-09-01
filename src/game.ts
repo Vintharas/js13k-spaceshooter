@@ -4,10 +4,12 @@ import createOpenScene from "./scenes/openScene";
 import createGameOverScene from "./scenes/gameOverScene";
 import { createChooseFactionScene } from "./scenes/factionScene";
 import { Faction } from "./factions";
+import { GameData } from "./gamedata";
 
 export default class Game {
   private static game: Game;
   public currentScene: Scene;
+  public gameData: GameData;
 
   private constructor() {
     this.currentScene = createOpenScene();
@@ -24,11 +26,13 @@ export default class Game {
 
   goToSpaceScene(selectedFaction: Faction): void {
     // TODO: use faction to create game data
-    this.switchToScene(createSpaceScene());
+    this.gameData = GameData(selectedFaction);
+    this.switchToScene(createSpaceScene(this.gameData));
   }
 
   goToGameOverScene(): any {
     this.switchToScene(createGameOverScene());
+    this.gameData = null;
   }
 
   goToChooseFaction(): any {

@@ -24,7 +24,7 @@ export interface Ship extends Sprite {
   takeDamage(damage: number): void;
 }
 
-export default function createShip(scene: Scene) {
+export default function createShip(scene: Scene, faction: Faction) {
   const collisionWidth = 20;
   const x = Config.Ship.InitialPosition.x;
   const y = Config.Ship.InitialPosition.y;
@@ -48,7 +48,7 @@ export default function createShip(scene: Scene) {
     parts: [energy, life, shield, speed, radar, weapons, vision],
 
     // TODO: factions will have different ships
-    image: kontra.assets.images.redship,
+    image: Config.Factions[faction].Ship,
 
     // position
     // this is actually the position of the camera

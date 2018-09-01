@@ -94,7 +94,9 @@ const Config = {
       Planet: PlanetType.Red,
       Objective: "War & Conquest",
       Description: "House Harkonnen...",
-      Emblem: ""
+      get Ship() {
+        return kontra.assets.images.reship;
+      }
     },
     [Faction.Blue]: {
       Name: "Atreides",
@@ -102,7 +104,9 @@ const Config = {
       Planet: PlanetType.Paradise,
       Objective: "Freedom & Liberty",
       Description: "House Atreides...",
-      Emblem: "blueemblem"
+      get Ship() {
+        return kontra.assets.images.blueship;
+      }
     },
     [Faction.Green]: {
       Name: "Corrino",
@@ -110,7 +114,9 @@ const Config = {
       PlanetName: "",
       Objective: "Wealth & Power",
       Description: "House Corrino...",
-      Emblem: ""
+      get Ship() {
+        return kontra.assets.images.blueship;
+      }
     }
   },
   Sector: {

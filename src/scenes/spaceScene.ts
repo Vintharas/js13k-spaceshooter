@@ -11,11 +11,12 @@ import { createSun } from "../sun";
 import { Sector } from "../map/sector";
 import createBullet from "../bullet";
 import { SpaceBackground } from "../background";
+import { GameData } from "../gamedata";
 
-export default function createSpaceScene() {
+export default function createSpaceScene(gameData: GameData) {
   const camera = createCamera();
   const scene = createScene({ camera, update });
-  const ship = createShip(scene);
+  const ship = createShip(scene, gameData.faction);
   camera.position = ship;
 
   // initial state
