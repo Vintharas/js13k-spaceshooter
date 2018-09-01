@@ -6,16 +6,26 @@ import {
   getValueInRange,
   Color
 } from "./utils";
+import Config from "./config";
 
-export default function createStar(
-  x: number,
-  y: number,
-  cameraPosition: Position
-) {
+export interface StarBuilder extends SpriteBuilder {}
+export interface Star extends Sprite {}
+
+/*
+export function StarPool() {
+  return kontra.pool({
+    create: createStar,
+    maxSize: Config.Stars.MaxNumber
+  });
+}
+*/
+
+export function createStar({ x, y, cameraPosition }: StarBuilder) {
   let distance = getValueInRange(0, 1).toFixed(2);
   let alpha: number = 1 - (3 * parseFloat(distance)) / 4;
   let color = Color.get(alpha);
   let size: number = 2 + (1 - parseFloat(distance));
+
   return kontra.sprite({
     // create some variation in positioning
     x: getNumberWithVariance(x, x / 2),

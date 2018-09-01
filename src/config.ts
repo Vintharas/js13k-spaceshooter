@@ -63,6 +63,14 @@ const Config = {
       Size: 100,
       Radius: 45,
       Range: 1000
+    },
+    InitialPosition: {
+      get x() {
+        return Config.canvasWidth / 2;
+      },
+      get y() {
+        return Config.canvasHeight / 2;
+      }
     }
   },
 
@@ -107,6 +115,9 @@ const Config = {
   },
   Sector: {
     Size: 10000
+  },
+  Stars: {
+    MaxNumber: 500
   }
 };
 

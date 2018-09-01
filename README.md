@@ -21,9 +21,9 @@
 
 - [*] all types of planets, suns
 - Map generation
-  - work on this
-  - divide map in sectors
-  - generate sectors with a star and some planets
+  - [*] divide map in sectors
+  - [*] generate sectors with a star and some planets
+  - create a map of a starting number of sectors
   - separate sectors by some distance of "empty" space
   - reuse objects using object pool
   - save state in an object

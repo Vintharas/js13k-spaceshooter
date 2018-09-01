@@ -53,14 +53,19 @@ interface Keys {
 interface Assets {
   images: any;
 }
+interface PoolBuilder {
+  create(s: SpriteBuilder): any;
+  maxSize?: number;
+}
+
+interface Pool {}
 
 interface Kontra {
   sprite(s: SpriteBuilder): any;
   gameLoop(s: GameLoopBuilder): any;
   keys: Keys;
   assets: Assets;
+  pool(p: PoolBuilder): Pool;
 }
 
 declare var kontra: Kontra;
-
-//kontra.sprite : ((Sprite) => Sprite)

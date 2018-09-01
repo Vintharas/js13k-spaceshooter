@@ -2,13 +2,15 @@ import { Scene, createScene } from "./scene";
 import { createAsteroid } from "../asteroid";
 import createShip from "../ship/ship";
 import { isObjectOutOfBounds, Position, getValueInRange } from "../utils";
-import createStar from "../star";
+import { createStar } from "../star";
 import Game from "../game";
 import Config from "../config";
 import { createPlanet } from "../planet";
 import { createCamera } from "./camera";
 import { createSun } from "../sun";
 import { Sector } from "../map/sector";
+import createBullet from "../bullet";
+import { SpaceBackground } from "../background";
 
 export default function createSpaceScene() {
   const camera = createCamera();
@@ -17,7 +19,8 @@ export default function createSpaceScene() {
   camera.position = ship;
 
   // initial state
-  addStars(scene, ship);
+  //addStars(scene, ship);
+  addBackground(scene, ship);
   //addPlanets(scene, ship);
   //addSun(scene, ship);
   addSector(scene, ship);
@@ -48,14 +51,21 @@ function cleanupObjectIfOutOfBounds(scene: Scene) {
 }
 
 // creates initial amount of stars surrounding the spaceship
+/*
 function addStars(scene: Scene, cameraPosition: Position) {
   let spaceBetweenStars = 50;
   for (var i = -1000; i <= 1000; i += spaceBetweenStars) {
     for (var j = -1000; j <= 1000; j += spaceBetweenStars) {
-      let star = createStar(i, j, cameraPosition);
+      let star = createStar({ x: i, y: j, cameraPosition });
       scene.addSprite(star, { isInForeground: false });
     }
   }
+}
+*/
+
+function addBackground(scene: Scene, cameraPosition: Position) {
+  let background = SpaceBackground(cameraPosition);
+  scene.addSprite(background, { isInForeground: false });
 }
 
 function addAsteroids(scene: Scene, cameraPosition: Position) {

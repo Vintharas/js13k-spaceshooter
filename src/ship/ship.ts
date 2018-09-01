@@ -26,8 +26,8 @@ export interface Ship extends Sprite {
 
 export default function createShip(scene: Scene) {
   const collisionWidth = 20;
-  const x = Config.canvasWidth / 2;
-  const y = Config.canvasHeight / 2;
+  const x = Config.Ship.InitialPosition.x;
+  const y = Config.Ship.InitialPosition.y;
   const energy = ShipEnergy(Config.Ship.Energy, scene);
   const life = ShipLife(Config.Ship.Life);
   const shield = ShipShield(
