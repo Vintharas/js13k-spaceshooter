@@ -21,6 +21,7 @@ export interface Planet extends Sprite {
   dt: number;
   origin: Position;
   angle: number;
+  orbit: number;
 
   claimedBy: Faction;
   increaseClaim(faction: Faction, percentage: number): void;
@@ -123,9 +124,19 @@ export function createPlanet(
       this.x = newPosition.x;
       this.y = newPosition.y;
     },
-    render() {
+    render(this: Planet) {
       if (isObjectOutOfBounds(this, cameraPosition)) return;
       let position = getCanvasPosition(this, cameraPosition);
+
+      // #0. planet orbit around sun
+      this.context.save();
+      let originInCanvas = getCanvasPosition(this.origin, cameraPosition);
+      this.context.translate(originInCanvas.x, originInCanvas.y);
+      this.context.strokeStyle = "rgba(255,255,255,0.15";
+      this.context.beginPath();
+      this.context.arc(0, 0, this.orbit, 0, 2 * Math.PI);
+      this.context.stroke();
+      this.context.restore();
 
       // #1. Actual planet and texture
       this.context.save();
