@@ -44,7 +44,7 @@ export default function createShip(scene: Scene, faction: Faction) {
 
   const ship = kontra.sprite({
     type: "ship",
-    faction: Faction.Red,
+    faction,
     parts: [energy, life, shield, speed, radar, weapons, vision],
 
     // TODO: factions will have different ships

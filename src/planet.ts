@@ -220,7 +220,7 @@ export function createPlanet(
         let factionRadius = radius + 0.35 * radius;
         this.context.save();
         this.context.translate(position.x, position.y);
-        this.context.strokeStyle = Faction.Red.toLowerCase();
+        this.context.strokeStyle = this.claimedBy.toLowerCase();
         this.context.lineWidth = 5;
         this.context.beginPath(); // start drawing a shape
 

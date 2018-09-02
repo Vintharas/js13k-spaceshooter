@@ -78,6 +78,7 @@
       and including it as is in the index.html template
     - setup compressor to just compress everything in dist/
   - test removing all the parts of kontra that I don't need
+  - wrap drawing primitives and behavior primitives in classes/functions/etc
 - TypeScript
   - use generics for kontra types
 
