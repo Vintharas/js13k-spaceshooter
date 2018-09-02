@@ -205,7 +205,11 @@ export default class CollisionsEngine {
       if (planet.claimedBy === ship.faction) {
         if (this.dt > 0.4) {
           this.dt = 0;
-          this.provideBoosts(ship);
+          // if it is a faction planet
+          // then you get double the amount of energy/life
+          let modifier =
+            planet.planetType === Config.Factions[ship.faction].Planet ? 2 : 1;
+          this.provideBoosts(ship, modifier);
         }
       } else {
         planet.increaseClaim(ship.faction, 1 / 2);
@@ -228,13 +232,13 @@ export default class CollisionsEngine {
     }
   }
 
-  provideBoosts(ship: Ship) {
+  provideBoosts(ship: Ship, modifier = 1) {
     let cellType = getRandomCellType();
     // add energy or life to the ship
     if (cellType === CellType.Energy) {
-      this.provideEnergyBoost(ship);
+      this.provideEnergyBoost(ship, modifier);
     } else if (cellType === CellType.Life) {
-      this.provideLifeBoost(ship);
+      this.provideLifeBoost(ship, modifier);
     }
   }
   provideEnergyBoost(ship: Ship, modifier = 1) {
@@ -244,8 +248,10 @@ export default class CollisionsEngine {
     ship.energy.recharge(energyBoost);
     this.addBoostText(energyBoost, ship, ship, { r: 0, g: 255, b: 0 });
   }
-  provideLifeBoost(ship: Ship) {
-    let lifeBoost = Math.ceil(getValueInRange(0, Config.Cell.LifeBoost));
+  provideLifeBoost(ship: Ship, modifier = 1) {
+    let lifeBoost = Math.ceil(
+      getValueInRange(0, Config.Cell.LifeBoost * modifier)
+    );
     ship.life.repair(lifeBoost);
     this.addBoostText(lifeBoost, ship, ship, { r: 255, g: 0, b: 0 });
   }

@@ -1,4 +1,4 @@
-import { Faction } from "./factions";
+import { Faction, FactionShipModifiers } from "./factions";
 import { PlanetType } from "./planet";
 import { CanvasConfig } from "./canvas.config";
 
@@ -99,13 +99,17 @@ const Config = {
       },
       Modifiers: {
         Life: 100,
+        LifeRepairRate: 1,
         Energy: 100,
+        EnergyRechargeRate: -1,
         Shield: 100,
+        ShieldRechargeRate: 1,
         Rotation: -1.5,
         Speed: -0.025,
+        FireRate: -0.1,
         Damage: 5,
         Protection: 5
-      }
+      } as FactionShipModifiers
     },
     [Faction.Blue]: {
       Name: "Atreides",
@@ -118,13 +122,17 @@ const Config = {
       },
       Modifiers: {
         Life: -100,
-        Energy: 0,
+        LifeRepairRate: 1,
+        Energy: 100,
+        EnergyRechargeRate: 2,
         Shield: -100,
+        ShieldRechargeRate: 1,
         Rotation: 2,
         Speed: 0.025,
+        FireRate: 0,
         Damage: -5,
         Protection: -5
-      }
+      } as FactionShipModifiers
     },
     [Faction.Green]: {
       Name: "Corrino",
@@ -137,13 +145,17 @@ const Config = {
       },
       Modifiers: {
         Life: 0,
+        LifeRepairRate: 0,
         Energy: 0,
+        EnergyRechargeRate: 0,
         Shield: 0,
+        ShieldRechargeRate: 0,
         Rotation: 0,
         Speed: 0,
         Damage: 0,
+        FireRate: 0,
         Protection: 0
-      }
+      } as FactionShipModifiers
     }
   },
   Sector: {

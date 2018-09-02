@@ -16,7 +16,11 @@ export interface ShipEnergy extends Sprite {
 // extract visual representation from behavior
 // Both are similarly rendered but may offer different behaviors
 // (the difference in behaviors depends on where I decide to put more collision and damaging logic)
-export function ShipEnergy(energy: number, scene: Scene): ShipEnergy {
+export function ShipEnergy(
+  energy: number,
+  scene: Scene,
+  modifier = 0
+): ShipEnergy {
   return kontra.sprite({
     maxEnergy: energy,
     energy,
@@ -37,7 +41,7 @@ export function ShipEnergy(energy: number, scene: Scene): ShipEnergy {
         let maxEnergyRecharge = 5;
         let activeSystems = this.systems.filter(s => s.isEnabled).length;
         let energyToRecharge = maxEnergyRecharge - activeSystems;
-        this.recharge(energyToRecharge);
+        this.recharge(energyToRecharge + modifier);
         this.dt = 0;
       }
     },

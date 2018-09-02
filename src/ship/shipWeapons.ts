@@ -16,7 +16,11 @@ export interface ShipWeapons extends Sprite, ShipSystem {
   ): void;
 }
 
-export function ShipWeapons(scene: Scene, energy: ShipEnergy): ShipWeapons {
+export function ShipWeapons(
+  scene: Scene,
+  energy: ShipEnergy,
+  modifier = 0
+): ShipWeapons {
   let weapons = kontra.sprite({
     ...ShipSystemMixin(scene, "WEAPONS", (energy.maxEnergy * 2) / 5),
 
@@ -39,7 +43,7 @@ export function ShipWeapons(scene: Scene, energy: ShipEnergy): ShipWeapons {
       this.dt += 1 / 60;
       if (
         kontra.keys.pressed("space") &&
-        this.dt > 0.25 &&
+        this.dt > 0.25 + modifier &&
         energy.hasEnoughEnergy(Config.Ship.EnergyCost.Shoot)
       ) {
         this.dt = 0;

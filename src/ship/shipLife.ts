@@ -5,7 +5,7 @@ export interface ShipLife extends Sprite {
   repair(value: number): void;
 }
 
-export function ShipLife(life: number) {
+export function ShipLife(life: number, modifier = 0) {
   return kontra.sprite({
     maxLife: life,
     life,
@@ -20,7 +20,7 @@ export function ShipLife(life: number) {
       if (this.dt > 1) {
         // baseline for recharging energy
         this.dt = 0;
-        this.repair(1);
+        this.repair(1 + modifier);
       }
     },
     repair(lifeBoost: number): void {

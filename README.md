@@ -85,8 +85,8 @@
 
 ## CORE GAME MECHANICS
 
-- ship energy
-  - when you get near to a sun you get more energy faster
+- ship faction modifier
+  - revisit. make a system with points to make it more equitative. (Instead of just setting random values xD)
 - shoot
   - support for other weapons:
     - bomb (explodes)

@@ -16,7 +16,8 @@ export function ShipShield(
   energy: ShipEnergy,
   shieldPosition: Position,
   radius: number,
-  scene: Scene
+  scene: Scene,
+  modifier = 0
 ) {
   let shipShield = kontra.sprite({
     ...ShipSystemMixin(scene, "SHIELD", (energy.maxEnergy * 3) / 5),
@@ -39,7 +40,7 @@ export function ShipShield(
       if (this.dt > 0.25) {
         if (this.isEnabled) {
           // baseline for recharging energy
-          if (this.shield < this.maxShield) this.shield++;
+          if (this.shield < this.maxShield) this.shield += 1 + modifier;
         } else {
           // discharge shield
           this.damage(3);

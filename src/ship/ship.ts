@@ -29,18 +29,26 @@ export default function createShip(scene: Scene, faction: Faction) {
   const collisionWidth = 20;
   const x = Config.Ship.InitialPosition.x;
   const y = Config.Ship.InitialPosition.y;
-  const energy = ShipEnergy(Config.Ship.Energy + modifiers.Energy, scene);
-  const life = ShipLife(Config.Ship.Life + modifiers.Life);
+  const energy = ShipEnergy(
+    Config.Ship.Energy + modifiers.Energy,
+    scene,
+    modifiers.EnergyRechargeRate
+  );
+  const life = ShipLife(
+    Config.Ship.Life + modifiers.Life,
+    modifiers.LifeRepairRate
+  );
   const shield = ShipShield(
     Config.Ship.Shield + modifiers.Shield,
     energy,
     { x, y },
     collisionWidth,
-    scene
+    scene,
+    modifiers.ShieldRechargeRate
   );
   const speed = ShipSpeed();
   const radar = ShipRadar(scene, energy);
-  const weapons = ShipWeapons(scene, energy);
+  const weapons = ShipWeapons(scene, energy, modifiers.FireRate);
   const vision = ShipVision(scene, energy);
 
   const ship = kontra.sprite({
