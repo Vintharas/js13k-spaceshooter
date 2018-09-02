@@ -1,6 +1,7 @@
 import { kontra } from "./libs/kontra.min.js";
 import RedShip from "./sprites/redship.png";
 import BlueShip from "./sprites/blueship.png";
+import GreenShip from "./sprites/greenship.png";
 import { CanvasConfig } from "./canvas.config.js";
 
 let canvas = window.document.querySelector("canvas");
@@ -16,7 +17,7 @@ kontra.context.scale(CanvasConfig.scale, CanvasConfig.scale);
 
 // load assets
 kontra.assets
-  .load(RedShip, BlueShip)
+  .load(RedShip, BlueShip, GreenShip)
   .then(function() {
     console.log("all assets loaded");
   })

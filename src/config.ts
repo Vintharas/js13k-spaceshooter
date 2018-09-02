@@ -95,7 +95,7 @@ const Config = {
       Objective: "War & Conquest",
       Description: "House Harkonnen...",
       get Ship() {
-        return kontra.assets.images.reship;
+        return kontra.assets.images.redship;
       }
     },
     [Faction.Blue]: {
@@ -115,7 +115,7 @@ const Config = {
       Objective: "Wealth & Power",
       Description: "House Corrino...",
       get Ship() {
-        return kontra.assets.images.blueship;
+        return kontra.assets.images.greenship;
       }
     }
   },
