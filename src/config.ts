@@ -96,6 +96,15 @@ const Config = {
       Description: "House Harkonnen...",
       get Ship() {
         return kontra.assets.images.redship;
+      },
+      Modifiers: {
+        Life: 100,
+        Energy: 100,
+        Shield: 100,
+        Rotation: -1.5,
+        Speed: -0.025,
+        Damage: 5,
+        Protection: 5
       }
     },
     [Faction.Blue]: {
@@ -106,6 +115,15 @@ const Config = {
       Description: "House Atreides...",
       get Ship() {
         return kontra.assets.images.blueship;
+      },
+      Modifiers: {
+        Life: -100,
+        Energy: 0,
+        Shield: -100,
+        Rotation: 2,
+        Speed: 0.025,
+        Damage: -5,
+        Protection: -5
       }
     },
     [Faction.Green]: {
@@ -116,6 +134,15 @@ const Config = {
       Description: "House Corrino...",
       get Ship() {
         return kontra.assets.images.greenship;
+      },
+      Modifiers: {
+        Life: 0,
+        Energy: 0,
+        Shield: 0,
+        Rotation: 0,
+        Speed: 0,
+        Damage: 0,
+        Protection: 0
       }
     }
   },

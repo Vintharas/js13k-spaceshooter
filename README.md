@@ -42,25 +42,26 @@
 - planets orbiting around sun
   - add gradient using the sun in the center as source of illumination
 - complete faction selection process
-  - 3 different ships
-    - create art for two more ships
+  - [*] 3 different ships
+    - [*] create art for two more ships
   - ships have slightly different stats
     - faction ship modifiers
     - blue
-      - faster, more maneuverability, less hull/shields
+      - [*] faster, more maneuverability, less hull/shields
       - positive modifier for paradise planets
       - victory condition freedom
     - green
-      - middle ground
+      - [*] middle ground
       - positive modifier for green plantes
       - victory condition collecting
     - red
-      - slower, less maneuverable, more hull/shields
+      - [*] slower, less maneuverable, more hull/shields
       - positive modifier for red planets
       - victory condition conquest
   - 3 victory conditions
     - way to store game data
-- proximity to a sun recharges energy faster?
+- [*] proximity to a sun recharges energy faster?
+- message queue to display in game messages
 - game engine
   - preload patterns for planets in loading screen so it won't affect fps in game
 - support for multiple weapons
@@ -392,6 +393,8 @@
     - get jobs
     - fullfill quests
     - sell resources (pillaging/asteroid mining/etc) in exchange for money/equipment/goods
+- boosts
+  - don't need to add boosts when ship is already healed/energy maxed
 - suns
   - proximity to sun hurts you
   - proximity to sun boost normal rate of energy acquisition

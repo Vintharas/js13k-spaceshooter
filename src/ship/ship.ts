@@ -25,13 +25,14 @@ export interface Ship extends Sprite {
 }
 
 export default function createShip(scene: Scene, faction: Faction) {
+  const modifiers = Config.Factions[faction].Modifiers;
   const collisionWidth = 20;
   const x = Config.Ship.InitialPosition.x;
   const y = Config.Ship.InitialPosition.y;
-  const energy = ShipEnergy(Config.Ship.Energy, scene);
-  const life = ShipLife(Config.Ship.Life);
+  const energy = ShipEnergy(Config.Ship.Energy + modifiers.Energy, scene);
+  const life = ShipLife(Config.Ship.Life + modifiers.Life);
   const shield = ShipShield(
-    Config.Ship.Shield,
+    Config.Ship.Shield + modifiers.Shield,
     energy,
     { x, y },
     collisionWidth,
@@ -140,14 +141,14 @@ export default function createShip(scene: Scene, faction: Faction) {
 
       // rotate the ship left or right
       if (kontra.keys.pressed("left")) {
-        this.rotation += -3;
+        this.rotation -= 3 + modifiers.Rotation;
         let particle = this.createShipParticle(ship.rotation + 75, {
           x: 5,
           y: -10
         });
         scene.addSprite(particle);
       } else if (kontra.keys.pressed("right")) {
-        this.rotation += 3;
+        this.rotation += 3 + modifiers.Rotation;
         let particle = this.createShipParticle(ship.rotation - 75, {
           x: 5,
           y: 10
@@ -157,13 +158,14 @@ export default function createShip(scene: Scene, faction: Faction) {
       // move the ship forward in the direction it's facing
       const cos = Math.cos(degreesToRadians(this.rotation));
       const sin = Math.sin(degreesToRadians(this.rotation));
+      const acceleration = 0.1 + modifiers.Speed;
 
       if (
         kontra.keys.pressed("up") &&
         this.energy.hasEnoughEnergy(Config.Ship.EnergyCost.Thrust)
       ) {
-        this.ddx = cos * 0.1;
-        this.ddy = sin * 0.1;
+        this.ddx = cos * acceleration;
+        this.ddy = sin * acceleration;
         // reduce energy
         this.energy.consume(Config.Ship.EnergyCost.Thrust);
         // create particles from this position
@@ -178,8 +180,8 @@ export default function createShip(scene: Scene, faction: Faction) {
         kontra.keys.pressed("down") &&
         this.energy.hasEnoughEnergy(Config.Ship.EnergyCost.Brake)
       ) {
-        this.ddx = (cos * -0.1) / 2;
-        this.ddy = (sin * -0.1) / 2;
+        this.ddx = (cos * -acceleration) / 2;
+        this.ddy = (sin * -acceleration) / 2;
         // reduce energy
         this.energy.consume(Config.Ship.EnergyCost.Brake);
         // create particles from this position

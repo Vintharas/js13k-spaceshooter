@@ -12,3 +12,16 @@ export interface FactionConfig {
   PlanetName: string;
   Description: string;
 }
+
+export interface FactionShipModifiers {
+  Life: number;
+  Energy: number;
+  Rotation: number;
+  Shield: number;
+  Speed: number;
+
+  // TODO: these aren't used yet
+  // I'll use them when attacking planets/ships/base stations
+  Damage: number;
+  Protection: number;
+}
