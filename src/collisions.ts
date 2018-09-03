@@ -8,6 +8,7 @@ import { Ship } from "./ship/ship";
 import { createText } from "./text";
 import { Planet } from "./planet";
 import { Sun } from "./sun";
+import { Vector } from "./vector";
 
 export default class CollisionsEngine {
   private ship: Ship;
@@ -78,9 +79,10 @@ export default class CollisionsEngine {
 
   handleCollisionWithAsteroid(asteroid: any, sprite: any): boolean {
     // circle vs. circle collision detection
-    let dx = asteroid.x - sprite.x;
-    let dy = asteroid.y - sprite.y;
-    if (Math.sqrt(dx * dx + dy * dy) < asteroid.radius + sprite.width) {
+    if (
+      Vector.getDistanceMagnitude(asteroid, sprite) <
+      asteroid.radius + sprite.width
+    ) {
       if (!["ship", "bullet"].includes(sprite.type)) return;
 
       asteroid.ttl = 0;
@@ -194,7 +196,6 @@ export default class CollisionsEngine {
       { size: 12, family: "monospace" }
     );
     this.scene.addSprite(cellText);
-    if (Config.debug) console.log("Created cell text:", cellText);
   }
 
   // TODO: it's about time to extract this into something it's own object
@@ -269,7 +270,8 @@ function breakAsteroidInSmallerOnes(asteroid: any, scene: Scene) {
       scene.cameraPosition
     );
     scene.addSprite(newAsteroid);
-    if (Config.debug) console.log("New Asteroid", newAsteroid);
+    if (Config.debug && Config.debugSpawnObjects)
+      console.log("New Asteroid", newAsteroid);
   }
 }
 

@@ -12,7 +12,7 @@ export function ShipSpeed() {
     y: Config.canvasHeight - 10,
     speed: 0,
     updateSpeed(dx: number, dy: number) {
-      let magnitude = Vector.getMagnitude(dx, dy);
+      let magnitude = Vector.getMagnitude({ x: dx, y: dy });
       this.speed = magnitude;
     },
     render() {

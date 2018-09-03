@@ -26,18 +26,22 @@ const Config = {
   ],
 
   // enable debug printouts
-  debug: false,
+  debug: true,
   verbose: false,
   typesToLog: ["asteroid", "ship"],
   logTheseProperties: (s: Sprite) => ({
     type: s.type,
     x: s.x,
     y: s.y,
+    dx: 0,
+    dy: 0,
     ttl: s.ttl
   }),
   onlyLogInProximityToShip: true, // great for debugging collisions
   renderCollisionArea: true,
-  debugRadar: true,
+  debugRadar: false,
+  showPath: true,
+  debugSpawnObjects: false,
 
   // UI
   UI: {
@@ -163,6 +167,9 @@ const Config = {
   },
   Stars: {
     MaxNumber: 500
+  },
+  Elders: {
+    MaxNumber: 100
   }
 };
 

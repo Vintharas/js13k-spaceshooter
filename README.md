@@ -19,18 +19,14 @@
 
 ## Prioritize
 
-- [*] all types of planets, suns
+- basic art for all types of planets!
+- AI enemy with basic following AI and shooting
+  - enemy with basic AI
 - Map generation
-  - [*] divide map in sectors
-  - [*] generate sectors with a star and some planets
-  - [*] cover background with stars. Considered using game pool
-    from kontra but in the end I created a custom sort of pool
-    cuz I didn't want to handle it via ttl/get (just update the
-    position of the farthest stars)
-    - BUG: there appears to be an issue where stars aren't displayed
-      after the ship has been moving for a while. PROBABLY due to
-      the position reaching maxInteger. We can solve this by using
-      both position and sectors. (so we never go over the position maxInteger)
+  - BUG: there appears to be an issue where stars aren't displayed
+    after the ship has been moving for a while. PROBABLY due to
+    the position reaching maxInteger. We can solve this by using
+    both position and sectors. (so we never go over the position maxInteger)
   - create a map of a starting number of sectors
   - separate sectors by some distance of "empty" space
   - reuse objects using object pool
@@ -42,25 +38,15 @@
 - planets orbiting around sun
   - add gradient using the sun in the center as source of illumination
 - complete faction selection process
-  - [*] 3 different ships
-    - [*] create art for two more ships
-  - ships have slightly different stats
-    - faction ship modifiers
+  - would be cool to add some information and background about the factions
     - blue
-      - [*] faster, more maneuverability, less hull/shields
-      - positive modifier for paradise planets
       - victory condition freedom
     - green
-      - [*] middle ground
-      - positive modifier for green plantes
       - victory condition collecting
     - red
-      - [*] slower, less maneuverable, more hull/shields
-      - positive modifier for red planets
       - victory condition conquest
   - 3 victory conditions
     - way to store game data
-- [*] proximity to a sun recharges energy faster?
 - message queue to display in game messages
 - game engine
   - preload patterns for planets in loading screen so it won't affect fps in game
@@ -105,6 +91,7 @@
 - asteroids generation
   - improve clusters to be x-close, or y-close, that will look cooler :D (I think, they will look more like a cluster)
   - add new clusters every so often (outside of the current camera view)
+  - far and near asteriods with differnet shades of ligt
 - ship life/collisions
   - when you collide with something or lose life, move the canvas with css like you're shaking. Add some reddish color in the actual screen.
   - collision decreases speed
@@ -163,7 +150,7 @@
   - life support?
 - game messages
   - implement so that not two overlapping texts appear at the same time (offline/online). Add some sort of message queueing system
-  - have a queue with 3 slots that can be filled with text (f.i.)
+  - have a queue with 3 slots that can be filled with text (f.i.
 - ways to lose
   - crushed by an asteroid
   - been too near a sun
@@ -176,12 +163,24 @@
   - galatic empire, etc
   - AIs
   - creatures
+  - aliensssss of some sort (the elders)
+    - make them with different polygon parts with different behaviors
+    - different AIs
+    - elders
+      - drone ships, hover around mother ship, follow a scouting pattern when you're within a range they follow you and attack you. Then go back to mother ship if you go too far.
+      - sentries. Slow turrets that are static and follow you as you get near.
+      - destroyer. bigger ship
+      - mother ship. huge ship
+  - other factions
+    - they have already claimed a planet, they attack your planets
+    - random patrols
 - a way to deliver story. what story? :)
 - game engine
   - extract all variables so they're configurable from a single point
   - this could be altered by a UI in realtime and allow me to tweak the game
+  - show active, inactive game objects, fps, etc when debug flag is enabled
 - different difficulty levels
-  - higher cost for actions
+  - higher cost for actions? smarter/beter enemies
 - end escene
   - show explosion of your ship then move to end screen with scores and such
   - overdo the explosion
@@ -220,7 +219,7 @@
   - [*] test creating a pixel on piksel
   - [*] make pixel moooore pixelated :) Looks better I think :)
   - show when the ship gets damage
-    - tink in red
+    - tint in red
 - particles
   - review particle system
   - it would be could if i could experiment with an editor and
@@ -252,6 +251,31 @@
 - for some reason, a broken down asteroid doesn't collide with the ship, although it does collide with bullets. #wat
 
 # OLD NOTES
+
+# 2nd SEPTEMBER
+
+- Map generation
+  - [*] divide map in sectors
+  - [*] generate sectors with a star and some planets
+  - [*] cover background with stars. Considered using game pool
+    from kontra but in the end I created a custom sort of pool
+    cuz I didn't want to handle it via ttl/get (just update the
+    position of the farthest stars)
+- [*] complete faction selection process
+  - [*] 3 different ships
+    - [*] create art for two more ships
+  - [*] ships have slightly different stats
+    - [*] faction ship modifiers
+    - blue
+      - [*] faster, more maneuverability, less hull/shields
+      - [*] positive modifier for paradise planets
+    - green
+      - [*] middle ground
+      - [*] positive modifier for green plantes
+    - red
+      - [*] slower, less maneuverable, more hull/shields
+      - [*] positive modifier for red planets
+- [*] proximity to a sun recharges energy faster?
 
 # 30 AUGUST
 

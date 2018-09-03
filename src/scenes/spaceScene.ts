@@ -1,6 +1,6 @@
 import { Scene, createScene } from "./scene";
 import { createAsteroid } from "../asteroid";
-import createShip from "../ship/ship";
+import createShip, { Ship } from "../ship/ship";
 import { isObjectOutOfBounds, Position, getValueInRange } from "../utils";
 import { createStar } from "../star";
 import Game from "../game";
@@ -12,6 +12,7 @@ import { Sector } from "../map/sector";
 import createBullet from "../bullet";
 import { SpaceBackground } from "../background";
 import { GameData } from "../gamedata";
+import { ElderPool } from "../enemies/elder";
 
 export default function createSpaceScene(gameData: GameData) {
   const camera = createCamera();
@@ -27,6 +28,10 @@ export default function createSpaceScene(gameData: GameData) {
   addSector(scene, ship);
   addAsteroids(scene, ship);
   addStaticAsteroids(scene, ship);
+
+  // add enemies for testing
+  addEnemies(scene, ship);
+
   scene.addSprite(ship);
 
   return scene;
@@ -147,4 +152,20 @@ function addSector(scene: Scene, cameraPosition: Position) {
     cameraPosition
   );
   sector.bodies.forEach(s => scene.addSprite(s));
+}
+
+function addEnemies(scene: Scene, ship: Ship) {
+  let elderPool = ElderPool(scene, ship);
+
+  //for (let x = 0; x < 500; x += 100) {
+  elderPool.get({
+    x: 200,
+    y: 200,
+    ttl: Infinity,
+    dx: 0,
+    dy: 0
+  });
+  //}
+
+  scene.pools.push(elderPool);
 }

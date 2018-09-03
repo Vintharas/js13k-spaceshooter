@@ -48,15 +48,10 @@ export function ShipWeapons(
       ) {
         this.dt = 0;
 
-        // fire in the direction the ship is looking
-        const cos = Math.cos(degreesToRadians(this.rotation));
-        const sin = Math.sin(degreesToRadians(this.rotation));
-
         const bullet = createBullet(
           this.position,
           this.velocity,
-          cos,
-          sin,
+          this.rotation,
           scene.cameraPosition,
           scene
         );

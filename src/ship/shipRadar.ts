@@ -87,10 +87,7 @@ export function ShipRadar(scene: Scene, energy: ShipEnergy) {
         x: sprite.x - cameraPosition.x,
         y: sprite.y - cameraPosition.y
       };
-      let magnitude = Vector.getMagnitude(
-        relativePosition.x,
-        relativePosition.y
-      );
+      let magnitude = Vector.getMagnitude(relativePosition);
       return magnitude < Config.Ship.Radar.Range;
     }
   });

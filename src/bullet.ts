@@ -1,15 +1,22 @@
-import { Position, getCanvasPosition, Velocity } from "./utils";
+import {
+  Position,
+  getCanvasPosition,
+  Velocity,
+  degreesToRadians
+} from "./utils";
 import { Scene } from "./scenes/scene";
 import { createParticle } from "./particles";
 
 export default function createBullet(
   position: Position,
   velocity: Velocity,
-  cos: number,
-  sin: number,
+  angle: number,
   cameraPosition: Position,
   scene: Scene
 ) {
+  let cos = Math.cos(degreesToRadians(angle));
+  let sin = Math.sin(degreesToRadians(angle));
+
   return kontra.sprite({
     type: "bullet",
     // start the bullet on the ship at the end of the triangle

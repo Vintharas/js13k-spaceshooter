@@ -58,7 +58,13 @@ interface PoolBuilder {
   maxSize?: number;
 }
 
-interface Pool {}
+interface Pool {
+  update(dt?: number): void;
+  render(): void;
+  clear(): void;
+  get(s: SpriteBuilder): void;
+  getAliveObjects(): Sprite[];
+}
 
 interface Kontra {
   sprite(s: SpriteBuilder): any;

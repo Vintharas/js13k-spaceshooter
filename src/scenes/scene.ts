@@ -14,6 +14,7 @@ export interface SpriteOptions {
 
 export interface Scene {
   sprites: Sprites;
+  pools: Pool[];
   update(dt: number): void;
   addSprite(this: Scene, sprite: Sprite, options?: SpriteOptions): void;
   start(): void;
@@ -35,6 +36,7 @@ export function createScene({
   render = () => {}
 }: SceneOptions = {}): Scene {
   const sprites: Sprites = { foreground: [], background: [] };
+  const pools: Pool[] = [];
 
   let loop = kontra.gameLoop({
     update(dt: number) {
@@ -45,6 +47,7 @@ export function createScene({
       // without having to create a new array
       this.sprites.background.forEach((s: Sprite) => s.update());
       this.sprites.foreground.forEach((s: Sprite) => s.update());
+      this.pools.forEach((p: Pool) => p.update());
 
       this.collisionEngine.processCollisions(dt);
       if (Config.debug && Config.verbose) {
@@ -63,12 +66,15 @@ export function createScene({
       this.sprites.foreground
         .filter((s: Sprite) => !isObjectOutOfBounds(s, camera))
         .forEach((s: Sprite) => s.render());
+      this.pools.forEach((p: Pool) => p.render());
     }
   });
 
   // Extend game loop with scene
-  // functionality
+  // functionality. This defines the public
+  // API of Scene
   let scene = Object.assign(loop, {
+    pools,
     sprites,
     // TODO: this may not be necessary
     // consider removing to save space

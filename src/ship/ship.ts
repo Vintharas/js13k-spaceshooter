@@ -136,7 +136,6 @@ export default function createShip(scene: Scene, faction: Faction) {
         this.context.beginPath(); // start drawing a shape
         this.context.arc(0, 0, this.collisionWidth, 0, Math.PI * 2);
         this.context.stroke(); // outline the circle
-        console.log(this.width);
       }
       this.context.restore();
 
