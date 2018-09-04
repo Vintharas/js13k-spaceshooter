@@ -7,7 +7,7 @@ export interface SpaceBackground extends Sprite {
 }
 
 export function SpaceBackground(cameraPosition: Position) {
-  let spaceBetweenStars = 50;
+  let spaceBetweenStars = 75;
   let offset = 500;
   let start = Config.Ship.InitialPosition.x - Config.canvasWidth / 2 - offset;
   let end = Config.Ship.InitialPosition.x + Config.canvasWidth / 2 + offset;

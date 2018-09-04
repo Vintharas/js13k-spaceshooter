@@ -24,7 +24,7 @@ export function createStar({ x, y, cameraPosition }: StarBuilder) {
   let distance = getValueInRange(0, 1).toFixed(2);
   let alpha: number = 1 - (3 * parseFloat(distance)) / 4;
   let color = Color.get(alpha);
-  let size: number = 2 + (1 - parseFloat(distance));
+  let size: number = 2.5 + (1 - parseFloat(distance));
 
   return kontra.sprite({
     // create some variation in positioning
