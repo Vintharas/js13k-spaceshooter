@@ -87,15 +87,21 @@ export default function createShip(scene: Scene, faction: Faction) {
     dt: 0, // track how much time has passed
     ttl: Infinity,
 
+    // damage animation
+    dwd: 0,
+    wasDamaged: false,
+
     takeDamage(this: Ship, damage: number) {
       if (this.shield.get() > 0) {
         this.shield.damage(damage);
         if (this.shield.get() <= 0) {
           // do some remaining damage to ship but less
           this.life.damage(damage / 4);
+          this.wasDamaged = true;
         }
       } else {
         this.life.damage(damage);
+        this.wasDamaged = true;
       }
       if (this.life.get() <= 0) {
         if (Config.debug) console.log("SHIP DIED");
@@ -128,6 +134,12 @@ export default function createShip(scene: Scene, faction: Faction) {
       // tell kontra to draw the image sprite
       this.context.drawImage(this.image, -16, -16);
 
+      if (this.wasDamaged) {
+        this.context.globalCompositeOperation = "source-atop";
+        this.context.fillStyle = "rgba(255,0,0,0.5)";
+        this.context.fillRect(-16, -16, 32, 32);
+      }
+
       // Drawing asteroids as a circle
       // this is what we use for collision
       // useful for debugging
@@ -145,6 +157,16 @@ export default function createShip(scene: Scene, faction: Faction) {
       this.weapons.updateShipInformation(this, this, this.rotation);
       this.speed.updateSpeed(this.dx, this.dy);
       this.parts.forEach((s: Sprite) => s.update());
+
+      if (this.wasDamaged) {
+        // TODO: extract this pattern
+        // (increase counter and do something after a specific period of time)
+        this.dwd += 1 / 60;
+        if (this.dwd > 0.25) {
+          this.wasDamaged = false;
+          this.dwd = 0;
+        }
+      }
 
       // rotate the ship left or right
       if (kontra.keys.pressed("left")) {

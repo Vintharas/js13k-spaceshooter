@@ -35,6 +35,10 @@ export function ShipShield(
     dt: 0,
     dtr: 0,
 
+    // damage animation
+    dwd: 0,
+    wasDamaged: false,
+
     update(this: ShipShield) {
       this.dt += 1 / 60;
       if (this.dt > 0.25) {
@@ -46,6 +50,15 @@ export function ShipShield(
           this.damage(3);
         }
         this.dt = 0;
+      }
+
+      // TODO: extract to behavior
+      if (this.wasDamaged) {
+        this.dwd += 1 / 60;
+        if (this.dwd > 0.25) {
+          this.wasDamaged = false;
+          this.dwd = 0;
+        }
       }
     },
 
@@ -97,26 +110,30 @@ export function ShipShield(
       );
       this.context.stroke(); // outline the circle
       this.context.fill();
+
+      if (this.wasDamaged) {
+        this.context.globalCompositeOperation = "color";
+        this.context.fillStyle = "rgba(255,0,0,0.5)";
+        this.context.strokeStyle = "rgba(255,0,0,1)";
+        this.context.beginPath(); // start drawing a shape
+        this.context.arc(
+          this.shieldPosition.x + getValueInRange(-0.5, 0.5),
+          this.shieldPosition.y + getValueInRange(-0.5, 0.5),
+          this.radius * 1.1,
+          0,
+          Math.PI * 2
+        );
+        this.context.stroke(); // outline the circle
+        this.context.fill();
+      }
+
       this.context.restore();
     },
 
     damage(damage: number) {
       if (this.shield > 0) this.shield -= damage;
       if (this.shield < 0) this.shield = 0;
-      if (Config.debug) {
-        if (this.isEnabled)
-          console.log(
-            `Ship took shield damage ${damage}. Remaining shield is ${
-              this.shield
-            }`
-          );
-        else
-          console.log(
-            `Ship shield losing power ${damage}. Remaining shield is ${
-              this.shield
-            }`
-          );
-      }
+      this.wasDamaged = true;
     },
 
     get(): number {
