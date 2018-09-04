@@ -1,5 +1,3 @@
-//import { Sprite } from "./utils";
-
 interface Position {
   x: number;
   y: number;

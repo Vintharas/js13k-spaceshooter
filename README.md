@@ -19,9 +19,13 @@
 
 ## Prioritize
 
-- basic art for all types of planets!
-- AI enemy with basic following AI and shooting
-  - enemy with basic AI
+- Enemies
+  - alien faction
+    - mother ship
+    - drones
+    - sentries
+  - other factions
+    - similar behavior to players ship
 - Map generation
   - BUG: there appears to be an issue where stars aren't displayed
     after the ship has been moving for a while. PROBABLY due to
@@ -31,26 +35,29 @@
   - separate sectors by some distance of "empty" space
   - reuse objects using object pool
   - save state in an object
-- use game pool
-  - with particles
-  - with asteroids
-  - with planets
+- define game story and goals
+  - complete faction selection process
+    - would be cool to add some information and background about the factions
+      - blue
+        - victory condition freedom
+      - green
+        - victory condition collecting
+      - red
+        - victory condition conquest
+    - 3 victory conditions
+      - way to store game data
+- polish of 10000 things
+- message queue to display in game messages
+- make sure to hit 60 fps
+  - use game pool
+    - with particles
+    - with asteroids
+    - with planets
+  - game engine
+    - preload patterns for planets in loading screen so it won't affect fps in game
+- support for multiple weapons
 - planets orbiting around sun
   - add gradient using the sun in the center as source of illumination
-- complete faction selection process
-  - would be cool to add some information and background about the factions
-    - blue
-      - victory condition freedom
-    - green
-      - victory condition collecting
-    - red
-      - victory condition conquest
-  - 3 victory conditions
-    - way to store game data
-- message queue to display in game messages
-- game engine
-  - preload patterns for planets in loading screen so it won't affect fps in game
-- support for multiple weapons
 
 ## BUILD - minimize assets to 13K
 

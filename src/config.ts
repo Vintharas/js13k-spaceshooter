@@ -2,6 +2,8 @@ import { Faction, FactionShipModifiers } from "./factions";
 import { PlanetType } from "./planet";
 import { CanvasConfig } from "./canvas.config";
 
+// TODO: create separate branch where I inline
+// all this and see whether it affects the resulting size
 const Config = {
   ...CanvasConfig,
 
@@ -26,7 +28,7 @@ const Config = {
   ],
 
   // enable debug printouts
-  debug: true,
+  debug: false,
   verbose: false,
   typesToLog: ["asteroid", "ship"],
   logTheseProperties: (s: Sprite) => ({
