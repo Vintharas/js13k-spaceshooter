@@ -53,7 +53,8 @@ export function FollowSteadyBehavior(target: Sprite): Behavior {
   return {
     type: BehaviorType.FollowSteady,
     properties: {
-      dtfs: 0
+      dtfs: 0,
+      speed: 2
     },
     update(dt?: number) {
       this.dtfs += 1 / 60;
@@ -62,10 +63,9 @@ export function FollowSteadyBehavior(target: Sprite): Behavior {
         this.activeBehavior = BehaviorType.FollowSteady;
         // follow target when it's close
         this.dtfs = 0;
-        let speed = 2;
         let distance = Vector.getDistance(target, this);
-        this.dx = (speed * distance.x) / distanceToShip;
-        this.dy = (speed * distance.y) / distanceToShip;
+        this.dx = (this.speed * distance.x) / distanceToShip;
+        this.dy = (this.speed * distance.y) / distanceToShip;
       } else if (this.dtfs > 1) {
         // if the target goes further away
         // after a while stop
@@ -81,7 +81,8 @@ export function Shoot(scene: Scene, target: Sprite): Behavior {
   return {
     type: BehaviorType.Shoot,
     properties: {
-      dts: 0
+      dts: 0,
+      damage: 1
     },
     update(dt?: number) {
       this.dts += 1 / 60;
@@ -95,7 +96,8 @@ export function Shoot(scene: Scene, target: Sprite): Behavior {
           angle,
           target,
           scene,
-          /*owner*/ this
+          /*owner*/ this,
+          this.damage
         );
         scene.addSprite(bullet);
       }

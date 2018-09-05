@@ -165,7 +165,6 @@ function addEnemies(scene: Scene, ship: Ship, sector: Sector) {
     ttl: Infinity,
     dx: 0,
     dy: 0,
-    width: 20,
     elderType: ElderType.Sentry,
     patrolTarget: sector.sun
   });

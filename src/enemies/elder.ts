@@ -27,6 +27,8 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
         // to the ship so they know its location
         ship,
         life: 100,
+        width: 20,
+
         // damage animation TODO: extract
         dwd: 0,
         wasDamaged: false,
@@ -58,21 +60,22 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
           this.context.save();
           this.context.translate(position.x, position.y);
           this.context.rotate((Math.PI * 1) / 4);
-
           let pattern = getElderPattern();
           this.context.fillStyle = pattern;
-          this.context.rect(0, 0, 20, 20);
-          this.context.fill();
+          this.context.fillRect(0, 0, this.width, this.width);
           if (this.wasDamaged) {
             this.context.globalCompositeOperation = "source-atop";
             this.context.fillStyle = "rgba(255,0,0,0.5)";
-            this.context.fillRect(0, 0, 20, 20);
+            this.context.fillRect(0, 0, this.width, this.width);
           }
           this.context.restore();
 
           if (Config.debug && Config.showPath) {
             this.context.save();
-            this.context.translate(position.x + 10, position.y + 10);
+            this.context.translate(
+              position.x + this.width / 2,
+              position.y + this.width / 2
+            );
             this.context.beginPath();
             this.context.strokeStyle = "red";
             this.context.moveTo(0, 0);
@@ -99,6 +102,9 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
           }
         },
         init(args: any) {
+          // load defaults based on type
+          let elderType = args.elderType as ElderType;
+          Object.assign(this, ElderCharacteristics[elderType]);
           Object.assign(this, args);
           if (this.elderType === ElderType.Sentry) {
             composeBehavior(elder, PatrolAroundTarget(/* orbit */ 300));
@@ -122,27 +128,46 @@ export enum ElderType {
   MotherShip
 }
 
-/* 
-    TODO: Refactor creation of elder types based on characteristics
-    of each type:
-
+interface EldersCharacteristics {
+  [ElderType.Drone]: ElderCharacteristics;
+  [ElderType.Sentry]: ElderCharacteristics;
+  [ElderType.MotherShip]: ElderCharacteristics;
+}
 interface ElderCharacteristics {
-  Behaviors: Behavior[];
+  size: number;
+  speed: number;
+  maxSpeed: number;
+  acceleration: number;
+  life: number;
+  damage: number;
 }
 
-const ElderCharacteristics = {
-  Drone: {
-    Behaviors: [Shoot]
+const ElderCharacteristics: EldersCharacteristics = {
+  [ElderType.Drone]: {
+    size: 10,
+    speed: 4,
+    maxSpeed: 6,
+    acceleration: 0.1,
+    life: 50,
+    damage: 10
   },
-  Sentry: {
-    Behaviors: [FollowSteadyBehavior, Shoot]
+  [ElderType.Sentry]: {
+    size: 20,
+    speed: 2,
+    maxSpeed: 2,
+    acceleration: 0, // move uniformly
+    life: 100,
+    damage: 30
   },
-  Mothership: {
-    Behaviors: [Shoot]
+  [ElderType.MotherShip]: {
+    size: 100,
+    speed: 1,
+    maxSpeed: 1,
+    acceleration: 0, // move uniformly
+    life: 500,
+    damage: 100
   }
 };
-
-*/
 
 function getElderPattern() {
   let grey = { h: 0, s: 0, l: 50 };

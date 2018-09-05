@@ -36,7 +36,9 @@
     - would be interesting to have the same for asteroids as well
   - other factions
     - similar behavior to players ship
-  - shoot bullets with color of your own faction
+  - shoot bullets with color of your own faction (including particles)
+    - red, blue, green for the factions
+    - purple for the evil elder race
 - Map generation
   - BUG: there appears to be an issue where stars aren't displayed
     after the ship has been moving for a while. PROBABLY due to
@@ -94,6 +96,8 @@
 
 ## CORE GAME MECHANICS
 
+- Gameplay
+  - allow user to zoom in or zoom out (using scale hopefully works XD)
 - ship faction modifier
   - revisit. make a system with points to make it more equitative. (Instead of just setting random values xD)
 - shoot
