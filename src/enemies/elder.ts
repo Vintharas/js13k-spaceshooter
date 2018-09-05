@@ -9,6 +9,7 @@ import {
   Behavior,
   PatrolAroundTarget
 } from "../behavior";
+import OffscreenCanvas from "../canvas";
 
 // Elder race of aliens jara, jara
 // Using the elder name couldn't be more confusing XD
@@ -57,8 +58,11 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
           this.context.save();
           this.context.translate(position.x, position.y);
           this.context.rotate((Math.PI * 1) / 4);
-          this.context.fillStyle = "gray";
-          this.context.fillRect(0, 0, 20, 20);
+
+          let pattern = getElderPattern();
+          this.context.fillStyle = pattern;
+          this.context.rect(0, 0, 20, 20);
+          this.context.fill();
           if (this.wasDamaged) {
             this.context.globalCompositeOperation = "source-atop";
             this.context.fillStyle = "rgba(255,0,0,0.5)";
@@ -139,3 +143,15 @@ const ElderCharacteristics = {
 };
 
 */
+
+function getElderPattern() {
+  let grey = { h: 0, s: 0, l: 50 };
+  let granate = { h: 295, s: 100, l: 50 };
+  let pattern = OffscreenCanvas.instance().getPatternBasedOnColors(
+    grey,
+    granate,
+    20,
+    20
+  );
+  return pattern;
+}

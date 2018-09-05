@@ -12,7 +12,6 @@ import { generateName } from "./names";
 import { Faction } from "./factions";
 import { createGameStatusText } from "./text";
 import { Scene } from "./scenes/scene";
-import { Sun } from "./sun";
 
 export interface Planet extends Sprite {
   radius: number;

@@ -155,6 +155,65 @@ export default class OffscreenCanvas {
 
     return pattern;
   }
+
+  getPatternBasedOnColors(
+    primary: HSL,
+    secondary: HSL,
+    width: number = 16,
+    height: number = 16,
+    pixelSize: number = 2
+  ) {
+    // memoize
+    // TODO: extract to higher-order function
+    if (
+      this.savedPatterns.has(twocolorkey(primary, secondary, width, height))
+    ) {
+      return this.savedPatterns.get(
+        twocolorkey(primary, secondary, width, height)
+      );
+    }
+
+    this.canvas.width = width;
+    this.canvas.height = height;
+
+    // 1. define color theme
+    const p = primary;
+    const s = secondary;
+
+    const baseColor = (a: number) => Color.hsla(p.h, p.s, p.l, a);
+    const lightShade = (a: number) => Color.hsla(p.h, p.s, p.l + 10, a);
+    const darkShade = (a: number) => Color.hsla(p.h, p.s, p.l - 10, a);
+    const accent = (a: number) => Color.hsla(s.h, s.s, s.l, a);
+
+    const buckets = [
+      baseColor,
+      baseColor,
+      baseColor,
+      baseColor,
+      lightShade,
+      lightShade,
+      darkShade,
+      darkShade,
+      accent,
+      accent
+    ];
+
+    // 3. distribute randomly pixel by pixel see how it looks
+    for (let x = 0; x < this.canvas.width; x += pixelSize) {
+      for (let y = 0; y < this.canvas.height; y += pixelSize) {
+        let pickedColor = pickColor(buckets);
+        this.context.fillStyle = pickedColor;
+        this.context.fillRect(x, y, pixelSize, pixelSize);
+      }
+    }
+
+    const pattern = this.context.createPattern(this.canvas, "repeat");
+    this.savedPatterns.set(
+      twocolorkey(primary, secondary, width, height),
+      pattern
+    );
+    return pattern;
+  }
 }
 
 function key(
@@ -174,6 +233,17 @@ function tkey(
   height: number
 ) {
   return `t/${key(hue, saturation, light, width, height)}`;
+}
+
+function twocolorkey(
+  primary: HSL,
+  secondary: HSL,
+  width: number,
+  height: number
+) {
+  let key1 = key(primary.h, primary.s, primary.l, width, height);
+  let key2 = key(secondary.h, secondary.s, secondary.l, width, height);
+  return `${key1}//${key2}`;
 }
 
 function pickColor(buckets: any) {
