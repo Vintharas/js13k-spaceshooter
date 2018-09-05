@@ -20,12 +20,23 @@
 ## Prioritize
 
 - Enemies
-  - alien faction
-    - mother ship
-    - drones
+  - [*] first version of enemy sentry that follows and shoots at you
+    - [*] update collision engine to be able to impact things with bullets
+  - REFACTORING
+    - extract receiving impact animation into something reusable
+    - refactor collision engine to be more consistent across different types of objects
+    - refactor objects types to Enums
+  - complete alien faction
     - sentries
+    - drones
+    - mother ship
+    - design pattern for this ships. Something greyish and purple
+  - collision between enemies and asteroids!
+  - handle collisions, idea of life/damage for non ship objects, etc
+    - would be interesting to have the same for asteroids as well
   - other factions
     - similar behavior to players ship
+  - shoot bullets with color of your own faction
 - Map generation
   - BUG: there appears to be an issue where stars aren't displayed
     after the ship has been moving for a while. PROBABLY due to
@@ -58,6 +69,7 @@
 - support for multiple weapons
 - planets orbiting around sun
   - add gradient using the sun in the center as source of illumination
+- investigate generative music
 
 ## BUILD - minimize assets to 13K
 
@@ -65,6 +77,10 @@
   - scenes.
     - Separate background and foreground objects. There's no need to check
     - extract checking whether an object is viewable to the render method within the scene. We no longer need to do it per sprite? As I've been doing it
+- Techniques to reduce space
+  - wrap kontra library
+  - write the loading assets component from scratch. I'll only need the images, so I don't really need 1K only for loading 3 images
+  - update ts not to transpile stuff to ES5
 - Optimize build
   - test closure compiler
     - this is going to be a pain in the ass

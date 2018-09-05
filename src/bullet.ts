@@ -7,13 +7,19 @@ import {
 import { Scene } from "./scenes/scene";
 import { createParticle } from "./particles";
 
+export interface Bullet extends Sprite {
+  damage: number;
+}
+
 export default function createBullet(
   position: Position,
   velocity: Velocity,
   angle: number,
   cameraPosition: Position,
-  scene: Scene
-) {
+  scene: Scene,
+  owner: Sprite,
+  damage: number = 10
+): Bullet {
   let cos = Math.cos(degreesToRadians(angle));
   let sin = Math.sin(degreesToRadians(angle));
 
@@ -25,6 +31,9 @@ export default function createBullet(
     // move the bullet slightly faster than the ship
     dx: velocity.dx + cos * 5,
     dy: velocity.dy + sin * 5,
+    // damage can vary based on who shoots the missile
+    damage,
+    owner,
     // live only 50 frames
     ttl: 50,
     // bullets are small

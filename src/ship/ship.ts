@@ -252,5 +252,10 @@ export default function createShip(scene: Scene, faction: Faction) {
     }
   });
 
+  // circular dependency necessary for
+  // ship weapons not to collide with the ship
+  // itself. TODO: solve this in a better way
+  weapons.ship = ship;
+
   return ship;
 }

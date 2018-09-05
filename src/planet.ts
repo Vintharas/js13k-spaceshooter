@@ -18,7 +18,6 @@ export interface Planet extends Sprite {
   radius: number;
   outerRadius: number;
 
-  dt: number;
   origin: Position;
   angle: number;
   orbit: number;
@@ -63,7 +62,6 @@ export function createPlanet(
     outerRadius: radius + 0.25 * radius,
 
     ttl: Infinity,
-    dt: 0,
 
     angle: startingAngle,
     da,
@@ -105,15 +103,7 @@ export function createPlanet(
     resources: Config.Planet.Resources,
 
     update() {
-      this.dt += 1 / 60;
       this.rotation += 1 / 4;
-      // TODO: this pattern I can extract in a function
-      // and reuse it across most sprites
-      /*if (this.dt > 0.25) {
-        this.dt = 0;
-        this.angle += this.da;
-      }
-      */
       this.angle += this.da;
 
       let newPosition = Positions.inCircleGivenAngle(

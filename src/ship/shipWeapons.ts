@@ -5,6 +5,7 @@ import { degreesToRadians, Position } from "../utils";
 import createBullet from "../bullet";
 import { ShipSystem, ShipSystemMixin } from "./shipSystems";
 import { createGameStatusText } from "../text";
+import { Ship } from "./ship";
 
 export interface ShipWeapons extends Sprite, ShipSystem {
   isEnabled: boolean;
@@ -24,6 +25,8 @@ export function ShipWeapons(
   let weapons = kontra.sprite({
     ...ShipSystemMixin(scene, "WEAPONS", (energy.maxEnergy * 2) / 5),
 
+    // this is necessary so that bullets won't collide with the ship
+    ship: undefined,
     dt: 0,
     rotation: 0,
     position: { x: 0, y: 0 },
@@ -53,7 +56,8 @@ export function ShipWeapons(
           this.velocity,
           this.rotation,
           scene.cameraPosition,
-          scene
+          scene,
+          /* owner */ this.ship
         );
         scene.addSprite(bullet);
       }

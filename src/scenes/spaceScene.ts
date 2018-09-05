@@ -12,7 +12,7 @@ import { Sector } from "../map/sector";
 import createBullet from "../bullet";
 import { SpaceBackground } from "../background";
 import { GameData } from "../gamedata";
-import { ElderPool } from "../enemies/elder";
+import { ElderPool, ElderType } from "../enemies/elder";
 
 export default function createSpaceScene(gameData: GameData) {
   const camera = createCamera();
@@ -25,12 +25,12 @@ export default function createSpaceScene(gameData: GameData) {
   addBackground(scene, ship);
   //addPlanets(scene, ship);
   //addSun(scene, ship);
-  addSector(scene, ship);
+  let sector = addSector(scene, ship);
   addAsteroids(scene, ship);
   addStaticAsteroids(scene, ship);
 
   // add enemies for testing
-  addEnemies(scene, ship);
+  addEnemies(scene, ship, sector);
 
   scene.addSprite(ship);
 
@@ -145,16 +145,17 @@ function addSun(scene: Scene, cameraPosition: Position) {
 
 */
 
-function addSector(scene: Scene, cameraPosition: Position) {
+function addSector(scene: Scene, cameraPosition: Position): Sector {
   let sector = Sector(
     scene,
     { x: -Config.Sector.Size / 2, y: -Config.Sector.Size / 2 },
     cameraPosition
   );
   sector.bodies.forEach(s => scene.addSprite(s));
+  return sector;
 }
 
-function addEnemies(scene: Scene, ship: Ship) {
+function addEnemies(scene: Scene, ship: Ship, sector: Sector) {
   let elderPool = ElderPool(scene, ship);
 
   //for (let x = 0; x < 500; x += 100) {
@@ -163,7 +164,10 @@ function addEnemies(scene: Scene, ship: Ship) {
     y: 200,
     ttl: Infinity,
     dx: 0,
-    dy: 0
+    dy: 0,
+    width: 20,
+    elderType: ElderType.Sentry,
+    patrolTarget: sector.sun
   });
   //}
 

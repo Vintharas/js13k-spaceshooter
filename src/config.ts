@@ -24,13 +24,14 @@ const Config = {
     "ship",
     "cell",
     "planet",
-    "planet-sun"
+    "planet-sun",
+    "enemy"
   ],
 
   // enable debug printouts
   debug: false,
   verbose: false,
-  typesToLog: ["asteroid", "ship"],
+  typesToLog: ["asteroid", "ship", "enemy", "bullet"],
   logTheseProperties: (s: Sprite) => ({
     type: s.type,
     x: s.x,

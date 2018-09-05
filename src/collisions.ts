@@ -9,6 +9,25 @@ import { createText } from "./text";
 import { Planet } from "./planet";
 import { Sun } from "./sun";
 import { Vector } from "./vector";
+import { Bullet } from "./bullet";
+
+/*
+Improvements for collision engine:
+
+- unify how we calculate collisions with all objects. Some of them have radius 
+  others have width, size, etc. Provide a unified interface with a single property
+  to take into account. Width is used by the framework and it make bet reset to something
+  I don't control (like in the case of a sprite or with object pools)
+- extract collision predicate into a function
+- rewrite collision algorithm that traverses list of game objects and checks collisions
+  between them.
+- use enums instead of strings for type
+- extract collision handlers into separate classes/functions that can also
+  check whether the handler applies to a given collision.
+  - 1. is there collision?
+  - 2. is there a handler?
+  - 3. apply handler
+*/
 
 export default class CollisionsEngine {
   private ship: Ship;
@@ -20,7 +39,12 @@ export default class CollisionsEngine {
 
     this.initializeShip();
     // temporary hack to test something
-    let collidableObjects = this.scene.sprites.foreground
+    let collidableObjects = [
+      ...this.scene.sprites.foreground,
+      ...this.scene.pools
+        .map(p => p.getAliveObjects())
+        .reduce((arr, acc) => [...acc, ...arr], [])
+    ]
       .filter(s => Config.collidableTypes.includes(s.type))
       // with the current algorithm that
       // checks whether an asteroid has collided with X
@@ -42,6 +66,23 @@ export default class CollisionsEngine {
             let asteroid = collidableObjects[i];
             let sprite = collidableObjects[j];
             let collided = this.handleCollisionWithAsteroid(asteroid, sprite);
+            if (collided) break;
+          }
+        }
+      }
+
+      if (collidableObjects[i].type === "bullet") {
+        for (let j = i + 1; j < collidableObjects.length; j++) {
+          // TODO: refactor, use enums
+          // don't check collisions betwen bullets
+          // asteroids have already been checked
+          if (
+            collidableObjects[j].type !== "bullet" &&
+            collidableObjects[i].type !== "asteroid"
+          ) {
+            let bullet = collidableObjects[i] as Bullet;
+            let sprite = collidableObjects[j] as Sprite;
+            let collided = this.handleCollisionWithBullet(bullet, sprite);
             if (collided) break;
           }
         }
@@ -109,6 +150,24 @@ export default class CollisionsEngine {
     }
   }
 
+  handleCollisionWithBullet(bullet: Bullet, sprite: Sprite) {
+    // circle vs. circle collision detection
+    if (
+      Vector.getDistanceMagnitude(bullet, sprite) <
+        bullet.width + sprite.width &&
+      bullet.owner !== sprite
+    ) {
+      // is it damageable?
+      if (sprite.takeDamage) sprite.takeDamage(bullet.damage);
+      bullet.ttl = 0;
+
+      // add explostion when sprite doesn't have any life left
+      if (sprite.ttl === 0)
+        // particle explosion
+        this.addExplosion(this.scene, sprite);
+    }
+  }
+
   handleCollisionAsteroidWithShip(asteroid: Asteroid, ship: any) {
     if (Config.debug)
       console.log("Asteroid collided with ship", asteroid, ship);
@@ -116,21 +175,28 @@ export default class CollisionsEngine {
     // on the size of the asteroid
     let damage = asteroid.radius * 4;
     ship.takeDamage(damage);
+    if (ship.ttl === 0) {
+      this.addExplosion(this.scene, ship);
+    }
   }
 
-  addExplosion(scene: Scene, asteroid: Asteroid) {
+  addExplosion(scene: Scene, sprite: Sprite) {
     // TODO: extract colors and selection
     // to a helper function
     let red = { r: 255, g: 0, b: 0 };
     let orange = { r: 255, g: 165, b: 0 };
     let yellow = { r: 255, g: 255, b: 0 };
     let explosionColors = [red, orange, yellow];
-    for (let i = 0; i < asteroid.radius * 10; i++) {
+
+    // TODO: unify this for the love of gooood!
+    let spriteSize = sprite.radius || sprite.width || sprite.size;
+    let numberOfParticles = spriteSize * 10;
+    for (let i = 0; i < numberOfParticles; i++) {
       let colorIndex = Math.round(Math.random() * 2);
-      let particle = createExplosionParticle(asteroid, scene.cameraPosition, {
+      let particle = createExplosionParticle(sprite, scene.cameraPosition, {
         ttl: 50,
         color: explosionColors[colorIndex],
-        magnitude: asteroid.radius / 2
+        magnitude: spriteSize / 2
       });
       scene.addSprite(particle);
     }
