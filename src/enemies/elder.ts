@@ -1,6 +1,6 @@
 import { Ship } from "../ship/ship";
 import Config from "../config";
-import { getCanvasPosition } from "../utils";
+import { Position, getCanvasPosition, getRandomValueOf } from "../utils";
 import { Scene } from "../scenes/scene";
 import {
   composeBehavior,
@@ -13,7 +13,7 @@ import OffscreenCanvas from "../canvas";
 
 // Elder race of aliens jara, jara
 // Using the elder name couldn't be more confusing XD
-export interface Elder extends Sprite {
+export interface Elder extends Sprite, ElderCharacteristics {
   elderType: ElderType;
 }
 
@@ -28,6 +28,9 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
         ship,
         life: 100,
         width: 20,
+
+        // render
+        pattern: getElderPattern(),
 
         // damage animation TODO: extract
         dwd: 0,
@@ -56,19 +59,7 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
         },
         render(this: Elder) {
           let position = getCanvasPosition(this, this.ship);
-
-          this.context.save();
-          this.context.translate(position.x, position.y);
-          this.context.rotate((Math.PI * 1) / 4);
-          let pattern = getElderPattern();
-          this.context.fillStyle = pattern;
-          this.context.fillRect(0, 0, this.width, this.width);
-          if (this.wasDamaged) {
-            this.context.globalCompositeOperation = "source-atop";
-            this.context.fillStyle = "rgba(255,0,0,0.5)";
-            this.context.fillRect(0, 0, this.width, this.width);
-          }
-          this.context.restore();
+          this.renderElder(position);
 
           if (Config.debug && Config.showPath) {
             this.context.save();
@@ -133,6 +124,7 @@ interface EldersCharacteristics {
   [ElderType.Sentry]: ElderCharacteristics;
   [ElderType.MotherShip]: ElderCharacteristics;
 }
+
 interface ElderCharacteristics {
   size: number;
   speed: number;
@@ -140,6 +132,7 @@ interface ElderCharacteristics {
   acceleration: number;
   life: number;
   damage: number;
+  renderElder(position: Position): void;
 }
 
 const ElderCharacteristics: EldersCharacteristics = {
@@ -149,7 +142,8 @@ const ElderCharacteristics: EldersCharacteristics = {
     maxSpeed: 6,
     acceleration: 0.1,
     life: 50,
-    damage: 10
+    damage: 10,
+    renderElder(position: Position) {}
   },
   [ElderType.Sentry]: {
     size: 20,
@@ -157,7 +151,20 @@ const ElderCharacteristics: EldersCharacteristics = {
     maxSpeed: 2,
     acceleration: 0, // move uniformly
     life: 100,
-    damage: 30
+    damage: 30,
+    renderElder(position: Position) {
+      this.context.save();
+      this.context.translate(position.x, position.y);
+      this.context.rotate((Math.PI * 1) / 4);
+      this.context.fillStyle = this.pattern;
+      this.context.fillRect(0, 0, this.width, this.width);
+      if (this.wasDamaged) {
+        this.context.globalCompositeOperation = "source-atop";
+        this.context.fillStyle = "rgba(255,0,0,0.5)";
+        this.context.fillRect(0, 0, this.width, this.width);
+      }
+      this.context.restore();
+    }
   },
   [ElderType.MotherShip]: {
     size: 100,
@@ -165,18 +172,23 @@ const ElderCharacteristics: EldersCharacteristics = {
     maxSpeed: 1,
     acceleration: 0, // move uniformly
     life: 500,
-    damage: 100
+    damage: 100,
+    renderElder(position: Position) {}
   }
 };
 
 function getElderPattern() {
   let grey = { h: 0, s: 0, l: 50 };
   let granate = { h: 295, s: 100, l: 50 };
+  let green = { h: 120, s: 100, l: 50 };
+  let accent = getRandomValueOf([granate, green]);
   let pattern = OffscreenCanvas.instance().getPatternBasedOnColors(
     grey,
-    granate,
+    accent,
     20,
     20
   );
   return pattern;
 }
+// TODO: could have a couple of patterns with purple and phosphorecent green
+// or something like that

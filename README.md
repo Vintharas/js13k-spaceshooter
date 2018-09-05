@@ -22,15 +22,13 @@
 - Enemies
   - [*] first version of enemy sentry that follows and shoots at you
     - [*] update collision engine to be able to impact things with bullets
-  - REFACTORING
-    - extract receiving impact animation into something reusable
-    - refactor collision engine to be more consistent across different types of objects
-    - refactor objects types to Enums
   - complete alien faction
-    - sentries
-    - drones
+    - [*] sentries
     - mother ship
-    - design pattern for this ships. Something greyish and purple
+    - drones
+    - create fleet formations (with mother ship, drones and sentries)
+    - [*] design pattern for this ships. Something greyish and purple
+      - looks great! Try some green as well and use either of those patterns
   - collision between enemies and asteroids!
   - handle collisions, idea of life/damage for non ship objects, etc
     - would be interesting to have the same for asteroids as well
@@ -72,6 +70,10 @@
 - planets orbiting around sun
   - add gradient using the sun in the center as source of illumination
 - investigate generative music
+- REFACTORING
+  - extract receiving impact animation into something reusable
+  - refactor collision engine to be more consistent across different types of objects
+  - refactor objects types to Enums
 
 ## BUILD - minimize assets to 13K
 
