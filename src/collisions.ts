@@ -154,7 +154,7 @@ export default class CollisionsEngine {
     // circle vs. circle collision detection
     if (
       Vector.getDistanceMagnitude(bullet, sprite) <
-        bullet.width + sprite.width &&
+        bullet.width + sprite.width / 2 &&
       bullet.owner !== sprite
     ) {
       // is it damageable?

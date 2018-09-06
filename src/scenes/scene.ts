@@ -64,9 +64,17 @@ export function createScene({
         .filter((s: Sprite) => !isObjectOutOfBounds(s, camera))
         .forEach((s: Sprite) => s.render());
       this.sprites.foreground
-        .filter((s: Sprite) => !isObjectOutOfBounds(s, camera))
+        .filter(
+          (s: Sprite) =>
+            !isObjectOutOfBounds(s, camera) &&
+            s.type !== "ship" &&
+            s.type !== "bullet"
+        )
         .forEach((s: Sprite) => s.render());
       this.pools.forEach((p: Pool) => p.render());
+      this.sprites.foreground
+        .filter((s: Sprite) => s.type === "ship" || s.type === "bullet")
+        .forEach((s: Sprite) => s.render());
     }
   });
 

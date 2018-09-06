@@ -63,9 +63,9 @@ function addBackground(scene: Scene, cameraPosition: Position) {
 
 function addAsteroids(scene: Scene, cameraPosition: Position) {
   // create some clusters of varying sizes
-  for (let i = 0; i < Config.initialNumberOfClusters; i++) {
+  for (let i = 0; i < Config.Asteroids.InitialNumberOfClusters; i++) {
     let clusterSize = Math.ceil(
-      getValueInRange(0, Config.maxAsteroidClusterSize)
+      getValueInRange(0, Config.Asteroids.MaxAsteroidClusterSize)
     );
     addAsteroidCluster(scene, cameraPosition, clusterSize);
   }
@@ -73,9 +73,9 @@ function addAsteroids(scene: Scene, cameraPosition: Position) {
 
 function addStaticAsteroids(scene: Scene, cameraPosition: Position) {
   // create some clusters of varying sizes
-  for (let i = 0; i < Config.initialNumberOfClusters; i++) {
+  for (let i = 0; i < Config.Asteroids.InitialNumberOfClusters; i++) {
     let clusterSize = Math.ceil(
-      getValueInRange(0, Config.maxAsteroidClusterSize)
+      getValueInRange(0, Config.Asteroids.MaxAsteroidClusterSize)
     );
     addAsteroidCluster(
       scene,
@@ -169,6 +169,15 @@ function addEnemies(scene: Scene, ship: Ship, sector: Sector) {
     patrolTarget: sector.sun
   });
   //}
+
+  elderPool.get({
+    x: 300,
+    y: 300,
+    ttl: Infinity,
+    dx: 0,
+    dy: 0,
+    elderType: ElderType.MotherShip
+  });
 
   scene.pools.push(elderPool);
 }

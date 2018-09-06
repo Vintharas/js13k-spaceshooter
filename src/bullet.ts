@@ -6,6 +6,8 @@ import {
 } from "./utils";
 import { Scene } from "./scenes/scene";
 import { createParticle } from "./particles";
+import Config from "./config";
+import { Draw } from "./draw";
 
 export interface Bullet extends Sprite {
   damage: number;
@@ -55,6 +57,20 @@ export default function createBullet(
       let position = getCanvasPosition(this, cameraPosition);
       this.context.fillStyle = this.color;
       this.context.fillRect(position.x, position.y, this.width, this.height);
+
+      if (Config.debug && Config.showPath) {
+        this.context.save();
+        this.context.translate(position.x, position.y);
+        Draw.drawLine(this.context, 0, 0, this.dx, this.dy, "red");
+        this.context.restore();
+      }
+
+      if (Config.debug && Config.renderCollisionArea) {
+        this.context.save();
+        this.context.translate(position.x, position.y);
+        Draw.drawCircle(this.context, 0, 0, this.width / 2, "red");
+        this.context.restore();
+      }
     }
   });
 }

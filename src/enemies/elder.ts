@@ -1,6 +1,11 @@
 import { Ship } from "../ship/ship";
 import Config from "../config";
-import { Position, getCanvasPosition, getRandomValueOf } from "../utils";
+import {
+  Position,
+  getCanvasPosition,
+  getRandomValueOf,
+  degreesToRadians
+} from "../utils";
 import { Scene } from "../scenes/scene";
 import {
   composeBehavior,
@@ -10,6 +15,7 @@ import {
   PatrolAroundTarget
 } from "../behavior";
 import OffscreenCanvas from "../canvas";
+import { Draw } from "../draw";
 
 // Elder race of aliens jara, jara
 // Using the elder name couldn't be more confusing XD
@@ -31,6 +37,7 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
 
         // render
         pattern: getElderPattern(),
+        rotation: 45,
 
         // damage animation TODO: extract
         dwd: 0,
@@ -50,6 +57,7 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
             }
           }
           this.advance();
+          this.rotation += 0.5;
         },
         takeDamage(damage: number) {
           // TODO: add take damage animation
@@ -63,32 +71,27 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
 
           if (Config.debug && Config.showPath) {
             this.context.save();
-            this.context.translate(
-              position.x + this.width / 2,
-              position.y + this.width / 2
+            this.context.translate(position.x, position.y);
+            Draw.drawLine(
+              this.context,
+              0,
+              0,
+              this.dx * 20,
+              this.dy * 20,
+              "red"
             );
-            this.context.beginPath();
-            this.context.strokeStyle = "red";
-            this.context.moveTo(0, 0);
-            this.context.lineTo(this.dx * 20, this.dy * 20);
-            this.context.stroke();
             this.context.restore();
           }
 
+          // TODO: looks like the collision algo
+          // uses width as radius instead of width/2
+          // creating a much bigger collision area than expected
+          // reduce that to be the actual width/2 and test that it works
           if (Config.debug && Config.renderCollisionArea) {
             this.context.save();
             this.context.translate(position.x, position.y);
-            this.context.rotate((Math.PI * 1) / 4);
-            this.context.strokeStyle = "red";
-            this.context.beginPath(); // start drawing a shape
-            this.context.arc(
-              this.width / 2,
-              this.width / 2,
-              this.width / 2,
-              0,
-              Math.PI * 2
-            );
-            this.context.stroke(); // outline the circle
+            this.context.rotate(degreesToRadians(this.rotation));
+            Draw.drawCircle(this.context, 0, 0, this.width / 2, "red");
             this.context.restore();
           }
         },
@@ -104,6 +107,8 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
           } else if (this.elderType === ElderType.Drone) {
           } else {
             // mothership
+            composeBehavior(elder, FollowSteadyBehavior(ship));
+            composeBehavior(elder, Shoot(scene, ship));
           }
         }
       });
@@ -126,18 +131,18 @@ interface EldersCharacteristics {
 }
 
 interface ElderCharacteristics {
-  size: number;
+  width: number;
   speed: number;
   maxSpeed: number;
   acceleration: number;
   life: number;
   damage: number;
-  renderElder(position: Position): void;
+  renderElder(this: Elder, position: Position): void;
 }
 
 const ElderCharacteristics: EldersCharacteristics = {
   [ElderType.Drone]: {
-    size: 10,
+    width: 10,
     speed: 4,
     maxSpeed: 6,
     acceleration: 0.1,
@@ -146,7 +151,7 @@ const ElderCharacteristics: EldersCharacteristics = {
     renderElder(position: Position) {}
   },
   [ElderType.Sentry]: {
-    size: 20,
+    width: 20,
     speed: 2,
     maxSpeed: 2,
     acceleration: 0, // move uniformly
@@ -155,25 +160,61 @@ const ElderCharacteristics: EldersCharacteristics = {
     renderElder(position: Position) {
       this.context.save();
       this.context.translate(position.x, position.y);
-      this.context.rotate((Math.PI * 1) / 4);
+      this.context.rotate(degreesToRadians(this.rotation));
       this.context.fillStyle = this.pattern;
-      this.context.fillRect(0, 0, this.width, this.width);
+      this.context.fillRect(
+        -this.width / 2,
+        -this.width / 2,
+        this.width,
+        this.width
+      );
       if (this.wasDamaged) {
         this.context.globalCompositeOperation = "source-atop";
         this.context.fillStyle = "rgba(255,0,0,0.5)";
-        this.context.fillRect(0, 0, this.width, this.width);
+        this.context.fillRect(
+          -this.width / 2,
+          -this.width / 2,
+          this.width,
+          this.width
+        );
       }
       this.context.restore();
     }
   },
   [ElderType.MotherShip]: {
-    size: 100,
+    width: 100,
     speed: 1,
     maxSpeed: 1,
     acceleration: 0, // move uniformly
     life: 500,
     damage: 100,
-    renderElder(position: Position) {}
+    renderElder(position: Position) {
+      // TODO: for this and sentry
+      // the position should be the center of the ship
+      // and not
+      // 1. draw main body
+      this.context.save();
+      this.context.translate(position.x, position.y);
+      this.context.rotate(degreesToRadians(this.rotation));
+      this.context.fillStyle = this.pattern;
+      this.context.fillRect(
+        -this.width / 4,
+        -this.width / 4,
+        this.width / 2,
+        this.width / 2
+      );
+      // outer ring is rotating faster than the inner one
+      this.context.rotate(degreesToRadians(this.rotation + 1.5));
+      Draw.drawCircle(
+        this.context,
+        0,
+        0,
+        this.width / 2,
+        this.pattern,
+        /*line width*/ 5
+      );
+      this.context.restore();
+    }
   }
 };
 

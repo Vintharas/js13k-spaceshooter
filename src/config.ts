@@ -13,10 +13,6 @@ const Config = {
   // debugging's sake
   mapBoundary: 10000,
 
-  // game objects
-  maxAsteroidClusterSize: 10,
-  initialNumberOfClusters: 10,
-
   // collisions
   collidableTypes: [
     "asteroid",
@@ -55,6 +51,12 @@ const Config = {
   },
 
   // Game Objects
+  Asteroids: {
+    // small number during dev
+    MaxAsteroidClusterSize: 5,
+    InitialNumberOfClusters: 5
+  },
+
   Ship: {
     Energy: 500,
     Life: 200,
