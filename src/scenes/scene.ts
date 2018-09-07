@@ -26,6 +26,7 @@ export interface SceneOptions {
   camera?: Camera;
   update?(dt: number): void;
   render?(): void;
+  props?: any;
 }
 
 // Manages sprites and game loop within
@@ -33,7 +34,8 @@ export interface SceneOptions {
 export function createScene({
   camera = createCamera(),
   update = () => {},
-  render = () => {}
+  render = () => {},
+  props = {}
 }: SceneOptions = {}): Scene {
   const sprites: Sprites = { foreground: [], background: [] };
   const pools: Pool[] = [];
@@ -84,6 +86,7 @@ export function createScene({
   let scene = Object.assign(loop, {
     pools,
     sprites,
+    ...props,
     // TODO: this may not be necessary
     // consider removing to save space
     addSprite(

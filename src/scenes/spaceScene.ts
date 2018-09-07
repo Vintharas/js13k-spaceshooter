@@ -13,10 +13,26 @@ import createBullet from "../bullet";
 import { SpaceBackground } from "../background";
 import { GameData } from "../gamedata";
 import { ElderPool, ElderType } from "../enemies/elder";
+import { after } from "../behavior";
 
 export default function createSpaceScene(gameData: GameData) {
   const camera = createCamera();
-  const scene = createScene({ camera, update });
+  const scene = createScene({
+    camera,
+    props: { isTransitioningToGameOver: false },
+    update() {
+      if (!ship.isAlive()) {
+        if (this.isTransitioningToGameOver) return;
+        this.isTransitioningToGameOver = true;
+        setTimeout(() => {
+          Game.instance().goToGameOverScene();
+        }, 2000);
+      }
+      // remove sprites too far from camera
+      cleanupObjectIfOutOfBounds(scene);
+    }
+  });
+
   const ship = createShip(scene, gameData.faction);
   camera.position = ship;
 
@@ -35,14 +51,6 @@ export default function createSpaceScene(gameData: GameData) {
   scene.addSprite(ship);
 
   return scene;
-
-  function update(dt: number) {
-    if (!ship.isAlive()) {
-      Game.instance().goToGameOverScene();
-    }
-    // remove sprites too far from camera
-    cleanupObjectIfOutOfBounds(scene);
-  }
 }
 
 function cleanupObjectIfOutOfBounds(scene: Scene) {
