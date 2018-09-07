@@ -1,4 +1,4 @@
-import { radiansToDegrees, Positions } from "./utils";
+import { radiansToDegrees, Positions, getValueInRange } from "./utils";
 import createBullet from "./bullet";
 import { Vector } from "./vector";
 import { Scene } from "./scenes/scene";
@@ -50,7 +50,10 @@ export function after(func: any, afterFunc: any) {
   };
 }
 
-export function FollowSteadyBehavior(target: Sprite): Behavior {
+export function FollowSteadyBehavior(
+  target: Sprite,
+  distanceToFollow: number = 500
+): Behavior {
   return {
     type: BehaviorType.FollowSteady,
     properties: {
@@ -60,14 +63,17 @@ export function FollowSteadyBehavior(target: Sprite): Behavior {
     update(dt?: number) {
       this.dtfs += 1 / 60;
       let distanceToShip = Vector.getDistanceMagnitude(this, target);
-      if (distanceToShip < 500 && this.dtfs > 0.25) {
+      if (distanceToShip < distanceToFollow && this.dtfs > 0.25) {
         this.activeBehavior = BehaviorType.FollowSteady;
         // follow target when it's close
         this.dtfs = 0;
         let distance = Vector.getDistance(target, this);
-        this.dx = (this.speed * distance.x) / distanceToShip;
-        this.dy = (this.speed * distance.y) / distanceToShip;
-      } else if (this.dtfs > 1) {
+        this.dx = (this.maxSpeed * distance.x) / distanceToShip;
+        this.dy = (this.maxSpeed * distance.y) / distanceToShip;
+      } else if (
+        this.dtfs > 1 &&
+        this.activeBehavior === BehaviorType.FollowSteady
+      ) {
         // if the target goes further away
         // after a while stop
         this.dx = 0;
@@ -106,7 +112,13 @@ export function Shoot(scene: Scene, target: Sprite): Behavior {
   };
 }
 
+export enum PatrolType {
+  Orbit,
+  Random
+}
+
 export function PatrolAroundTarget(
+  patrolType: PatrolType = PatrolType.Orbit,
   patrolOrbit = 150,
   target: Sprite = undefined
 ): Behavior {
@@ -115,7 +127,8 @@ export function PatrolAroundTarget(
     properties: {
       patrolOrbit,
       angle: 0,
-      dpta: 1,
+      dpta: 1, // da (angle) patrol around target
+      dtpt: 0, // dt (time) patrol around target
       patrolTarget: target
     },
     // describe
@@ -131,38 +144,67 @@ export function PatrolAroundTarget(
       if (!this.patrolTarget) return;
 
       this.activeBehavior = BehaviorType.PatrolAroundTarget;
-      // if we are in the object's orbit then just traverse orbit
-      // otherwise go towards the object
-      let distanceToTarget = Vector.getDistanceMagnitude(
-        this,
-        this.patrolTarget
-      );
-      if (distanceToTarget > this.patrolOrbit) {
-        let speed = 2;
-        let distance = Vector.getDistance(this.patrolTarget, this);
-        this.dx = (speed * distance.x) / distanceToTarget;
-        this.dy = (speed * distance.y) / distanceToTarget;
+      if (patrolType === PatrolType.Orbit) {
+        performOrbitPatrol.call(this);
       } else {
-        // we're in orbit
-        // does the angle correspond to our current position?
-        // if it doesn't set the proper angle
-        // HERE!!!
-
-        // if it does just start orbiting
-        this.dx = 0;
-        this.dy = 0;
-        this.angle += this.dpta;
-
-        let newPosition = Positions.inCircleGivenAngle(
-          this.patrolTarget,
-          this.patrolOrbit,
-          this.angle
-        );
-        this.x = newPosition.x;
-        this.y = newPosition.y;
+        performRandomPatrol.call(this);
       }
     }
   };
+}
+
+function performOrbitPatrol() {
+  // if we are in the object's orbit then just traverse orbit
+  // otherwise go towards the object
+  let distanceToTarget = Vector.getDistanceMagnitude(this, this.patrolTarget);
+  if (distanceToTarget > this.patrolOrbit) {
+    let distance = Vector.getDistance(this.patrolTarget, this);
+    this.dx = (this.speed * distance.x) / distanceToTarget;
+    this.dy = (this.speed * distance.y) / distanceToTarget;
+  } else {
+    // we're in orbit
+    // does the angle correspond to our current position?
+    // TODO: if it doesn't set the proper angle
+    // right now it looks weird, it just jumps to the angle :D
+    // teleport!!!
+
+    // if it does just start orbiting
+    this.dx = 0;
+    this.dy = 0;
+    this.angle += this.dpta;
+
+    let newPosition = Positions.inCircleGivenAngle(
+      this.patrolTarget,
+      this.patrolOrbit,
+      this.angle
+    );
+    this.x = newPosition.x;
+    this.y = newPosition.y;
+  }
+}
+
+function performRandomPatrol() {
+  // if we are in the object's orbit then just
+  // more around randomly
+  // otherwise go back to the orbit by moving directly
+  // to the target
+  let distanceToTarget = Vector.getDistanceMagnitude(this, this.patrolTarget);
+  if (distanceToTarget > this.patrolOrbit) {
+    // move toward target
+    let distance = Vector.getDistance(this.patrolTarget, this);
+    this.dx = (this.speed * distance.x) / distanceToTarget;
+    this.dy = (this.speed * distance.y) / distanceToTarget;
+    this.dtpt = 0;
+  } else {
+    this.dtpt += 1 / 60;
+    if ((this.dx === 0 && this.dy === 0) || this.dtpt > 1) {
+      this.dtpt = 0;
+      // find new random direction every second
+      let newDirection = getValueInRange(0, 2 * Math.PI);
+      this.dx = this.speed * Math.cos(newDirection);
+      this.dy = this.speed * Math.sin(newDirection);
+    }
+  }
 }
 
 // CANDIDATES for behaviors

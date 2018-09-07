@@ -11,10 +11,10 @@ import {
   composeBehavior,
   FollowSteadyBehavior,
   Shoot,
-  Behavior,
   PatrolAroundTarget,
   after,
-  updateWasDamageStatus
+  updateWasDamageStatus,
+  PatrolType
 } from "../behavior";
 import OffscreenCanvas from "../canvas";
 import { Draw } from "../draw";
@@ -89,13 +89,17 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
           Object.assign(this, ElderCharacteristics[elderType]);
           Object.assign(this, args);
           if (this.elderType === ElderType.Sentry) {
-            composeBehavior(elder, PatrolAroundTarget(/* orbit */ 300));
-            composeBehavior(elder, FollowSteadyBehavior(ship));
+            composeBehavior(elder, PatrolAroundTarget(PatrolType.Orbit, 200));
+            composeBehavior(elder, FollowSteadyBehavior(ship, 300));
             composeBehavior(elder, Shoot(scene, ship));
           } else if (this.elderType === ElderType.Drone) {
+            // change this behavior to follow fast
+            composeBehavior(elder, PatrolAroundTarget(PatrolType.Random));
+            composeBehavior(elder, FollowSteadyBehavior(ship, 400));
+            composeBehavior(elder, Shoot(scene, ship));
           } else {
             // mothership
-            composeBehavior(elder, FollowSteadyBehavior(ship));
+            composeBehavior(elder, FollowSteadyBehavior(ship, 300));
             composeBehavior(elder, Shoot(scene, ship));
           }
         }
@@ -131,12 +135,35 @@ interface ElderCharacteristics {
 const ElderCharacteristics: EldersCharacteristics = {
   [ElderType.Drone]: {
     width: 10,
-    speed: 4,
-    maxSpeed: 6,
+    speed: 2,
+    maxSpeed: 4,
     acceleration: 0.1,
     life: 50,
     damage: 10,
-    renderElder(position: Position) {}
+    renderElder(position: Position) {
+      this.context.save();
+      this.context.translate(position.x, position.y);
+      this.context.rotate(degreesToRadians(this.rotation));
+      this.context.strokeStyle = this.pattern;
+      this.context.lineWidth = 3;
+      this.context.strokeRect(
+        -this.width / 2,
+        -this.width / 2,
+        this.width,
+        this.width
+      );
+      if (this.wasDamaged) {
+        this.context.globalCompositeOperation = "source-atop";
+        this.context.fillStyle = "rgba(255,0,0,0.5)";
+        this.context.fillRect(
+          -this.width / 2,
+          -this.width / 2,
+          this.width,
+          this.width
+        );
+      }
+      this.context.restore();
+    }
   },
   [ElderType.Sentry]: {
     width: 20,

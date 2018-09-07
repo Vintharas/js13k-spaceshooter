@@ -166,18 +166,6 @@ function addSector(scene: Scene, cameraPosition: Position): Sector {
 function addEnemies(scene: Scene, ship: Ship, sector: Sector) {
   let elderPool = ElderPool(scene, ship);
 
-  //for (let x = 0; x < 500; x += 100) {
-  elderPool.get({
-    x: 200,
-    y: 200,
-    ttl: Infinity,
-    dx: 0,
-    dy: 0,
-    elderType: ElderType.Sentry,
-    patrolTarget: sector.sun
-  });
-  //}
-
   elderPool.get({
     x: 300,
     y: 300,
@@ -186,6 +174,36 @@ function addEnemies(scene: Scene, ship: Ship, sector: Sector) {
     dy: 0,
     elderType: ElderType.MotherShip
   });
+
+  for (let x = 0; x <= 60; x += 20) {
+    elderPool.get({
+      x: 200 + x,
+      y: 200 + x,
+      ttl: Infinity,
+      dx: 0,
+      dy: 0,
+      elderType: ElderType.Sentry,
+      patrolTarget: elderPool
+        .getAliveObjects()
+        .filter(s => s.elderType === ElderType.MotherShip)[0],
+      patrolOrbit: 100 + x,
+      angle: x
+    });
+  }
+
+  for (let x = 0; x < 500; x += 100) {
+    elderPool.get({
+      x,
+      y: x,
+      ttl: Infinity,
+      dx: 0,
+      dy: 0,
+      elderType: ElderType.Drone,
+      patrolTarget: elderPool
+        .getAliveObjects()
+        .filter(s => s.elderType === ElderType.MotherShip)[0]
+    });
+  }
 
   scene.pools.push(elderPool);
 }

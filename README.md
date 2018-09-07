@@ -24,11 +24,12 @@
     - [*] update collision engine to be able to impact things with bullets
   - complete alien faction
     - [*] sentries
-    - mother ship
-    - drones
-    - create fleet formations (with mother ship, drones and sentries)
+    - [*] mother ship
+    - [*] drones
     - [*] design pattern for this ships. Something greyish and purple
       - looks great! Try some green as well and use either of those patterns
+    - create fleet formations (with mother ship, drones and sentries)
+      - make mother ship move steady in a direction
   - collision between enemies and asteroids!
   - handle collisions, idea of life/damage for non ship objects, etc
     - would be interesting to have the same for asteroids as well
