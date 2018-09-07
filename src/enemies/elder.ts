@@ -19,6 +19,7 @@ import {
 import OffscreenCanvas from "../canvas";
 import { Draw } from "../draw";
 import { doThisEvery } from "../time";
+import { Faction } from "../factions";
 
 // Elder race of aliens jara, jara
 // Using the elder name couldn't be more confusing XD
@@ -31,7 +32,7 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
     create() {
       let elder = kontra.sprite({
         // pass all properties ot the kontra.sprite ctor
-        type: "enemy",
+        type: "elder",
         // the enemies will need to have a reference
         // to the ship so they know its location
         ship,
@@ -198,15 +199,12 @@ const ElderCharacteristics: EldersCharacteristics = {
   },
   [ElderType.MotherShip]: {
     width: 100,
-    speed: 1,
+    speed: 0.5,
     maxSpeed: 1,
     acceleration: 0, // move uniformly
     life: 500,
     damage: 100,
     renderElder(position: Position) {
-      // TODO: for this and sentry
-      // the position should be the center of the ship
-      // and not
       // 1. draw main body
       this.context.save();
       this.context.translate(position.x, position.y);

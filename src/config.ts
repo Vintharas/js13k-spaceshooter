@@ -21,7 +21,7 @@ const Config = {
     "cell",
     "planet",
     "planet-sun",
-    "enemy"
+    "elder" // aliens
   ],
 
   // enable debug printouts

@@ -152,10 +152,13 @@ export default class CollisionsEngine {
 
   handleCollisionWithBullet(bullet: Bullet, sprite: Sprite) {
     // circle vs. circle collision detection
+    if (bullet.owner === sprite) return;
+    if (bullet.owner.faction && bullet.owner.faction === sprite.faction) return;
+    if (bullet.owner.type === "elder" && sprite.type === "elder") return;
+
     if (
       Vector.getDistanceMagnitude(bullet, sprite) <
-        bullet.width + sprite.width / 2 &&
-      bullet.owner !== sprite
+      bullet.width + sprite.width / 2
     ) {
       // is it damageable?
       if (sprite.takeDamage) sprite.takeDamage(bullet.damage);
