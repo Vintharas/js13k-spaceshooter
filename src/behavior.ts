@@ -2,6 +2,7 @@ import { radiansToDegrees, Positions } from "./utils";
 import createBullet from "./bullet";
 import { Vector } from "./vector";
 import { Scene } from "./scenes/scene";
+import { doThisEvery } from "./Time";
 
 export enum BehaviorType {
   FollowSteady = "FollowSteady",
@@ -162,4 +163,26 @@ export function PatrolAroundTarget(
       }
     }
   };
+}
+
+// CANDIDATES for behaviors
+
+// TODO: This could be wrapped into a behavior
+// that could be composed with objects ad hoc
+// it's slighltly more involved because it's compounded of
+// 1. keeping state of wasDamaged and updating it
+// 2. rendering coloring which will be slighlty different
+// per object. At least right now
+export function updateWasDamageStatus() {
+  // returns a function that
+  // updates was damage status every 0.25 seconds
+  return doThisEvery({
+    condition() {
+      return this.wasDamaged;
+    },
+    action() {
+      this.wasDamaged = false;
+    },
+    t: 0.25
+  });
 }

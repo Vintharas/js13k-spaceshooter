@@ -10,6 +10,7 @@ import { ShipEnergy } from "./shipEnergy";
 import { ShipLife } from "./shipLife";
 import { ShipWeapons } from "./shipWeapons";
 import { ShipVision } from "./shipVision";
+import { updateWasDamageStatus, after } from "../behavior";
 
 export interface Ship extends Sprite {
   width: number;
@@ -88,7 +89,6 @@ export default function createShip(scene: Scene, faction: Faction) {
     ttl: Infinity,
 
     // damage animation
-    dwd: 0,
     wasDamaged: false,
 
     takeDamage(this: Ship, damage: number) {
@@ -153,20 +153,10 @@ export default function createShip(scene: Scene, faction: Faction) {
 
       this.parts.forEach((s: Sprite) => s.render());
     },
-    update(this: Ship) {
+    update: after(function update(this: Ship) {
       this.weapons.updateShipInformation(this, this, this.rotation);
       this.speed.updateSpeed(this.dx, this.dy);
       this.parts.forEach((s: Sprite) => s.update());
-
-      if (this.wasDamaged) {
-        // TODO: extract this pattern
-        // (increase counter and do something after a specific period of time)
-        this.dwd += 1 / 60;
-        if (this.dwd > 0.25) {
-          this.wasDamaged = false;
-          this.dwd = 0;
-        }
-      }
 
       // rotate the ship left or right
       if (kontra.keys.pressed("left")) {
@@ -236,7 +226,7 @@ export default function createShip(scene: Scene, faction: Faction) {
         this.dx *= 0.95;
         this.dy *= 0.95;
       }
-    },
+    }, updateWasDamageStatus()),
     createShipParticle(
       particleAxis: number,
       offset: Position = { x: 0, y: 0 }

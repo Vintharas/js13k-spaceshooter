@@ -12,10 +12,13 @@ import {
   FollowSteadyBehavior,
   Shoot,
   Behavior,
-  PatrolAroundTarget
+  PatrolAroundTarget,
+  after,
+  updateWasDamageStatus
 } from "../behavior";
 import OffscreenCanvas from "../canvas";
 import { Draw } from "../draw";
+import { doThisEvery } from "../time";
 
 // Elder race of aliens jara, jara
 // Using the elder name couldn't be more confusing XD
@@ -40,25 +43,15 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
         rotation: 45,
 
         // damage animation TODO: extract
-        dwd: 0,
         wasDamaged: false,
 
         // behaviors
         activeBehavior: undefined,
 
-        update() {
-          if (this.wasDamaged) {
-            // TODO: extract this pattern
-            // (increase counter and do something after a specific period of time)
-            this.dwd += 1 / 60;
-            if (this.dwd > 0.25) {
-              this.wasDamaged = false;
-              this.dwd = 0;
-            }
-          }
+        update: after(function update() {
           this.advance();
           this.rotation += 0.5;
-        },
+        }, updateWasDamageStatus()),
         takeDamage(damage: number) {
           // TODO: add take damage animation
           this.life -= damage;
@@ -71,22 +64,17 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
 
           if (Config.debug && Config.showPath) {
             this.context.save();
-            this.context.translate(position.x, position.y);
             Draw.drawLine(
               this.context,
-              0,
-              0,
-              this.dx * 20,
-              this.dy * 20,
+              position.x,
+              position.y,
+              position.x + this.dx * 20,
+              position.y + this.dy * 20,
               "red"
             );
             this.context.restore();
           }
 
-          // TODO: looks like the collision algo
-          // uses width as radius instead of width/2
-          // creating a much bigger collision area than expected
-          // reduce that to be the actual width/2 and test that it works
           if (Config.debug && Config.renderCollisionArea) {
             this.context.save();
             this.context.translate(position.x, position.y);
@@ -213,6 +201,16 @@ const ElderCharacteristics: EldersCharacteristics = {
         this.pattern,
         /*line width*/ 5
       );
+      if (this.wasDamaged) {
+        this.context.globalCompositeOperation = "source-atop";
+        this.context.fillStyle = "rgba(255,0,0,0.5)";
+        this.context.fillRect(
+          -this.width / 2 - 10,
+          -this.width / 2 - 10,
+          this.width + 20,
+          this.width + 20
+        );
+      }
       this.context.restore();
     }
   }
