@@ -22,18 +22,14 @@
 - Map generation
   - create a map of a starting number of sectors (Test having everything in memory first)
     - get to the end of the map you appear on the other side
-    - add more static asteroids
-  - update sectors/plantes, etc to work with pools
-    - separate data from actual sprite
-    - use pools
-    - then generate map data, and use that with the pools
+    - add more static asteroids in the different sectors
   - reuse objects using object pool
   - save state in an object
 - basic gameplay
   - fix player bullet shooting. It looks weird. I think it has to do with the
     speed of the ship
-  - add radar with more information of interest (not only radar but arrows as well)
-  - detect enemies in radar
+  - add radar with more information of interest (not only radar but arrows as well). Otherwise is going to be impossible to find star systems.
+  - [*] detect enemies in radar
 - Enemies
   - motherships.
     - make mother ship move steady in a direction
@@ -57,23 +53,15 @@
         - victory condition conquest
     - 3 victory conditions
       - way to store game data
-- polish of 10000 things
 - message queue to display in game messages
-- make sure to hit 60 fps
-  - use game pool
-    - with particles
-    - with asteroids
-    - with planets
-  - game engine
-    - preload patterns for planets in loading screen so it won't affect fps in game
 - support for multiple weapons
 - planets orbiting around sun
   - add gradient using the sun in the center as source of illumination
+- make planets smarter
+  - defend themselves before they can be claimed
+  - build defence systems over time
 - investigate generative music
-- REFACTORING
-  - extract receiving impact animation into something reusable
-  - refactor collision engine to be more consistent across different types of objects
-  - refactor objects types to Enums
+- make a way to deliver game story
 
 ## BUILD - minimize assets to 13K
 
@@ -237,6 +225,20 @@
   - Add application manifest so it can be installed
 - Canvas
   - resize canvas on windows change
+- Performance
+  - make sure to hit 60 fps
+    - use game pool
+      - with particles
+      - with asteroids
+      - with planets
+    - update sectors/planets, etc to work with pools
+      - separate data from actual sprite
+      - use pools
+      - then generate map data, and use that with the pools
+- REFACTORING
+  - extract receiving impact animation into something reusable
+  - refactor collision engine to be more consistent across different types of objects
+  - refactor objects types to Enums
 
 ## Art
 
