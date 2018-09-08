@@ -6,6 +6,7 @@ import {
 } from "./utils";
 import { generateName } from "./names";
 import { PlanetType, getPattern } from "./planet";
+import Config from "./config";
 
 export interface Sun extends Sprite {
   radius: number;
@@ -20,8 +21,11 @@ export function createSun(
   cameraPosition: Position,
   sunName: string = generateName()
 ): Sun {
-  let textureWidth = Math.round(getValueInRange(radius * 2, radius * 2));
-  let textureHeight = Math.round(getValueInRange(radius * 2, radius * 2));
+  //let textureWidth = Math.round(getValueInRange(radius * 2, radius * 2));
+  //let textureHeight = Math.round(getValueInRange(radius * 2, radius * 2));
+
+  let textureWidth = Config.Textures.Sun;
+  let textureHeight = Config.Textures.Sun;
 
   // sun = visible star :)
   let sun = kontra.sprite({

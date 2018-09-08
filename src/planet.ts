@@ -39,8 +39,10 @@ export function createPlanet(
   planetType: PlanetType = getPlanetType(),
   planetName: string = generateName()
 ): Planet {
-  let textureWidth = Math.round(getValueInRange(64, radius));
-  let textureHeight = Math.round(getValueInRange(64, radius));
+  //let textureWidth = Math.round(getValueInRange(64, radius));
+  //let textureHeight = Math.round(getValueInRange(64, radius));
+  let textureWidth = Config.Textures.Planet;
+  let textureHeight = Config.Textures.Planet;
 
   // sun orbit
   let startingAngle = getValueInRange(0, 360);
@@ -246,6 +248,14 @@ export enum PlanetType {
   Paradise = 5,
   Sun = 6
 }
+export const PlanetTypes = [
+  PlanetType.Red,
+  PlanetType.Green,
+  PlanetType.Blue,
+  PlanetType.Desert,
+  PlanetType.Barren,
+  PlanetType.Paradise
+];
 export const PlanetBaseColors = [
   /*Red*/ { h: 0, s: 70, l: 45 },
   /*Green*/ { h: 120, s: 100, l: 39 },

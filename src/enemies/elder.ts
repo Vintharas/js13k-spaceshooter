@@ -243,6 +243,12 @@ const ElderCharacteristics: EldersCharacteristics = {
   }
 };
 
+export const ElderColors = {
+  grey: { h: 0, s: 0, l: 50 },
+  granate: { h: 295, s: 100, l: 50, r: 243, g: 0, b: 255 },
+  green: { h: 120, s: 100, l: 50, r: 0, g: 255, b: 0 }
+};
+
 function getElderColor(): HSL & RGB {
   let granate = { h: 295, s: 100, l: 50, r: 243, g: 0, b: 255 };
   let green = { h: 120, s: 100, l: 50, r: 0, g: 255, b: 0 };
@@ -255,8 +261,8 @@ function getElderPattern(accent: HSL) {
   let pattern = OffscreenCanvas.instance().getPatternBasedOnColors(
     grey,
     accent,
-    20,
-    20
+    Config.Textures.Elder,
+    Config.Textures.Elder
   );
   return pattern;
 }

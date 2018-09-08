@@ -183,6 +183,11 @@ const Config = {
   },
   Elders: {
     MaxNumber: 100
+  },
+  Textures: {
+    Planet: 100,
+    Sun: 100,
+    Elder: 20
   }
 };
 
