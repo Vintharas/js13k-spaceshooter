@@ -184,6 +184,9 @@ const Config = {
   Elders: {
     MaxNumber: 100
   },
+  Bullets: {
+    NumberOfParticles: 2
+  },
   Textures: {
     Planet: 100,
     Sun: 100,

@@ -28,7 +28,7 @@ export function createStaticParticle(
   let dxVariance = getValueInRange(0.5, 1.5);
   let dyVariance = getValueInRange(0.5, 1.5);
   let ParticleAxisVariance = getValueInRange(-20, 20);
-  let maxTTL = 50;
+  let maxTTL = 70;
 
   const cos = Math.cos(degreesToRadians(particleAxis + ParticleAxisVariance));
   const sin = Math.sin(degreesToRadians(particleAxis + ParticleAxisVariance));
@@ -49,12 +49,11 @@ export function createStaticParticle(
 
     // each particle with have a slightly
     // different lifespan
-    ttl: getValueInRange(0, maxTTL),
+    ttl: getValueInRange(10, maxTTL),
     dt: 0,
 
     // particles are small
     width: 2,
-    height: 2,
 
     // So that the particles don't originate from
     // a single point
@@ -67,6 +66,7 @@ export function createStaticParticle(
       // as time passes the alpha increases until particles disappear
       let frames = this.dt * 60;
       let alpha = 1 - frames / maxTTL;
+      let size = (1 + (0.5 * frames) / maxTTL) * this.width;
 
       // easier to paint these by rotating the canvas
       this.context.save();
@@ -76,8 +76,8 @@ export function createStaticParticle(
       this.context.fillRect(
         offset.x,
         offset.y + this.thicknessVariance,
-        this.width,
-        this.height
+        size,
+        size
       );
       this.context.restore();
     }
@@ -90,15 +90,9 @@ export function createParticle(
   velocity: Velocity,
   cameraPosition: Position,
   particleAxis: number,
-  {
-    ttl = 30,
-    color = { r: 255, g: 255, b: 255 },
-    magnitude = 5
-  }: ParticleOptions = {}
+  { ttl = 30, color = { r: 255, g: 255, b: 255 } }: ParticleOptions = {}
 ): any {
-  let dxVariance = getValueInRange(0.5, 1.5);
-  let dyVariance = getValueInRange(0.5, 1.5);
-  let ParticleAxisVariance = getValueInRange(-15, 15);
+  let ParticleAxisVariance = getValueInRange(-5, 5);
 
   const cos = Math.cos(degreesToRadians(particleAxis + ParticleAxisVariance));
   const sin = Math.sin(degreesToRadians(particleAxis + ParticleAxisVariance));
@@ -112,17 +106,16 @@ export function createParticle(
 
     // variance so that different particles will have
     // slightly different trajectories
-    dx: velocity.dx * cos * dxVariance,
-    dy: velocity.dy * sin * dyVariance,
+    dx: velocity.dx - cos * 4,
+    dy: velocity.dy - sin * 4,
 
     // each particle with have a slightly
     // different lifespan
-    ttl: getValueInRange(0, ttl),
+    ttl: getValueInRange(20, ttl),
     dt: 0,
 
     // particles are small
     width: 2,
-    height: 2,
     update() {
       this.dt += 1 / 60;
       this.advance();
@@ -132,8 +125,9 @@ export function createParticle(
       // as time passes the alpha increases until particles disappear
       let frames = this.dt * 60;
       let alpha = 1 - frames / ttl;
+      let size = (1 + (0.5 * frames) / ttl) * this.width;
       this.context.fillStyle = Color.rgba(color.r, color.g, color.b, alpha);
-      this.context.fillRect(position.x, position.y, this.width, this.height);
+      this.context.fillRect(position.x, position.y, size, size);
     }
   });
 }

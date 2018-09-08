@@ -10,6 +10,7 @@ import { Scene } from "./scenes/scene";
 import { createParticle } from "./particles";
 import Config from "./config";
 import { Draw } from "./draw";
+import { Vector } from "./vector";
 
 export interface Bullet extends Sprite {
   damage: number;
@@ -34,12 +35,16 @@ export default function createBullet(
     x: position.x + cos * 12,
     y: position.y + sin * 12,
     // move the bullet slightly faster than the ship
+    // it can happen that the ship is going in the opposite direction
+    // than the bullets (in that case the speed of the bullets is smaller with
+    // the current implementation)
     dx: velocity.dx + cos * 5,
     dy: velocity.dy + sin * 5,
     // damage can vary based on who shoots the missile
     damage,
     owner,
     // live only 50 frames
+    // TODO: This should be configurable as range of firing
     ttl: 50,
     // bullets are small
     width: 2,
@@ -47,15 +52,16 @@ export default function createBullet(
     color,
     update() {
       this.advance();
-      // add particles
-      let particle = createParticle(
-        { x: this.x, y: this.y },
-        { dx: 1, dy: 1 },
-        cameraPosition,
-        0,
-        { color }
-      );
-      scene.addSprite(particle);
+      for (let i = 0; i <= Config.Bullets.NumberOfParticles; i++) {
+        let particle = createParticle(
+          { x: this.x, y: this.y },
+          { dx: this.dx, dy: this.dy },
+          cameraPosition,
+          angle,
+          { color }
+        );
+        scene.addSprite(particle);
+      }
     },
     render() {
       let position = getCanvasPosition(this, cameraPosition);

@@ -19,17 +19,19 @@
 
 ## Prioritize
 
+- Playability and Basic gameplay
+  - Fix player bullet shooting. It looks weird. I think it has to do with the
+    speed of the ship.
+  - Add radar with more information of interest (not only radar but arrows as well). Otherwise is going to be impossible to find star systems.
+  - [*] detect enemies in radar
+  - Adjust numbers. Make ship stronger so you don't die so fast.
+  - make systems go offline with less energy (not at a uniform rate)
 - Map generation
   - create a map of a starting number of sectors (Test having everything in memory first)
     - get to the end of the map you appear on the other side
     - add more static asteroids in the different sectors
   - reuse objects using object pool
   - save state in an object
-- basic gameplay
-  - fix player bullet shooting. It looks weird. I think it has to do with the
-    speed of the ship
-  - add radar with more information of interest (not only radar but arrows as well). Otherwise is going to be impossible to find star systems.
-  - [*] detect enemies in radar
 - Enemies
   - motherships.
     - make mother ship move steady in a direction
@@ -70,9 +72,10 @@
     - Separate background and foreground objects. There's no need to check
     - extract checking whether an object is viewable to the render method within the scene. We no longer need to do it per sprite? As I've been doing it
 - Techniques to reduce space
-  - wrap kontra library
+  - wrap kontra library -> this didn't work
   - write the loading assets component from scratch. I'll only need the images, so I don't really need 1K only for loading 3 images
-  - update ts not to transpile stuff to ES5
+  - [*] update ts not to transpile stuff to ES5
+  - use spritesheet with all sprites
 - Optimize build
   - test closure compiler
     - this is going to be a pain in the ass
