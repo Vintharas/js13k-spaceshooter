@@ -27,6 +27,9 @@ export const Color = {
 
     return this.rgba(red, green, blue, alpha);
   },
+  rgb(color: RGB) {
+    return `rgb(${color.r},${color.g},${color.b})`;
+  },
   rgba(red: number, green: number, blue: number, alpha: number) {
     return `rgba(${red},${green},${blue},${alpha})`;
   },

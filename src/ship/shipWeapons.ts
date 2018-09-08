@@ -1,11 +1,9 @@
 import { Scene } from "../scenes/scene";
 import { ShipEnergy } from "./shipEnergy";
 import Config from "../config";
-import { degreesToRadians, Position } from "../utils";
+import { Position, RGB } from "../utils";
 import createBullet from "../bullet";
 import { ShipSystem, ShipSystemMixin } from "./shipSystems";
-import { createGameStatusText } from "../text";
-import { Ship } from "./ship";
 
 export interface ShipWeapons extends Sprite, ShipSystem {
   isEnabled: boolean;
@@ -20,7 +18,8 @@ export interface ShipWeapons extends Sprite, ShipSystem {
 export function ShipWeapons(
   scene: Scene,
   energy: ShipEnergy,
-  modifier = 0
+  modifier = 0,
+  color: RGB = { r: 255, g: 255, b: 255 }
 ): ShipWeapons {
   let weapons = kontra.sprite({
     ...ShipSystemMixin(scene, "WEAPONS", (energy.maxEnergy * 2) / 5),
@@ -57,7 +56,9 @@ export function ShipWeapons(
           this.rotation,
           scene.cameraPosition,
           scene,
-          /* owner */ this.ship
+          /* owner */ this.ship,
+          10, // TODO: add faction modifier
+          color
         );
         scene.addSprite(bullet);
       }

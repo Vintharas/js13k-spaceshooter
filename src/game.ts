@@ -4,7 +4,7 @@ import createOpenScene from "./scenes/openScene";
 import createGameOverScene from "./scenes/gameOverScene";
 import { createChooseFactionScene } from "./scenes/factionScene";
 import { Faction } from "./factions";
-import { GameData } from "./gamedata";
+import { GameData } from "./data/gamedata";
 
 export default class Game {
   private static game: Game;

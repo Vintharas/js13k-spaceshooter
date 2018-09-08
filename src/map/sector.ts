@@ -52,12 +52,12 @@ function createPlanets(sun: Sun, scene: Scene, cameraPosition: Position) {
   let planets = [];
   let planetPosition: Position = { x: sun.x, y: sun.y };
   for (let i = 0; i < numberOfPlanets; i++) {
-    let planetOrbit = getValueInRange(500, 1000);
-    planetPosition.x = planetPosition.x + planetOrbit;
+    let additiveOrbit = getValueInRange(500, 1000);
+    planetPosition.x = planetPosition.x + additiveOrbit;
     let radius = getValueInRange(50, 100);
     let planet = createPlanet(
       sun,
-      planetPosition.x,
+      /* orbit */ planetPosition.x - sun.x,
       radius,
       cameraPosition,
       scene

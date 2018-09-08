@@ -1,6 +1,6 @@
 import { Scene } from "./scenes/scene";
 import { createAsteroid, Asteroid } from "./asteroid";
-import { Position, getValueInRange, RGB } from "./utils";
+import { Position, getValueInRange, RGB, isObjectOutOfBounds } from "./utils";
 import Config from "./config";
 import { createExplosionParticle } from "./particles";
 import createCell, { CellType, Cell, getRandomCellType } from "./cell";
@@ -45,6 +45,7 @@ export default class CollisionsEngine {
         .map(p => p.getAliveObjects())
         .reduce((arr, acc) => [...acc, ...arr], [])
     ]
+      .filter(s => !isObjectOutOfBounds(s, this.scene.cameraPosition))
       .filter(s => Config.collidableTypes.includes(s.type))
       // with the current algorithm that
       // checks whether an asteroid has collided with X

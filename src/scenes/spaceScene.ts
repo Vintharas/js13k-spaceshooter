@@ -7,7 +7,7 @@ import Config from "../config";
 import { createCamera } from "./camera";
 import { Sector } from "../map/sector";
 import { SpaceBackground } from "../background";
-import { GameData } from "../gamedata";
+import { GameData } from "../data/gamedata";
 import { ElderPool, ElderType } from "../enemies/elder";
 
 export default function createSpaceScene(gameData: GameData) {
@@ -24,7 +24,9 @@ export default function createSpaceScene(gameData: GameData) {
         }, 2000);
       }
       // remove sprites too far from camera
-      cleanupObjectIfOutOfBounds(scene);
+      // TODO: enable this as soon as I implement
+      // support for pools and rehidrating objects
+      // cleanupObjectIfOutOfBounds(scene);
     }
   });
 
@@ -32,11 +34,8 @@ export default function createSpaceScene(gameData: GameData) {
   camera.position = ship;
 
   // initial state
-  //addStars(scene, ship);
   addBackground(scene, ship);
-  //addPlanets(scene, ship);
-  //addSun(scene, ship);
-  let sector = addSector(scene, ship);
+  addSector(scene, ship);
   addAsteroids(scene, ship);
   addStaticAsteroids(scene, ship);
 
@@ -148,14 +147,22 @@ function addSun(scene: Scene, cameraPosition: Position) {
 
 */
 
-function addSector(scene: Scene, cameraPosition: Position): Sector {
-  let sector = Sector(
-    scene,
-    { x: -Config.Sector.Size / 2, y: -Config.Sector.Size / 2 },
-    cameraPosition
-  );
-  sector.bodies.forEach(s => scene.addSprite(s));
-  return sector;
+function addSector(scene: Scene, cameraPosition: Position) {
+  // this will create 100 sectors right now
+  for (
+    let x = -Config.Galaxy.Size / 2;
+    x < Config.Galaxy.Size / 2;
+    x += Config.Sector.Size
+  ) {
+    for (
+      let y = -Config.Galaxy.Size / 2;
+      y < Config.Galaxy.Size / 2;
+      y += Config.Sector.Size
+    ) {
+      let sector = Sector(scene, { x, y }, cameraPosition);
+      sector.bodies.forEach(s => scene.addSprite(s));
+    }
+  }
 }
 
 function addEnemies(scene: Scene, ship: Ship) {

@@ -107,6 +107,7 @@ const Config = {
       get Ship() {
         return kontra.assets.images.redship;
       },
+      Color: { r: 255, g: 0, b: 0 },
       Modifiers: {
         Life: 100,
         LifeRepairRate: 1,
@@ -123,6 +124,7 @@ const Config = {
     },
     [Faction.Blue]: {
       Name: "Atreides",
+      Color: { r: 0, g: 227, b: 255 },
       PlanetName: "",
       Planet: PlanetType.Paradise,
       Objective: "Freedom & Liberty",
@@ -148,6 +150,7 @@ const Config = {
       Name: "Corrino",
       Planet: PlanetType.Green,
       PlanetName: "",
+      Color: { r: 0, g: 255, b: 0 },
       Objective: "Wealth & Power",
       Description: "House Corrino...",
       get Ship() {
@@ -167,6 +170,10 @@ const Config = {
         Protection: 0
       } as FactionShipModifiers
     }
+  },
+  Galaxy: {
+    // start with fixed size 10x10 sectors
+    Size: 100000
   },
   Sector: {
     Size: 10000

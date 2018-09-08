@@ -148,13 +148,29 @@ function DebugInfoSprite(scene: Scene): Sprite {
   return kontra.sprite({
     x: 40,
     y: Config.canvasHeight / 2,
+    lastframe: performance.now(),
+    fps: 0,
+    dt: 0,
     ttl: Infinity,
+    update() {
+      // calculate every frame but only show every half a second
+      this.dt += 1 / 60;
+      let thisframe = performance.now();
+      if (this.dt > 0.5) {
+        this.dt = 0;
+        this.fps = 1000 / (thisframe - this.lastframe);
+      }
+      this.lastframe = thisframe;
+    },
     render() {
       this.context.save();
       this.context.font = "normal normal 12px monospace";
       this.context.fillStyle = "white";
       let textToRender = `
-camera : (${scene.cameraPosition.x}, ${scene.cameraPosition.y})
+fps: ${this.fps.toFixed(0)}
+camera : (${scene.cameraPosition.x.toFixed(
+        0
+      )}, ${scene.cameraPosition.y.toFixed(0)})
 ${getSpriteCount(scene.sprites.background)}
 ${getSpriteCount(scene.sprites.foreground)}
 ${getSpriteCount(scene.sprites.shell)}

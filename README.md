@@ -19,6 +19,26 @@
 
 ## Prioritize
 
+- Map generation
+  - [*] BUG: there appears to be an issue where stars aren't displayed
+    after the ship has been moving for a while. PROBABLY due to
+    the position reaching maxInteger. We can solve this by using
+    both position and sectors. (so we never go over the position maxInteger)
+    - fixed. I was removing the stars out of the arbitrary boundaries I defined
+  - create a map of a starting number of sectors (Test having everything in memory first)
+    - [*] planets and suns
+    - start with a fixed sized based on max and min size of number and that's it
+      . In v2 I can create a infinite universe xD.
+    - get to the end of the map you appear on the other side
+    - static asteroids
+    - doesn't look so bad
+  - separate sectors by some distance of "empty" space
+  - update sectors/plantes, etc to work with pools
+    - separate data from actual sprite
+    - use pools
+    - then generate map data, and use that with the pools
+  - reuse objects using object pool
+  - save state in an object
 - Enemies
   - [*] first version of enemy sentry that follows and shoots at you
     - [*] update collision engine to be able to impact things with bullets
@@ -27,8 +47,9 @@
     - [*] mother ship
     - [*] drones
     - [*] design pattern for this ships. Something greyish and purple
-      - looks great! Try some green as well and use either of those patterns
-    - create fleet formations (with mother ship, drones and sentries)
+      - [*] looks great! Try some green as well and use either of those patterns
+    - [*] create fleet formations (with mother ship, drones and sentries)
+      - [*] more or less complete
       - make mother ship move steady in a direction
   - collision between enemies and asteroids!
   - handle collisions, idea of life/damage for non ship objects, etc
@@ -38,17 +59,6 @@
   - shoot bullets with color of your own faction (including particles)
     - red, blue, green for the factions
     - purple for the evil elder race
-- Map generation
-  - BUG: there appears to be an issue where stars aren't displayed
-    after the ship has been moving for a while. PROBABLY due to
-    the position reaching maxInteger. We can solve this by using
-    both position and sectors. (so we never go over the position maxInteger)
-  - create a map of a starting number of sectors
-    - start with a fixed sized based on max and min size of number and that's it
-      . In v2 I can create a infinite universe xD.
-  - separate sectors by some distance of "empty" space
-  - reuse objects using object pool
-  - save state in an object
 - define game story and goals
   - complete faction selection process
     - would be cool to add some information and background about the factions

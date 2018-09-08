@@ -1,4 +1,4 @@
-import { Faction } from "./factions";
+import { Faction } from "../factions";
 
 export interface GameData {
   faction: Faction;

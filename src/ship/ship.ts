@@ -26,7 +26,8 @@ export interface Ship extends Sprite {
 }
 
 export default function createShip(scene: Scene, faction: Faction) {
-  const modifiers = Config.Factions[faction].Modifiers;
+  const factionConfig = Config.Factions[faction];
+  const modifiers = factionConfig.Modifiers;
   const collisionWidth = 20;
   const x = Config.Ship.InitialPosition.x;
   const y = Config.Ship.InitialPosition.y;
@@ -49,7 +50,12 @@ export default function createShip(scene: Scene, faction: Faction) {
   );
   const speed = ShipSpeed();
   const radar = ShipRadar(scene, energy);
-  const weapons = ShipWeapons(scene, energy, modifiers.FireRate);
+  const weapons = ShipWeapons(
+    scene,
+    energy,
+    modifiers.FireRate,
+    factionConfig.Color
+  );
   const vision = ShipVision(scene, energy);
 
   const ship = kontra.sprite({

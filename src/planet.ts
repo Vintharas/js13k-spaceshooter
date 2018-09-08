@@ -4,7 +4,8 @@ import {
   isObjectOutOfBounds,
   degreesToRadians,
   getValueInRange,
-  Positions
+  Positions,
+  Color
 } from "./utils";
 import OffscreenCanvas from "./canvas";
 import Config from "./config";
@@ -209,7 +210,9 @@ export function createPlanet(
         let factionRadius = radius + 0.35 * radius;
         this.context.save();
         this.context.translate(position.x, position.y);
-        this.context.strokeStyle = this.claimedBy.toLowerCase();
+        let color = Config.Factions[this.claimedBy].Color;
+        this.context.strokeStyle = Color.rgb(color);
+        this.claimedBy.toLowerCase();
         this.context.lineWidth = 5;
         this.context.beginPath(); // start drawing a shape
 

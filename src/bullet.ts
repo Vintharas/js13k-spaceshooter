@@ -2,7 +2,9 @@ import {
   Position,
   getCanvasPosition,
   Velocity,
-  degreesToRadians
+  degreesToRadians,
+  RGB,
+  Color
 } from "./utils";
 import { Scene } from "./scenes/scene";
 import { createParticle } from "./particles";
@@ -20,7 +22,8 @@ export default function createBullet(
   cameraPosition: Position,
   scene: Scene,
   owner: Sprite,
-  damage: number = 10
+  damage: number = 10,
+  color: RGB = { r: 255, g: 255, b: 255 }
 ): Bullet {
   let cos = Math.cos(degreesToRadians(angle));
   let sin = Math.sin(degreesToRadians(angle));
@@ -41,7 +44,7 @@ export default function createBullet(
     // bullets are small
     width: 2,
     height: 2,
-    color: "white",
+    color,
     update() {
       this.advance();
       // add particles
@@ -49,13 +52,14 @@ export default function createBullet(
         { x: this.x, y: this.y },
         { dx: 1, dy: 1 },
         cameraPosition,
-        0
+        0,
+        { color }
       );
       scene.addSprite(particle);
     },
     render() {
       let position = getCanvasPosition(this, cameraPosition);
-      this.context.fillStyle = this.color;
+      this.context.fillStyle = Color.rgb(this.color);
       this.context.fillRect(position.x, position.y, this.width, this.height);
 
       if (Config.debug && Config.showPath) {

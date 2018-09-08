@@ -1,16 +1,11 @@
 import {
   Position,
   getCanvasPosition,
-  isObjectOutOfBounds,
   degreesToRadians,
   getValueInRange
 } from "./utils";
-import OffscreenCanvas from "./canvas";
-import Config from "./config";
 import { generateName } from "./names";
-import { Faction } from "./factions";
-import { Scene } from "./scenes/scene";
-import { PlanetBaseColors, PlanetType, getPattern } from "./planet";
+import { PlanetType, getPattern } from "./planet";
 
 export interface Sun extends Sprite {
   radius: number;
@@ -25,8 +20,8 @@ export function createSun(
   cameraPosition: Position,
   sunName: string = generateName()
 ): Sun {
-  let textureWidth = Math.round(getValueInRange(64, radius));
-  let textureHeight = Math.round(getValueInRange(64, radius));
+  let textureWidth = Math.round(getValueInRange(radius * 2, radius * 2));
+  let textureHeight = Math.round(getValueInRange(radius * 2, radius * 2));
 
   // sun = visible star :)
   let sun = kontra.sprite({
