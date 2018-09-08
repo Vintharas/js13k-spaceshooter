@@ -1,19 +1,14 @@
-import { Scene, createScene } from "./scene";
+import { Scene, createScene, SceneLayer } from "./scene";
 import { createAsteroid } from "../asteroid";
 import createShip, { Ship } from "../ship/ship";
 import { isObjectOutOfBounds, Position, getValueInRange } from "../utils";
-import { createStar } from "../star";
 import Game from "../game";
 import Config from "../config";
-import { createPlanet } from "../planet";
 import { createCamera } from "./camera";
-import { createSun } from "../sun";
 import { Sector } from "../map/sector";
-import createBullet from "../bullet";
 import { SpaceBackground } from "../background";
 import { GameData } from "../gamedata";
 import { ElderPool, ElderType } from "../enemies/elder";
-import { after } from "../behavior";
 
 export default function createSpaceScene(gameData: GameData) {
   const camera = createCamera();
@@ -46,7 +41,7 @@ export default function createSpaceScene(gameData: GameData) {
   addStaticAsteroids(scene, ship);
 
   // add enemies for testing
-  addEnemies(scene, ship, sector);
+  addEnemies(scene, ship);
 
   scene.addSprite(ship);
 
@@ -66,7 +61,7 @@ function cleanupObjectIfOutOfBounds(scene: Scene) {
 
 function addBackground(scene: Scene, cameraPosition: Position) {
   let background = SpaceBackground(cameraPosition);
-  scene.addSprite(background, { isInForeground: false });
+  scene.addSprite(background, { sceneLayer: SceneLayer.Background });
 }
 
 function addAsteroids(scene: Scene, cameraPosition: Position) {
@@ -163,7 +158,7 @@ function addSector(scene: Scene, cameraPosition: Position): Sector {
   return sector;
 }
 
-function addEnemies(scene: Scene, ship: Ship, sector: Sector) {
+function addEnemies(scene: Scene, ship: Ship) {
   let elderPool = ElderPool(scene, ship);
 
   elderPool.get({

@@ -41,7 +41,10 @@ export function createStar({ x, y, cameraPosition }: StarBuilder) {
     size,
     update() {},
     render() {
-      if (isObjectOutOfBounds(this, cameraPosition)) return;
+      if (isObjectOutOfBounds(this, cameraPosition)) {
+        console.log(`star out of bounds `, this);
+        return;
+      }
       // the more distant stars appear dimmer
       // limit alpha between 1 and 0.75
       // more distant stars are less affected by the camera position

@@ -89,10 +89,9 @@ export function isObjectOutOfBounds(
   objectPosition: Position,
   cameraPosition: Position
 ) {
-  return (
-    Math.abs(objectPosition.x - cameraPosition.x) > Config.mapBoundary ||
-    Math.abs(objectPosition.y - cameraPosition.y) > Config.mapBoundary
-  );
+  let dx = Math.abs(objectPosition.x - cameraPosition.x);
+  let dy = Math.abs(objectPosition.y - cameraPosition.y);
+  return dx > Config.mapBoundary || dy > Config.mapBoundary;
 }
 
 export function getNumberWithVariance(n: number, variance: number): number {

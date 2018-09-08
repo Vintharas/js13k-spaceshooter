@@ -22,6 +22,7 @@ export function SpaceBackground(cameraPosition: Position) {
     cameraPosition
   });
   return kontra.sprite({
+    type: "background",
     x: start,
     y: start,
     stars,

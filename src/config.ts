@@ -25,8 +25,9 @@ const Config = {
   ],
 
   // enable debug printouts
-  debug: false,
-  verbose: false,
+  debug: true,
+  renderDebugData: true,
+  verbose: false, // prints all info of ships in console
   typesToLog: ["asteroid", "ship", "enemy", "bullet"],
   logTheseProperties: (s: Sprite) => ({
     type: s.type,
@@ -37,9 +38,9 @@ const Config = {
     ttl: s.ttl
   }),
   onlyLogInProximityToShip: true, // great for debugging collisions
-  renderCollisionArea: true,
+  renderCollisionArea: false,
   debugRadar: false,
-  showPath: true,
+  showPath: false,
   debugSpawnObjects: false,
 
   // UI

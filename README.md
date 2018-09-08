@@ -44,6 +44,8 @@
     the position reaching maxInteger. We can solve this by using
     both position and sectors. (so we never go over the position maxInteger)
   - create a map of a starting number of sectors
+    - start with a fixed sized based on max and min size of number and that's it
+      . In v2 I can create a infinite universe xD.
   - separate sectors by some distance of "empty" space
   - reuse objects using object pool
   - save state in an object

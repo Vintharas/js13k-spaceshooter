@@ -36,6 +36,7 @@ export function createText(
   }
 
   return kontra.sprite({
+    type: "text",
     x,
     y,
     dx,
