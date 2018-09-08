@@ -4,7 +4,9 @@ import {
   Position,
   getCanvasPosition,
   getRandomValueOf,
-  degreesToRadians
+  degreesToRadians,
+  HSL,
+  RGB
 } from "../utils";
 import { Scene } from "../scenes/scene";
 import {
@@ -18,8 +20,6 @@ import {
 } from "../behavior";
 import OffscreenCanvas from "../canvas";
 import { Draw } from "../draw";
-import { doThisEvery } from "../time";
-import { Faction } from "../factions";
 
 // Elder race of aliens jara, jara
 // Using the elder name couldn't be more confusing XD
@@ -28,6 +28,7 @@ export interface Elder extends Sprite, ElderCharacteristics {
 }
 
 export function ElderPool(scene: Scene, ship: Ship): Pool {
+  let color = getElderColor();
   return kontra.pool({
     create() {
       let elder = kontra.sprite({
@@ -40,7 +41,8 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
         width: 20,
 
         // render
-        pattern: getElderPattern(),
+        color,
+        pattern: getElderPattern(color),
         rotation: 45,
 
         // damage animation TODO: extract
@@ -241,11 +243,15 @@ const ElderCharacteristics: EldersCharacteristics = {
   }
 };
 
-function getElderPattern() {
-  let grey = { h: 0, s: 0, l: 50 };
-  let granate = { h: 295, s: 100, l: 50 };
-  let green = { h: 120, s: 100, l: 50 };
+function getElderColor(): HSL & RGB {
+  let granate = { h: 295, s: 100, l: 50, r: 243, g: 0, b: 255 };
+  let green = { h: 120, s: 100, l: 50, r: 0, g: 255, b: 0 };
   let accent = getRandomValueOf([granate, green]);
+  return accent;
+}
+
+function getElderPattern(accent: HSL) {
+  let grey = { h: 0, s: 0, l: 50 };
   let pattern = OffscreenCanvas.instance().getPatternBasedOnColors(
     grey,
     accent,

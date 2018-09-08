@@ -89,7 +89,8 @@ export function Shoot(scene: Scene, target: Sprite): Behavior {
     type: BehaviorType.Shoot,
     properties: {
       dts: 0,
-      damage: 1
+      damage: 1,
+      color: { r: 255, g: 255, b: 255 }
     },
     update(dt?: number) {
       this.dts += 1 / 60;
@@ -104,7 +105,8 @@ export function Shoot(scene: Scene, target: Sprite): Behavior {
           target,
           scene,
           /*owner*/ this,
-          this.damage
+          this.damage,
+          this.color
         );
         scene.addSprite(bullet);
       }
