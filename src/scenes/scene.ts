@@ -27,6 +27,7 @@ export enum SceneLayer {
 export interface Scene {
   sprites: Sprites;
   pools: Pool[];
+  activePoolObjects(): Sprite[];
   update(dt: number): void;
   addSprite(this: Scene, sprite: Sprite, options?: SpriteOptions): void;
   start(): void;
@@ -114,7 +115,12 @@ export function createScene({
       else this.sprites.background.push(sprite);
     },
     cameraPosition: camera,
-    logGameObjects
+    logGameObjects,
+    activePoolObjects(this: Scene): Sprite[] {
+      return this.pools
+        .map(p => p.getAliveObjects())
+        .reduce((arr, acc) => [...acc, ...arr], []);
+    }
   });
   scene.collisionEngine = new CollisionsEngine(scene);
 

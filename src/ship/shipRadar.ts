@@ -3,7 +3,6 @@ import Config from "../config";
 import { Color, Position } from "../utils";
 import { Vector } from "../vector";
 import { ShipEnergy } from "./shipEnergy";
-import { createGameStatusText } from "../text";
 import { ShipSystem, ShipSystemMixin } from "./shipSystems";
 
 export interface ShipRadar extends Sprite, ShipSystem {
@@ -29,7 +28,10 @@ export function ShipRadar(scene: Scene, energy: ShipEnergy) {
       // updates targets every second
       if (this.dt > 1) {
         this.dt = 0;
-        this.targetsInRadar = scene.sprites.foreground
+        this.targetsInRadar = [
+          ...scene.sprites.foreground,
+          ...scene.activePoolObjects()
+        ]
           .filter((s: Sprite) => this.isInRange(s, scene.cameraPosition))
           .filter((s: Sprite) => s.radius > 15 || s.size > 10 || s.width > 10)
           .map((s: Sprite) => mapToTarget(s, scene.cameraPosition));
@@ -123,6 +125,7 @@ function mapToTarget(sprite: Sprite, cameraPosition: Position): RadarTarget {
   function typeToColor(type: string): string {
     if (type === "planet") return Color.rgba(0, 255, 0, 0.7);
     if (type === "asteroid") return Color.rgba(200, 200, 200, 0.7);
+    if (type === "elder") return Color.rgba(255, 0, 0, 0.7);
     else return Color.rgba(150, 150, 150, 0.7);
   }
   function toSize(sprite: Sprite) {

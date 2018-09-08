@@ -41,9 +41,7 @@ export default class CollisionsEngine {
     // temporary hack to test something
     let collidableObjects = [
       ...this.scene.sprites.foreground,
-      ...this.scene.pools
-        .map(p => p.getAliveObjects())
-        .reduce((arr, acc) => [...acc, ...arr], [])
+      ...this.scene.activePoolObjects()
     ]
       .filter(s => !isObjectOutOfBounds(s, this.scene.cameraPosition))
       .filter(s => Config.collidableTypes.includes(s.type))
