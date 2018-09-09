@@ -14,7 +14,7 @@ export interface ShipRadar extends Sprite, ShipSystem {
 // the game into Galaxy/Sectors, etc
 export function ShipRadar(scene: Scene, energy: ShipEnergy) {
   let radar = kontra.sprite({
-    ...ShipSystemMixin(scene, "RADAR", (energy.maxEnergy * 4) / 5),
+    ...ShipSystemMixin(scene, "RADAR", (energy.maxEnergy * 4) / 6),
 
     // center of radar
     x: Config.canvasWidth - Config.Ship.Radar.Size / 2,

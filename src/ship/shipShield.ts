@@ -20,7 +20,7 @@ export function ShipShield(
   modifier = 0
 ) {
   let shipShield = kontra.sprite({
-    ...ShipSystemMixin(scene, "SHIELD", (energy.maxEnergy * 3) / 5),
+    ...ShipSystemMixin(scene, "SHIELD", (energy.maxEnergy * 3) / 6),
 
     maxShield: shield,
     shield,

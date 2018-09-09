@@ -10,6 +10,7 @@ import { PlanetType, PlanetBaseColors, PlanetTypes } from "./planet";
 import Config from "./config";
 import { HSL } from "./utils";
 import { ElderColors } from "./enemies/elder";
+import { createGameStatusText } from "./text";
 
 export default class Game {
   private static game: Game;

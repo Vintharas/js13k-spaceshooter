@@ -22,7 +22,7 @@ export function ShipWeapons(
   color: RGB = { r: 255, g: 255, b: 255 }
 ): ShipWeapons {
   let weapons = kontra.sprite({
-    ...ShipSystemMixin(scene, "WEAPONS", (energy.maxEnergy * 2) / 5),
+    ...ShipSystemMixin(scene, "WEAPONS", (energy.maxEnergy * 2) / 6),
 
     // this is necessary so that bullets won't collide with the ship
     ship: undefined,

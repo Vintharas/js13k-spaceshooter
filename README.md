@@ -20,18 +20,39 @@
 ## Prioritize
 
 - Playability and Basic gameplay
-  - Fix player bullet shooting. It looks weird. I think it has to do with the
+  - [*] Fix player bullet shooting. It looks weird. I think it has to do with the
     speed of the ship.
-  - Add radar with more information of interest (not only radar but arrows as well). Otherwise is going to be impossible to find star systems.
   - [*] detect enemies in radar
-  - Adjust numbers. Make ship stronger so you don't die so fast.
-  - make systems go offline with less energy (not at a uniform rate)
+  - Message queue to display in game messages
+  - Add radar with more information of interest (not only radar but arrows as well). Otherwise is going to be impossible to find star systems.
+  - [*] Adjust numbers. Make ship stronger so you don't die so fast.
+  - [*] Make systems go offline with less energy (not at a uniform rate)
+  - Make bullets follow targets
+  - Planets
+    - stations, defences, production
 - Map generation
-  - create a map of a starting number of sectors (Test having everything in memory first)
+  - Add first version of all planets
+  - [*] create a map of a starting number of sectors (Test having everything in memory first)
     - get to the end of the map you appear on the other side
+  - static map generation
     - add more static asteroids in the different sectors
+    - add elder fleets of different sizes
+    - add other factions
+      - planets
+      - NPC ships
+    - change the position of the sun so it is not always dead center of a sector
+  - dynamic events
+    - add dynamic asteroids that approach the ship
+    - add elder patrols that attack the ship
+    - add other factions attacking the ship
+    - other factions/elders taking control of planets, etc
   - reuse objects using object pool
   - save state in an object
+- Victory conditions
+  - reclaim earth
+  - Red: Conquest x plantes
+  - Blue: Reclaim x planets from elders
+  - Green: Establish commerce in x planets
 - Enemies
   - motherships.
     - make mother ship move steady in a direction
@@ -55,7 +76,6 @@
         - victory condition conquest
     - 3 victory conditions
       - way to store game data
-- message queue to display in game messages
 - support for multiple weapons
 - planets orbiting around sun
   - add gradient using the sun in the center as source of illumination

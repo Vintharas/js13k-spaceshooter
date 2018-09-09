@@ -8,7 +8,7 @@ export interface ShipVision extends Sprite, ShipSystem {}
 
 export function ShipVision(scene: Scene, energy: ShipEnergy) {
   let vision = kontra.sprite({
-    ...ShipSystemMixin(scene, "NEAR SPACE RADAR", (energy.maxEnergy * 1) / 5),
+    ...ShipSystemMixin(scene, "NEAR SPACE RADAR", (energy.maxEnergy * 1) / 6),
 
     dt: 0,
     render(this: Sprite) {

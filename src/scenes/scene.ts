@@ -1,17 +1,29 @@
-import {
-  Position,
-  Positions,
-  isObjectOutOfBounds,
-  getCanvasPosition
-} from "../utils";
+import { Position, Positions, isObjectOutOfBounds } from "../utils";
 import CollisionsEngine from "../collisions";
 import Config from "../config";
 import { Camera, createCamera } from "./camera";
+import { createGameStatusText } from "../text";
 
-export interface Sprites {
-  background: Sprite[];
-  foreground: Sprite[];
-  shell: Sprite[];
+export class Sprites {
+  background: Sprite[] = [];
+  foreground: Sprite[] = [];
+  shell: Sprite[] = [];
+  pools: Pool[] = [];
+
+  [Symbol.iterator]() {
+    return [
+      ...this.background,
+      ...this.foreground,
+      ...this.activePoolObjects(),
+      ...this.shell
+    ][Symbol.iterator]();
+  }
+
+  activePoolObjects(this: Sprites): Sprite[] {
+    return this.pools
+      .map(p => p.getAliveObjects())
+      .reduce((arr, acc) => [...acc, ...arr], []);
+  }
 }
 
 export interface SpriteOptions {
@@ -30,6 +42,7 @@ export interface Scene {
   activePoolObjects(): Sprite[];
   update(dt: number): void;
   addSprite(this: Scene, sprite: Sprite, options?: SpriteOptions): void;
+  addPool(this: Scene, pool: Pool): void;
   start(): void;
   stop(): void;
   cameraPosition: Position;
@@ -50,48 +63,16 @@ export function createScene({
   render = () => {},
   props = {}
 }: SceneOptions = {}): Scene {
-  const sprites: Sprites = { foreground: [], background: [], shell: [] };
-  const pools: Pool[] = [];
+  const sprites = new Sprites();
 
   let loop = kontra.gameLoop({
     update(dt: number) {
       update.bind(this)(dt);
-
-      // TODO: provide custom iterator to
-      // allow to easy traverse all sprites
-      // without having to create a new array
-      this.sprites.background.forEach((s: Sprite) => s.update());
-      this.sprites.foreground.forEach((s: Sprite) => s.update());
-      this.pools.forEach((p: Pool) => p.update());
-      this.sprites.shell.forEach((s: Sprite) => s.update());
-
-      this.collisionEngine.processCollisions(dt);
-      if (Config.debug && Config.verbose) {
-        this.logGameObjects();
-      }
-
-      this.sprites.foreground = this.sprites.foreground.filter(
-        (sprite: Sprite) => sprite.isAlive()
-      );
+      updateLoop.bind(this)(dt);
     },
     render() {
       render.bind(this)();
-      // background never out of bounds
-      this.sprites.background.forEach((s: Sprite) => s.render());
-      this.sprites.foreground
-        .filter(
-          (s: Sprite) =>
-            !isObjectOutOfBounds(s, camera) &&
-            s.type !== "ship" &&
-            s.type !== "bullet"
-        )
-        .forEach((s: Sprite) => s.render());
-      this.pools.forEach((p: Pool) => p.render());
-      // make bullets part of the pool and remove this
-      this.sprites.foreground
-        .filter((s: Sprite) => s.type === "ship" || s.type === "bullet")
-        .forEach((s: Sprite) => s.render());
-      this.sprites.shell.forEach((s: Sprite) => s.render());
+      renderLoop.bind(this)();
     }
   });
 
@@ -99,7 +80,6 @@ export function createScene({
   // functionality. This defines the public
   // API of Scene
   let scene = Object.assign(loop, {
-    pools,
     sprites,
     ...props,
     // TODO: this may not be necessary
@@ -114,12 +94,14 @@ export function createScene({
       else if (sceneLayer === SceneLayer.Shell) this.sprites.shell.push(sprite);
       else this.sprites.background.push(sprite);
     },
+    addPool(this: Scene, pool: Pool) {
+      this.sprites.pools.push(pool);
+    },
     cameraPosition: camera,
     logGameObjects,
-    activePoolObjects(this: Scene): Sprite[] {
-      return this.pools
-        .map(p => p.getAliveObjects())
-        .reduce((arr, acc) => [...acc, ...arr], []);
+    showMessage(text: string) {
+      let message = createGameStatusText(text);
+      this.messageQueue.push(message);
     }
   });
   scene.collisionEngine = new CollisionsEngine(scene);
@@ -129,6 +111,28 @@ export function createScene({
   }
 
   return scene;
+
+  function updateLoop(dt: number) {
+    // TODO: not create an array every time you want
+    // to traverse the sprites. What about using generators...?
+    Array.from(this.sprites).forEach((s: Sprite) => s.update());
+
+    this.collisionEngine.processCollisions(dt);
+    if (Config.debug && Config.verbose) {
+      this.logGameObjects();
+    }
+
+    this.sprites.foreground = this.sprites.foreground.filter((sprite: Sprite) =>
+      sprite.isAlive()
+    );
+  }
+
+  function renderLoop() {
+    // TODO: use generators so I don't need to create a new array
+    // each time
+    // background never out of bounds
+    Array.from(this.sprites).forEach((s: Sprite) => s.render());
+  }
 }
 
 function logGameObjects() {

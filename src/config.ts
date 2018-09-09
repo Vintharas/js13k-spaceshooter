@@ -59,9 +59,9 @@ const Config = {
   },
 
   Ship: {
-    Energy: 500,
-    Life: 200,
-    Shield: 300,
+    Energy: 700,
+    Life: 300,
+    Shield: 400,
     EnergyCost: {
       Thrust: 1,
       Brake: 1,

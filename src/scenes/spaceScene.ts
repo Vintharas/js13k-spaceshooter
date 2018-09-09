@@ -207,5 +207,5 @@ function addEnemies(scene: Scene, ship: Ship) {
     });
   }
 
-  scene.pools.push(elderPool);
+  scene.addPool(elderPool);
 }
