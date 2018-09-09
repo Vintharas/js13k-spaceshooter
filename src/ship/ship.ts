@@ -10,7 +10,8 @@ import { ShipEnergy } from "./shipEnergy";
 import { ShipLife } from "./shipLife";
 import { ShipWeapons } from "./shipWeapons";
 import { ShipVision } from "./shipVision";
-import { updateWasDamageStatus, after } from "../behavior";
+import { updateWasDamageStatus } from "../behavior";
+import { after } from "../fp";
 
 export interface Ship extends Sprite {
   width: number;

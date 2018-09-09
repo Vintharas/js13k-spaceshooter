@@ -3,6 +3,7 @@ import createBullet from "./bullet";
 import { Vector } from "./vector";
 import { Scene } from "./scenes/scene";
 import { doThisEvery } from "./Time";
+import { after, before } from "./fp";
 
 export enum BehaviorType {
   FollowSteady = "FollowSteady",
@@ -34,20 +35,6 @@ export function composeBehavior(sprite: Sprite, behavior: Behavior) {
   if (behavior.render) {
     sprite.render = after(sprite.render, behavior.render).bind(sprite);
   }
-}
-
-export function before(func: any, beforeFunc: any) {
-  return function(...args: any[]) {
-    beforeFunc.apply(this, args);
-    func.apply(this, args);
-  };
-}
-
-export function after(func: any, afterFunc: any) {
-  return function(...args: any[]) {
-    func.apply(this, args);
-    afterFunc.apply(this, args);
-  };
 }
 
 export function FollowSteadyBehavior(

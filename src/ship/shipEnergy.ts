@@ -80,8 +80,7 @@ export function ShipEnergy(
     },
 
     addOfflineText(text: string) {
-      let textSprite = createGameStatusText(text);
-      scene.addSprite(textSprite);
+      scene.showMessage(text);
     }
   });
 }

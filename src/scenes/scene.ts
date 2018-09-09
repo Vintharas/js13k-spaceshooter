@@ -3,6 +3,8 @@ import CollisionsEngine from "../collisions";
 import Config from "../config";
 import { Camera, createCamera } from "./camera";
 import { createGameStatusText } from "../text";
+import { after } from "../fp";
+import { doThisEvery } from "../Time";
 
 export class Sprites {
   background: Sprite[] = [];
@@ -39,6 +41,8 @@ export enum SceneLayer {
 export interface Scene {
   sprites: Sprites;
   pools: Pool[];
+  messageQueue: string[];
+  showMessage(text: string): void;
   activePoolObjects(): Sprite[];
   update(dt: number): void;
   addSprite(this: Scene, sprite: Sprite, options?: SpriteOptions): void;
@@ -66,20 +70,15 @@ export function createScene({
   const sprites = new Sprites();
 
   let loop = kontra.gameLoop({
-    update(dt: number) {
-      update.bind(this)(dt);
-      updateLoop.bind(this)(dt);
-    },
-    render() {
-      render.bind(this)();
-      renderLoop.bind(this)();
-    }
+    update: after(update, updateLoop, showMessageWhenAvailable()),
+    render: after(render, renderLoop)
   });
 
   // Extend game loop with scene
   // functionality. This defines the public
   // API of Scene
   let scene = Object.assign(loop, {
+    messageQueue: [],
     sprites,
     ...props,
     // TODO: this may not be necessary
@@ -100,8 +99,7 @@ export function createScene({
     cameraPosition: camera,
     logGameObjects,
     showMessage(text: string) {
-      let message = createGameStatusText(text);
-      this.messageQueue.push(message);
+      this.messageQueue.push(text);
     }
   });
   scene.collisionEngine = new CollisionsEngine(scene);
@@ -122,6 +120,7 @@ export function createScene({
       this.logGameObjects();
     }
 
+    // TODO: this should be handled by pools :D
     this.sprites.foreground = this.sprites.foreground.filter((sprite: Sprite) =>
       sprite.isAlive()
     );
@@ -204,4 +203,19 @@ function getSpriteCount(sprites: Sprite[]) {
   return Array.from(spritesByType.keys()).reduce((str, type) => {
     return str + `${type}: ${spritesByType.get(type)}\n`;
   }, ``);
+}
+
+export function showMessageWhenAvailable() {
+  // returns a function that
+  // takes an item from a message queue and shows it
+  return doThisEvery({
+    condition() {
+      return this.messageQueue.length > 0;
+    },
+    action(this: Scene) {
+      let text = createGameStatusText(this.messageQueue.shift());
+      this.addSprite(text, { sceneLayer: SceneLayer.Shell });
+    },
+    t: 2
+  });
 }

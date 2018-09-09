@@ -80,10 +80,7 @@ export function createPlanet(
     increaseClaim(faction: Faction, percentage: number): void {
       if (!this.beingClaimed) {
         // text
-        let textSprite = createGameStatusText(
-          `${faction} FACTION CLAIMING ${planetName}`
-        );
-        scene.addSprite(textSprite);
+        scene.showMessage(`${faction} FACTION CLAIMING ${planetName}`);
         this.beingClaimed = true;
       }
 
@@ -93,10 +90,7 @@ export function createPlanet(
         this.claimedPercentage = 100;
         this.beingClaimed = false;
         this.claimedBy = faction;
-        let textSprite = createGameStatusText(
-          `${faction} FACTION CLAIMED ${planetName}`
-        );
-        scene.addSprite(textSprite);
+        scene.showMessage(`${faction} FACTION CLAIMED ${planetName}`);
       }
     },
 

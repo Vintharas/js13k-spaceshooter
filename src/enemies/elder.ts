@@ -14,12 +14,12 @@ import {
   FollowSteadyBehavior,
   Shoot,
   PatrolAroundTarget,
-  after,
   updateWasDamageStatus,
   PatrolType
 } from "../behavior";
 import OffscreenCanvas from "../canvas";
 import { Draw } from "../draw";
+import { after } from "../fp";
 
 // Elder race of aliens jara, jara
 // Using the elder name couldn't be more confusing XD

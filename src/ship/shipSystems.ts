@@ -1,5 +1,3 @@
-import Config from "../config";
-import { createGameStatusText } from "../text";
 import { Scene } from "../scenes/scene";
 
 export interface ShipSystem {
@@ -22,16 +20,10 @@ export function ShipSystemMixin(
     onEnergyChanged(currentEnergy: number) {
       if (currentEnergy > energyThreshold && !this.isEnabled) {
         this.isEnabled = true;
-        let textSprite = createGameStatusText(
-          `- ${name.toUpperCase()} ONLINE -`
-        );
-        scene.addSprite(textSprite);
+        scene.showMessage(`- ${name.toUpperCase()} ONLINE -`);
       } else if (currentEnergy < energyThreshold && this.isEnabled) {
         this.disable();
-        let textSprite = createGameStatusText(
-          `- ${name.toUpperCase()} OFFLINE -`
-        );
-        scene.addSprite(textSprite);
+        scene.showMessage(`- ${name.toUpperCase()} OFFLINE -`);
       }
     }
   } as ShipSystem;

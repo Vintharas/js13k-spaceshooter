@@ -1,7 +1,7 @@
 export interface Action {
   action: () => void;
   t: number;
-  condition: () => boolean;
+  condition?: () => boolean;
 }
 
 export function doThisEvery({ action, t, condition = () => true }: Action) {

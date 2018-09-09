@@ -30,7 +30,7 @@ export function ShipRadar(scene: Scene, energy: ShipEnergy) {
         this.dt = 0;
         this.targetsInRadar = [
           ...scene.sprites.foreground,
-          ...scene.activePoolObjects()
+          ...scene.sprites.activePoolObjects()
         ]
           .filter((s: Sprite) => this.isInRange(s, scene.cameraPosition))
           .filter((s: Sprite) => s.radius > 15 || s.size > 10 || s.width > 10)
