@@ -23,10 +23,11 @@
   - [*] Fix player bullet shooting. It looks weird. I think it has to do with the
     speed of the ship.
   - [*] detect enemies in radar
-  - Message queue to display in game messages
+  - [*] Message queue to display in game messages
   - Add radar with more information of interest (not only radar but arrows as well). Otherwise is going to be impossible to find star systems.
   - [*] Adjust numbers. Make ship stronger so you don't die so fast.
   - [*] Make systems go offline with less energy (not at a uniform rate)
+  - [*] Add more information about where the player ship is
   - Make bullets follow targets
   - Planets
     - stations, defences, production

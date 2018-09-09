@@ -4,7 +4,7 @@ import { createStaticParticle, Particle } from "../particles";
 import Config from "../config";
 import { Faction } from "../factions";
 import { ShipRadar } from "./shipRadar";
-import { ShipSpeed } from "./shipSpeed";
+import { ShipSpeedAndLocation } from "./shipSpeed";
 import { ShipShield } from "./shipShield";
 import { ShipEnergy } from "./shipEnergy";
 import { ShipLife } from "./shipLife";
@@ -18,7 +18,7 @@ export interface Ship extends Sprite {
   collisionWidth: number;
   energy: ShipEnergy;
   life: ShipLife;
-  speed: ShipSpeed;
+  speed: ShipSpeedAndLocation;
   faction: Faction;
   radar: ShipRadar;
   weapons: ShipWeapons;
@@ -49,7 +49,7 @@ export default function createShip(scene: Scene, faction: Faction) {
     scene,
     modifiers.ShieldRechargeRate
   );
-  const speed = ShipSpeed();
+  const speed = ShipSpeedAndLocation();
   const radar = ShipRadar(scene, energy);
   const weapons = ShipWeapons(
     scene,
@@ -162,7 +162,7 @@ export default function createShip(scene: Scene, faction: Faction) {
     },
     update: after(function update(this: Ship) {
       this.weapons.updateShipInformation(this, this, this.rotation);
-      this.speed.updateSpeed(this.dx, this.dy);
+      this.speed.updateShipInformation(this);
       this.parts.forEach((s: Sprite) => s.update());
 
       // rotate the ship left or right
