@@ -77,7 +77,12 @@ module.exports = {
     new CleanWebpackPlugin(["dist"]),
     new HtmlWebpackPlugin({
       title: "js13k-spaceshooter",
-      template: "src/index.html"
+      template: "src/index.html",
+      minify: {
+        collapseWhitespace: true,
+        minifyCSS: true,
+        removeComments: true
+      }
     })
   ]
 };

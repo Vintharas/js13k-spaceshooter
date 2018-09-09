@@ -48,7 +48,8 @@ module.exports = merge(common, {
     new ZopfliPlugin({
       asset: "[path].gz[query]",
       algorithm: "zopfli",
-      test: /\.(js|html)$/
+      test: /\.(html|js)$/,
+      deleteOriginalAssets: true
     })
   ]
 });
