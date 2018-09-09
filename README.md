@@ -20,6 +20,7 @@
 ## Prioritize
 
 - Playability and Basic gameplay
+  - BUG. Fix regression with alien ships following the ship
   - [*] Fix player bullet shooting. It looks weird. I think it has to do with the
     speed of the ship.
   - [*] detect enemies in radar

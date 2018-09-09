@@ -4,12 +4,16 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 // cleans up dist folder
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+// copy files to output directory
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
+  /*
   entry: {
     kontra: "./src/loadkontra.js",
     game: "./src/index.ts"
   },
+  */
   output: {
     filename: "[name].bundle.js",
     path: path.resolve(__dirname, "dist")
@@ -46,6 +50,7 @@ module.exports = {
 
       // loading kontra as a global script
       // it relies on this being window
+      /*
       {
         test: require.resolve("./src/libs/kontra.min.js"),
         use: "imports-loader?this=>window"
@@ -54,6 +59,7 @@ module.exports = {
         test: require.resolve("./src/libs/kontra.min.js"),
         use: "exports-loader?kontra=this.kontra"
       },
+      */
       // Actual sprites
       // Using Piksel thus far to create sprites manually
       // it saves stuff as PNG, that may not be super optimal
@@ -83,6 +89,7 @@ module.exports = {
         minifyCSS: true,
         removeComments: true
       }
-    })
+    }),
+    CopyWebpackPlugin([{ from: "src/libs/kontra.min.js", to: "kontra.min.js" }])
   ]
 };

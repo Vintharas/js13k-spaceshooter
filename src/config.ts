@@ -1,11 +1,17 @@
 import { Faction, FactionShipModifiers } from "./factions";
 import { PlanetType } from "./planet";
-import { CanvasConfig } from "./canvas.config";
 
 // TODO: create separate branch where I inline
 // all this and see whether it affects the resulting size
 const Config = {
-  ...CanvasConfig,
+  get canvasWidth() {
+    return kontra.canvas && kontra.canvas.width / this.scale;
+  },
+  get canvasHeight() {
+    return kontra.canvas && kontra.canvas.height / this.scale;
+  },
+  //scale: 1
+  scale: 1.5,
 
   // an object far from the camera
   // more than this constant will be recycled

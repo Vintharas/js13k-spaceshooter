@@ -1,3 +1,8 @@
+declare module "*.png" {
+  const content: any;
+  export default content;
+}
+
 declare const enum SpriteType {
   Background,
   Text,
@@ -64,6 +69,7 @@ interface Keys {
 }
 interface Assets {
   images: any;
+  load(...assets: any[]): any;
 }
 interface PoolBuilder {
   create(s: SpriteBuilder): any;
@@ -79,6 +85,9 @@ interface Pool {
 }
 
 interface Kontra {
+  init(): void;
+  context: CanvasRenderingContext2D;
+  canvas: HTMLCanvasElement;
   sprite(s: SpriteBuilder): any;
   gameLoop(s: GameLoopBuilder): any;
   keys: Keys;
