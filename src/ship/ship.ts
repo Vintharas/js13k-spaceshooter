@@ -60,7 +60,7 @@ export default function createShip(scene: Scene, faction: Faction) {
   const vision = ShipVision(scene, energy);
 
   const ship = kontra.sprite({
-    type: "ship",
+    type: SpriteType.Ship,
     faction,
     parts: [energy, life, shield, speed, radar, weapons, vision],
 

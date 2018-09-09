@@ -121,11 +121,10 @@ function mapToTarget(sprite: Sprite, cameraPosition: Position): RadarTarget {
     size: toSize(sprite)
   };
 
-  // TODO: Why not use enums for types?
-  function typeToColor(type: string): string {
-    if (type === "planet") return Color.rgba(0, 255, 0, 0.7);
-    if (type === "asteroid") return Color.rgba(200, 200, 200, 0.7);
-    if (type === "elder") return Color.rgba(255, 0, 0, 0.7);
+  function typeToColor(type: SpriteType): string {
+    if (type === SpriteType.Planet) return Color.rgba(0, 255, 0, 0.7);
+    if (type === SpriteType.Asteroid) return Color.rgba(200, 200, 200, 0.7);
+    if (type === SpriteType.Elder) return Color.rgba(255, 0, 0, 0.7);
     else return Color.rgba(150, 150, 150, 0.7);
   }
   function toSize(sprite: Sprite) {

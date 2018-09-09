@@ -54,7 +54,7 @@ export function createPlanet(
   let da = getValueInRange(0, 0.05);
 
   let planet = kontra.sprite({
-    type: "planet",
+    type: SpriteType.Planet,
 
     origin,
     orbit,
@@ -208,7 +208,7 @@ export function createPlanet(
         this.context.translate(position.x, position.y);
         let color = Config.Factions[this.claimedBy].Color;
         this.context.strokeStyle = Color.rgb(color);
-        this.claimedBy.toLowerCase();
+        Config.Factions[this.claimedBy].Name.toLowerCase();
         this.context.lineWidth = 5;
         this.context.beginPath(); // start drawing a shape
 
@@ -233,14 +233,14 @@ export function createPlanet(
   return planet;
 }
 
-export enum PlanetType {
-  Red = 0,
-  Green = 1,
-  Blue = 2,
-  Desert = 3,
-  Barren = 4,
-  Paradise = 5,
-  Sun = 6
+export const enum PlanetType {
+  Red,
+  Green,
+  Blue,
+  Desert,
+  Barren,
+  Paradise,
+  Sun
 }
 export const PlanetTypes = [
   PlanetType.Red,

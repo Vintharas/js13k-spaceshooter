@@ -33,7 +33,7 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
     create() {
       let elder = kontra.sprite({
         // pass all properties ot the kontra.sprite ctor
-        type: "elder",
+        type: SpriteType.Elder,
         // the enemies will need to have a reference
         // to the ship so they know its location
         ship,
@@ -113,7 +113,7 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
   });
 }
 
-export enum ElderType {
+export const enum ElderType {
   Drone,
   Sentry,
   MotherShip

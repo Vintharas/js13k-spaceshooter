@@ -5,10 +5,10 @@ import { Scene } from "./scenes/scene";
 import { doThisEvery } from "./Time";
 import { after, before } from "./fp";
 
-export enum BehaviorType {
-  FollowSteady = "FollowSteady",
-  Shoot = "Shoot",
-  PatrolAroundTarget = "PatrolAroundTarget"
+export const enum BehaviorType {
+  FollowSteady,
+  Shoot,
+  PatrolAroundTarget
 }
 
 export interface Behavior {
@@ -101,7 +101,7 @@ export function Shoot(scene: Scene, target: Sprite): Behavior {
   };
 }
 
-export enum PatrolType {
+export const enum PatrolType {
   Orbit,
   Random
 }

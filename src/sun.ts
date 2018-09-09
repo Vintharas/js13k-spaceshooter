@@ -29,7 +29,7 @@ export function createSun(
 
   // sun = visible star :)
   let sun = kontra.sprite({
-    type: "planet-sun",
+    type: SpriteType.Sun,
     x: position.x,
     y: position.y,
     radius,

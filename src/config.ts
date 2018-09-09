@@ -15,20 +15,25 @@ const Config = {
 
   // collisions
   collidableTypes: [
-    "asteroid",
-    "bullet",
-    "ship",
-    "cell",
-    "planet",
-    "planet-sun",
-    "elder" // aliens
+    SpriteType.Asteroid,
+    SpriteType.Bullet,
+    SpriteType.Ship,
+    SpriteType.Cell,
+    SpriteType.Planet,
+    SpriteType.Sun,
+    SpriteType.Elder
   ],
 
   // enable debug printouts
   debug: false,
   renderDebugData: true,
   verbose: false, // prints all info of ships in console
-  typesToLog: ["asteroid", "ship", "enemy", "bullet"],
+  typesToLog: [
+    SpriteType.Asteroid,
+    SpriteType.Ship,
+    SpriteType.Elder,
+    SpriteType.Bullet
+  ],
   logTheseProperties: (s: Sprite) => ({
     type: s.type,
     x: s.x,

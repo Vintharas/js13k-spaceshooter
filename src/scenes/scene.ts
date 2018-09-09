@@ -32,7 +32,7 @@ export interface SpriteOptions {
   sceneLayer?: SceneLayer;
 }
 
-export enum SceneLayer {
+export const enum SceneLayer {
   Background,
   Foreground,
   Shell

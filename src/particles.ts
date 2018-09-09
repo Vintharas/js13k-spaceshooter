@@ -34,7 +34,7 @@ export function createStaticParticle(
   const sin = Math.sin(degreesToRadians(particleAxis + ParticleAxisVariance));
 
   return kontra.sprite({
-    type: "particle",
+    type: SpriteType.Particle,
 
     // particles originate from the same point
     // the always originate from the back of the ship
@@ -98,7 +98,7 @@ export function createParticle(
   const sin = Math.sin(degreesToRadians(particleAxis + ParticleAxisVariance));
 
   return kontra.sprite({
-    type: "particle",
+    type: SpriteType.Particle,
 
     // particles originate from a single point
     x: position.x,
@@ -158,7 +158,7 @@ export function createExplosionParticle(
   //const sin = Math.sin(degreesToRadians(particleAxis + ParticleAxisVariance));
 
   return kontra.sprite({
-    type: "particle",
+    type: SpriteType.Particle,
 
     // particles originate from the same point
     // the always originate from the back of the ship

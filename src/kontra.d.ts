@@ -1,3 +1,17 @@
+declare const enum SpriteType {
+  Background,
+  Text,
+  Particle,
+  Asteroid,
+  Bullet,
+  Cell,
+  Planet,
+  Sun,
+  Star,
+  Elder,
+  Ship
+}
+
 interface Position {
   x: number;
   y: number;
@@ -13,7 +27,7 @@ interface SpriteBuilder {
   y?: number;
   dx?: number;
   dy?: number;
-  type?: string;
+  type?: SpriteType;
   ttl?: number;
   update?(this: Sprite, dt?: number): void;
   render?(this: Sprite): void;
@@ -25,7 +39,7 @@ interface SpriteBuilder {
 }
 
 interface Sprite extends Position, Velocity {
-  type?: string;
+  type?: SpriteType;
   ttl?: number;
   update(dt?: number): void;
   render(): void;

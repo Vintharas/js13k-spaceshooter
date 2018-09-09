@@ -30,7 +30,7 @@ export default function createBullet(
   let sin = Math.sin(degreesToRadians(angle));
 
   return kontra.sprite({
-    type: "bullet",
+    type: SpriteType.Bullet,
     // start the bullet on the ship at the end of the triangle
     x: position.x + cos * 12,
     y: position.y + sin * 12,
@@ -51,6 +51,7 @@ export default function createBullet(
     height: 2,
     color,
     update() {
+      this.followNearTarget();
       this.advance();
       for (let i = 0; i <= Config.Bullets.NumberOfParticles; i++) {
         let particle = createParticle(
@@ -62,6 +63,9 @@ export default function createBullet(
         );
         scene.addSprite(particle);
       }
+    },
+    followNearTarget() {
+      // HERE
     },
     render() {
       let position = getCanvasPosition(this, cameraPosition);

@@ -58,10 +58,10 @@ export default class CollisionsEngine {
     // collision detection
     for (let i = 0; i < collidableObjects.length; i++) {
       // only check for collision against asteroids
-      if (collidableObjects[i].type === "asteroid") {
+      if (collidableObjects[i].type === SpriteType.Asteroid) {
         for (let j = i + 1; j < collidableObjects.length; j++) {
           // don't check asteroid vs. asteroid collisions
-          if (collidableObjects[j].type !== "asteroid") {
+          if (collidableObjects[j].type !== SpriteType.Asteroid) {
             let asteroid = collidableObjects[i];
             let sprite = collidableObjects[j];
             let collided = this.handleCollisionWithAsteroid(asteroid, sprite);
@@ -70,14 +70,14 @@ export default class CollisionsEngine {
         }
       }
 
-      if (collidableObjects[i].type === "bullet") {
+      if (collidableObjects[i].type === SpriteType.Bullet) {
         for (let j = i + 1; j < collidableObjects.length; j++) {
           // TODO: refactor, use enums
           // don't check collisions betwen bullets
           // asteroids have already been checked
           if (
-            collidableObjects[j].type !== "bullet" &&
-            collidableObjects[i].type !== "asteroid"
+            collidableObjects[j].type !== SpriteType.Bullet &&
+            collidableObjects[i].type !== SpriteType.Asteroid
           ) {
             let bullet = collidableObjects[i] as Bullet;
             let sprite = collidableObjects[j] as Sprite;
@@ -87,19 +87,19 @@ export default class CollisionsEngine {
         }
       }
 
-      if (collidableObjects[i].type === "cell" && this.ship) {
+      if (collidableObjects[i].type === SpriteType.Cell && this.ship) {
         // did it collide with the ship?
         // circle vs. circle collision detection
         let cell = collidableObjects[i] as Cell;
         this.handleCollisionBetweenCellAndShip(cell, this.ship);
       }
 
-      if (collidableObjects[i].type === "planet" && this.ship) {
+      if (collidableObjects[i].type === SpriteType.Planet && this.ship) {
         let planet = collidableObjects[i] as Planet;
         this.handleCollisionBetweenPlanetAndShip(planet, this.ship);
       }
 
-      if (collidableObjects[i].type === "planet-sun" && this.ship) {
+      if (collidableObjects[i].type === SpriteType.Sun && this.ship) {
         let sun = collidableObjects[i] as Sun;
         this.handleCollisionBetweenSunAndShip(sun, this.ship);
       }
@@ -112,7 +112,7 @@ export default class CollisionsEngine {
     if (this.ship) return;
 
     let shipTypedSprites = this.scene.sprites.foreground.filter(
-      (s: Sprite) => s.type === "ship"
+      (s: Sprite) => s.type === SpriteType.Ship
     ) as Ship[];
     if (shipTypedSprites.length > 0) [this.ship] = shipTypedSprites;
   }
@@ -153,7 +153,11 @@ export default class CollisionsEngine {
     // circle vs. circle collision detection
     if (bullet.owner === sprite) return;
     if (bullet.owner.faction && bullet.owner.faction === sprite.faction) return;
-    if (bullet.owner.type === "elder" && sprite.type === "elder") return;
+    if (
+      bullet.owner.type === SpriteType.Elder &&
+      sprite.type === SpriteType.Elder
+    )
+      return;
 
     if (
       Vector.getDistanceMagnitude(bullet, sprite) <

@@ -36,7 +36,7 @@ export function createText(
   }
 
   return kontra.sprite({
-    type: "text",
+    type: SpriteType.Text,
     x,
     y,
     dx,

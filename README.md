@@ -31,6 +31,7 @@
   - Make bullets follow targets
   - Planets
     - stations, defences, production
+- Change types for enums instead of strings
 - Map generation
   - Add first version of all planets
   - [*] create a map of a starting number of sectors (Test having everything in memory first)
@@ -92,6 +93,9 @@
   - scenes.
     - Separate background and foreground objects. There's no need to check
     - extract checking whether an object is viewable to the render method within the scene. We no longer need to do it per sprite? As I've been doing it
+- Refactor
+  - collision engine
+  - particle generator
 - Techniques to reduce space
   - wrap kontra library -> this didn't work
   - write the loading assets component from scratch. I'll only need the images, so I don't really need 1K only for loading 3 images

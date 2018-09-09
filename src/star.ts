@@ -21,7 +21,7 @@ export function createStar({ x, y, cameraPosition }: StarBuilder) {
     // create some variation in positioning
     x: getNumberWithVariance(x, x / 2),
     y: getNumberWithVariance(y, y / 2),
-    type: "star",
+    type: SpriteType.Star,
     dx: 0,
     dy: 0,
     ttl: Infinity,

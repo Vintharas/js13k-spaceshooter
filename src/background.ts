@@ -22,7 +22,7 @@ export function SpaceBackground(cameraPosition: Position) {
     cameraPosition
   });
   return kontra.sprite({
-    type: "background",
+    type: SpriteType.Background,
     x: start,
     y: start,
     stars,

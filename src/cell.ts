@@ -24,7 +24,7 @@ export default function createCell(
   let cos = Math.cos(degreesToRadians(angle));
   let sin = Math.sin(degreesToRadians(angle));
   return kontra.sprite({
-    type: "cell",
+    type: SpriteType.Cell,
     cellType,
     x: position.x,
     y: position.y,
@@ -69,9 +69,9 @@ export default function createCell(
   });
 }
 
-export enum CellType {
-  Energy = "Energy",
-  Life = "Life"
+export const enum CellType {
+  Energy,
+  Life
 }
 
 function cellTypeToColor(type: CellType, alpha: number): string {

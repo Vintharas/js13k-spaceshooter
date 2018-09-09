@@ -1,9 +1,9 @@
 import { PlanetType } from "./planet";
 
-export enum Faction {
-  Red = "Red",
-  Blue = "Blue",
-  Green = "Green"
+export const enum Faction {
+  Red,
+  Blue,
+  Green
 }
 
 export interface FactionConfig {

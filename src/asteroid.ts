@@ -28,7 +28,7 @@ export function createAsteroid(
   cameraPosition: Position
 ): Asteroid {
   let asteroid = kontra.sprite({
-    type: "asteroid",
+    type: SpriteType.Asteroid,
     x: position.x,
     y: position.y,
     radius,
