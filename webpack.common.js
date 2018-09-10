@@ -8,12 +8,10 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  /*
   entry: {
-    kontra: "./src/loadkontra.js",
-    game: "./src/index.ts"
+    //kontra: "./src/loadkontra.js",
+    main: "./src/index.ts"
   },
-  */
   output: {
     filename: "[name].bundle.js",
     path: path.resolve(__dirname, "dist")
@@ -89,7 +87,7 @@ module.exports = {
         minifyCSS: true,
         removeComments: true
       }
-    }),
-    CopyWebpackPlugin([{ from: "src/libs/kontra.min.js", to: "kontra.min.js" }])
+    })
+    //CopyWebpackPlugin([{ from: "libs/kontra.min.js", to: "kontra.min.js" }])
   ]
 };

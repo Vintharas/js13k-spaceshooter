@@ -1,6 +1,7 @@
 // I injected this in the index.html template
 // directly to avoid 10K in prod package
 // import "./styles.css";
+import "../libs/kontra.min.js";
 import Game from "./game";
 import RedShip from "./sprites/redship.png";
 import BlueShip from "./sprites/blueship.png";

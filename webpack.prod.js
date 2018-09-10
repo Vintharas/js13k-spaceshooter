@@ -7,9 +7,11 @@ const ZopfliPlugin = require("zopfli-webpack-plugin");
 //const ClosurePlugin = require("closure-webpack-plugin");
 
 // This is another package by Google
-// const fs = require("fs");
-// const ClosureCompiler = require("google-closure-compiler-js").webpack;
-// const externs = fs.readFileSync("./externs.js", "utf8");
+/*
+const fs = require("fs");
+const ClosureCompiler = require("google-closure-compiler-js").webpack;
+const externs = fs.readFileSync("./externs.js", "utf8");
+*/
 
 module.exports = merge(common, {
   // Using the production setting
@@ -35,21 +37,22 @@ module.exports = merge(common, {
     /*
     new ClosureCompiler({
       options: {
-        languageIn: "ECMASCRIPT6",
-        languageOut: "ECMASCRIPT5",
-        //compilationLevel: "ADVANCED",
-        compilationLevel: "SIMPLE",
+        languageIn: "ES6",
+        languageOut: "ES6",
+        compilationLevel: "ADVANCED",
+        //compilationLevel: "SIMPLE",
         warningLevel: "VERBOSE",
         //externs: ["./externs.js"]
         externs: [{ src: externs }]
       }
-    }),
+    })
     */
+    // Will use advzip via commandline
     new ZopfliPlugin({
       asset: "[path].gz[query]",
       algorithm: "zopfli",
       test: /\.(html|js)$/,
-      deleteOriginalAssets: true
+      deleteOriginalAssets: false
     })
   ]
 });

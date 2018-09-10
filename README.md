@@ -19,6 +19,10 @@
 
 ## Prioritize
 
+- Size. Get under 13 K mother fucker
+  - refactor offscreen canvas remove
+  - refactor collision engine
+  - refactor particle generator
 - Playability and Basic gameplay
   - BUG. Fix regression with alien ships following the ship
   - [*] Fix player bullet shooting. It looks weird. I think it has to do with the
@@ -108,6 +112,7 @@
     - consider loading kontra just by copying file as is to the dist folder
       and including it as is in the index.html template
     - setup compressor to just compress everything in dist/
+    - Test setting up to take advantage of TYPESCRIPT, because right now I'm removing types after transpiling and then sending it to closure
   - test removing all the parts of kontra that I don't need
   - wrap drawing primitives and behavior primitives in classes/functions/etc
 - TypeScript

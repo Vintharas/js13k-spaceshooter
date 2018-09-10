@@ -3,7 +3,14 @@
     "outDir": "./dist/",
     "noImplicitAny": true,
     "module": "es6",
-    "target": "ESNext",
+    // module as commonjs for tsickle
+    // "module":"commonjs",
+    //"target": "ESNext",
+    // using es6 instead of esNext cuz
+    // closure compiler doesn't seem to support
+    // es2018 features
+    // looks like I get better results from the compiler with es6
+    "target": "es6",
     "jsx": "react",
     "allowJs": true,
     "sourceMap": true,
