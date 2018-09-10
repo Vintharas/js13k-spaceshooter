@@ -24,8 +24,8 @@ export function createSun(
   //let textureWidth = Math.round(getValueInRange(radius * 2, radius * 2));
   //let textureHeight = Math.round(getValueInRange(radius * 2, radius * 2));
 
-  let textureWidth = Config.Textures.Sun;
-  let textureHeight = Config.Textures.Sun;
+  let textureWidth = 100;
+  let textureHeight = 100;
 
   // sun = visible star :)
   let sun = kontra.sprite({

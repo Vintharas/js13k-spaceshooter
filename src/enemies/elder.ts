@@ -65,6 +65,8 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
           let position = getCanvasPosition(this, this.ship);
           this.renderElder(position);
 
+          /*
+          // Show elder ship path
           if (Config.debug && Config.showPath) {
             this.context.save();
             Draw.drawLine(
@@ -77,7 +79,10 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
             );
             this.context.restore();
           }
+          */
 
+          /*
+          // Show elder ship collision area
           if (Config.debug && Config.renderCollisionArea) {
             this.context.save();
             this.context.translate(position.x, position.y);
@@ -85,6 +90,7 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
             Draw.drawCircle(this.context, 0, 0, this.width / 2, "red");
             this.context.restore();
           }
+          */
         },
         init(args: any) {
           // load defaults based on type
@@ -109,7 +115,8 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
       });
       return elder;
     },
-    maxSize: Config.Elders.MaxNumber
+    //maxSize: Config.Elders.MaxNumber
+    maxSize: 100
   });
 }
 
@@ -261,8 +268,10 @@ function getElderPattern(accent: HSL) {
   let pattern = OffscreenCanvas.instance().getPatternBasedOnColors(
     grey,
     accent,
-    Config.Textures.Elder,
-    Config.Textures.Elder
+    //Config.Textures.Elder,
+    //Config.Textures.Elder
+    20,
+    20
   );
   return pattern;
 }

@@ -88,13 +88,14 @@ export function getCanvasPosition(
   return canvasPosition;
 }
 
+const OutOfBoundsDistance = 10000;
 export function isObjectOutOfBounds(
   objectPosition: Position,
   cameraPosition: Position
 ) {
   let dx = Math.abs(objectPosition.x - cameraPosition.x);
   let dy = Math.abs(objectPosition.y - cameraPosition.y);
-  return dx > Config.mapBoundary || dy > Config.mapBoundary;
+  return dx > OutOfBoundsDistance || dy > OutOfBoundsDistance;
 }
 
 export function getNumberWithVariance(n: number, variance: number): number {

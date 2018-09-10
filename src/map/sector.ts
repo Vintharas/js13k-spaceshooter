@@ -15,6 +15,8 @@ export interface Sector extends Position {
   asteroids?: Asteroid[];
 }
 
+const SectorSize = 10000;
+
 export function Sector(
   scene: Scene,
   position: Position,
@@ -39,8 +41,8 @@ export function Sector(
 
 function createSectorSun(sectorPosition: Position, cameraPosition: Position) {
   let centerOfTheSector = {
-    x: sectorPosition.x + Config.Sector.Size / 2,
-    y: sectorPosition.y + Config.Sector.Size / 2
+    x: sectorPosition.x + SectorSize / 2,
+    y: sectorPosition.y + SectorSize / 2
   };
   let sunSize = getValueInRange(125, 175);
   let sun = createSun({ ...centerOfTheSector }, sunSize, cameraPosition);

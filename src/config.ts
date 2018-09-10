@@ -13,12 +13,18 @@ const Config = {
   //scale: 1
   scale: 1.5,
 
+  /*
+  TODO: Commenting this to save space for the js13k competition
+  I'll inline these in every specific file they're used
+
+
   // an object far from the camera
   // more than this constant will be recycled
   // TODO: make this smaller, temporarily increasing for
   // debugging's sake
   mapBoundary: 10000,
 
+  */
   // collisions
   collidableTypes: [
     SpriteType.Asteroid,
@@ -29,6 +35,7 @@ const Config = {
     SpriteType.Sun,
     SpriteType.Elder
   ],
+  /*
 
   // enable debug printouts
   debug: false,
@@ -107,6 +114,7 @@ const Config = {
   Planet: {
     Resources: 3000
   },
+  */
 
   Factions: {
     [Faction.Red]: {
@@ -181,7 +189,9 @@ const Config = {
         Protection: 0
       } as FactionShipModifiers
     }
-  },
+  }
+
+  /*
   Galaxy: {
     // start with fixed size 10x10 sectors
     Size: 100000
@@ -203,6 +213,7 @@ const Config = {
     Sun: 100,
     Elder: 20
   }
+  */
 };
 
 export default Config;

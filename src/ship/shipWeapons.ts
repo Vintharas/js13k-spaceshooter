@@ -15,6 +15,8 @@ export interface ShipWeapons extends Sprite, ShipSystem {
   ): void;
 }
 
+const ShootCost = 10;
+
 export function ShipWeapons(
   scene: Scene,
   energy: ShipEnergy,
@@ -46,9 +48,10 @@ export function ShipWeapons(
       if (
         kontra.keys.pressed("space") &&
         this.dt > 0.25 + modifier &&
-        energy.hasEnoughEnergy(Config.Ship.EnergyCost.Shoot)
+        energy.hasEnoughEnergy(ShootCost)
       ) {
         this.dt = 0;
+        energy.consume(ShootCost);
 
         const bullet = createBullet(
           this.position,

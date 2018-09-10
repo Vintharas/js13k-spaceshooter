@@ -77,6 +77,7 @@ export function createAsteroid(
       this.context.fill(); // fill circle
       this.context.restore();
 
+      /*
       // Drawing asteroids as a circle
       // this is what we use for collision
       // useful for debugging
@@ -88,6 +89,7 @@ export function createAsteroid(
         this.context.stroke(); // outline the circle
         this.context.restore();
       }
+      */
     }
   });
 

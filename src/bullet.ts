@@ -16,6 +16,8 @@ export interface Bullet extends Sprite {
   damage: number;
 }
 
+const NumberOfParticles = 2;
+
 export default function createBullet(
   position: Position,
   velocity: Velocity,
@@ -53,7 +55,7 @@ export default function createBullet(
     update() {
       this.followNearTarget();
       this.advance();
-      for (let i = 0; i <= Config.Bullets.NumberOfParticles; i++) {
+      for (let i = 0; i <= NumberOfParticles; i++) {
         let particle = createParticle(
           { x: this.x, y: this.y },
           { dx: this.dx, dy: this.dy },
@@ -72,19 +74,23 @@ export default function createBullet(
       this.context.fillStyle = Color.rgb(this.color);
       this.context.fillRect(position.x, position.y, this.width, this.height);
 
+      /*
       if (Config.debug && Config.showPath) {
         this.context.save();
         this.context.translate(position.x, position.y);
         Draw.drawLine(this.context, 0, 0, this.dx, this.dy, "red");
         this.context.restore();
       }
+      */
 
+      /*
       if (Config.debug && Config.renderCollisionArea) {
         this.context.save();
         this.context.translate(position.x, position.y);
         Draw.drawCircle(this.context, 0, 0, this.width / 2, "red");
         this.context.restore();
       }
+      */
     }
   });
 }

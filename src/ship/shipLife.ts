@@ -41,11 +41,13 @@ export function ShipLife(life: number, modifier = 0) {
     damage(damage: number) {
       if (this.life > 0) this.life -= damage;
       if (this.life < 0) this.life = 0;
+      /*
       if (Config.debug) {
         console.log(
           `Ship took damage ${damage}. Remaining life is ${this.life}`
         );
       }
+      */
     },
 
     get(): number {

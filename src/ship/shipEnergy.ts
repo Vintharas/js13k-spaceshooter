@@ -1,6 +1,5 @@
 import { Scene } from "../scenes/scene";
 import Config from "../config";
-import { createGameStatusText } from "../text";
 import { ShipSystem } from "./shipSystems";
 
 export interface ShipEnergy extends Sprite {
@@ -47,20 +46,15 @@ export function ShipEnergy(
     },
     render() {
       // energy bar
-      let energyWidth = Math.ceil(
-        (this.energy * Config.UI.Bar.Width) / this.maxEnergy
-      );
+      const barWidth = 100;
+      const barHeight = 5;
+      let energyWidth = Math.ceil((this.energy * barWidth) / this.maxEnergy);
 
       this.context.fillStyle = "green";
-      this.context.fillRect(this.x, this.y, energyWidth, Config.UI.Bar.Height);
+      this.context.fillRect(this.x, this.y, energyWidth, barHeight);
       // energy bar container
       this.context.strokeStyle = "white";
-      this.context.strokeRect(
-        this.x,
-        this.y,
-        Config.UI.Bar.Width,
-        Config.UI.Bar.Height
-      );
+      this.context.strokeRect(this.x, this.y, barWidth, barHeight);
     },
 
     consume(this: ShipEnergy, energyCost: number) {

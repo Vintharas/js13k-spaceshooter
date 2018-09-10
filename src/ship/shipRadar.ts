@@ -9,6 +9,10 @@ export interface ShipRadar extends Sprite, ShipSystem {
   isInRange(s: Sprite, cameraPosition: Position): boolean;
 }
 
+const RadarSize = 100;
+const RadarRadius = 45;
+const RadarRange = 1000;
+
 // TODO: I should be able to optimize
 // the performance of this when I divide
 // the game into Galaxy/Sectors, etc
@@ -17,8 +21,8 @@ export function ShipRadar(scene: Scene, energy: ShipEnergy) {
     ...ShipSystemMixin(scene, "RADAR", (energy.maxEnergy * 4) / 6),
 
     // center of radar
-    x: Config.canvasWidth - Config.Ship.Radar.Size / 2,
-    y: Config.Ship.Radar.Size / 2,
+    x: Config.canvasWidth - RadarSize / 2,
+    y: RadarSize / 2,
     dt: 0,
     targetsInRadar: [],
     update(this: ShipRadar) {
@@ -36,15 +40,17 @@ export function ShipRadar(scene: Scene, energy: ShipEnergy) {
           .filter((s: Sprite) => s.radius > 15 || s.size > 10 || s.width > 10)
           .map((s: Sprite) => mapToTarget(s, scene.cameraPosition));
 
+        /*
         if (Config.debug && Config.debugRadar)
           console.log(`Targets in radar: `, this.targetsInRadar);
+        */
       }
     },
     render() {
       this.context.save();
       this.context.translate(this.x, this.y);
       // #1. render radar as concentric circles
-      for (let r = Config.Ship.Radar.Radius; r > 15; r -= 5) {
+      for (let r = RadarRadius; r > 15; r -= 5) {
         this.context.beginPath();
         this.context.strokeStyle = Color.rgba(255, 255, 255, 0.5);
         this.context.arc(0, 0, r, 0, 2 * Math.PI);
@@ -53,26 +59,23 @@ export function ShipRadar(scene: Scene, energy: ShipEnergy) {
       this.context.closePath();
 
       // and two lines
-      this.context.translate(-Config.Ship.Radar.Size / 2, 0);
+      this.context.translate(-RadarSize / 2, 0);
       this.context.beginPath();
       this.context.moveTo(0, 0);
-      this.context.lineTo(Config.Ship.Radar.Size, 0);
+      this.context.lineTo(RadarSize, 0);
       this.context.stroke();
       this.context.closePath();
 
-      this.context.translate(
-        Config.Ship.Radar.Size / 2,
-        -Config.Ship.Radar.Size / 2
-      );
+      this.context.translate(RadarSize / 2, -RadarSize / 2);
       this.context.beginPath();
       this.context.moveTo(0, 0);
-      this.context.lineTo(0, Config.Ship.Radar.Size);
+      this.context.lineTo(0, RadarSize);
       this.context.stroke();
       this.context.closePath();
 
       // #2. render targets
       if (this.isEnabled) {
-        this.context.translate(0, Config.Ship.Radar.Size / 2);
+        this.context.translate(0, RadarSize / 2);
         this.targetsInRadar.forEach((t: RadarTarget) => {
           this.context.fillStyle = t.color;
           //this.context.fillRect(t.x, t.y, t.size, t.size);
@@ -90,7 +93,7 @@ export function ShipRadar(scene: Scene, energy: ShipEnergy) {
         y: sprite.y - cameraPosition.y
       };
       let magnitude = Vector.getMagnitude(relativePosition);
-      return magnitude < Config.Ship.Radar.Range;
+      return magnitude < RadarRange;
     }
   });
 
@@ -110,13 +113,13 @@ function mapToTarget(sprite: Sprite, cameraPosition: Position): RadarTarget {
     y: sprite.y - cameraPosition.y
   };
   let normalizedRelativePosition = {
-    x: relativePosition.x / Config.Ship.Radar.Range,
-    y: relativePosition.y / Config.Ship.Radar.Range
+    x: relativePosition.x / RadarRange,
+    y: relativePosition.y / RadarRange
   };
 
   return {
-    x: normalizedRelativePosition.x * Config.Ship.Radar.Radius,
-    y: normalizedRelativePosition.y * Config.Ship.Radar.Radius,
+    x: normalizedRelativePosition.x * RadarRadius,
+    y: normalizedRelativePosition.y * RadarRadius,
     color: typeToColor(sprite.type),
     size: toSize(sprite)
   };

@@ -11,6 +11,9 @@ import { Sun } from "./sun";
 import { Vector } from "./vector";
 import { Bullet } from "./bullet";
 
+const EnergyBoost = 20;
+const LifeBoost = 10;
+
 /*
 Improvements for collision engine:
 
@@ -175,8 +178,10 @@ export default class CollisionsEngine {
   }
 
   handleCollisionAsteroidWithShip(asteroid: Asteroid, ship: any) {
+    /*
     if (Config.debug)
       console.log("Asteroid collided with ship", asteroid, ship);
+    */
     // the damage produced in the ship depends
     // on the size of the asteroid
     let damage = asteroid.radius * 4;
@@ -232,18 +237,16 @@ export default class CollisionsEngine {
     let dy = cell.y - this.ship.y;
     if (
       Math.sqrt(dx * dx + dy * dy) <
-      Config.Cell.OuterRadius + this.ship.collisionWidth
+      cell.outerRadius + this.ship.collisionWidth
     ) {
       cell.ttl = 0;
       // add energy or life to the ship
       if (cell.cellType === CellType.Energy) {
-        let energyBoost = Math.ceil(
-          getValueInRange(0, Config.Cell.EnergyBoost)
-        );
+        let energyBoost = Math.ceil(getValueInRange(0, EnergyBoost));
         this.ship.energy.recharge(energyBoost);
         this.addBoostText(energyBoost, cell, ship, { r: 0, g: 255, b: 0 });
       } else if (cell.cellType === CellType.Life) {
-        let lifeBoost = Math.ceil(getValueInRange(0, Config.Cell.LifeBoost));
+        let lifeBoost = Math.ceil(getValueInRange(0, LifeBoost));
         this.ship.life.repair(lifeBoost);
         this.addBoostText(lifeBoost, cell, ship, { r: 255, g: 0, b: 0 });
       }
@@ -315,25 +318,18 @@ export default class CollisionsEngine {
     }
   }
   provideEnergyBoost(ship: Ship, modifier = 1) {
-    let energyBoost = Math.ceil(
-      getValueInRange(0, Config.Cell.EnergyBoost * modifier)
-    );
+    let energyBoost = Math.ceil(getValueInRange(0, EnergyBoost * modifier));
     ship.energy.recharge(energyBoost);
     this.addBoostText(energyBoost, ship, ship, { r: 0, g: 255, b: 0 });
   }
   provideLifeBoost(ship: Ship, modifier = 1) {
-    let lifeBoost = Math.ceil(
-      getValueInRange(0, Config.Cell.LifeBoost * modifier)
-    );
+    let lifeBoost = Math.ceil(getValueInRange(0, LifeBoost * modifier));
     ship.life.repair(lifeBoost);
     this.addBoostText(lifeBoost, ship, ship, { r: 255, g: 0, b: 0 });
   }
 }
 
 function breakAsteroidInSmallerOnes(asteroid: any, scene: Scene) {
-  if (Config.debug)
-    console.log("Asteroid destroyed. Creating smaller asteroids", asteroid);
-
   for (let i = 0; i < 3; i++) {
     let newAsteroid = createAsteroid(
       asteroid,
@@ -342,8 +338,6 @@ function breakAsteroidInSmallerOnes(asteroid: any, scene: Scene) {
       scene.cameraPosition
     );
     scene.addSprite(newAsteroid);
-    if (Config.debug && Config.debugSpawnObjects)
-      console.log("New Asteroid", newAsteroid);
   }
 }
 

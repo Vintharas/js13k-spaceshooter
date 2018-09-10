@@ -47,16 +47,18 @@ export default function createSpaceScene(gameData: GameData) {
   return scene;
 }
 
+/*
 function cleanupObjectIfOutOfBounds(scene: Scene) {
   // TODO: see how I can make better use of object pool
   // from kontra.js. This could be something I could take advantage of here
   scene.sprites.foreground.forEach((s: any) => {
     if (isObjectOutOfBounds(s, scene.cameraPosition)) {
       s.ttl = 0;
-      if (Config.debug) console.log(`Object ${s.type} out of bounds`, s);
+      //if (Config.debug) console.log(`Object ${s.type} out of bounds`, s);
     }
   });
 }
+*/
 
 function addBackground(scene: Scene, cameraPosition: Position) {
   let background = SpaceBackground(cameraPosition);
@@ -64,20 +66,24 @@ function addBackground(scene: Scene, cameraPosition: Position) {
 }
 
 function addAsteroids(scene: Scene, cameraPosition: Position) {
+  let maxNumberOfClusters = 5;
+  let maxNumberOfAsteroidsPerCluster = 5;
   // create some clusters of varying sizes
-  for (let i = 0; i < Config.Asteroids.InitialNumberOfClusters; i++) {
+  for (let i = 0; i < maxNumberOfClusters; i++) {
     let clusterSize = Math.ceil(
-      getValueInRange(0, Config.Asteroids.MaxAsteroidClusterSize)
+      getValueInRange(0, maxNumberOfAsteroidsPerCluster)
     );
     addAsteroidCluster(scene, cameraPosition, clusterSize);
   }
 }
 
 function addStaticAsteroids(scene: Scene, cameraPosition: Position) {
+  let maxNumberOfClusters = 5;
+  let maxNumberOfAsteroidsPerCluster = 5;
   // create some clusters of varying sizes
-  for (let i = 0; i < Config.Asteroids.InitialNumberOfClusters; i++) {
+  for (let i = 0; i < maxNumberOfClusters; i++) {
     let clusterSize = Math.ceil(
-      getValueInRange(0, Config.Asteroids.MaxAsteroidClusterSize)
+      getValueInRange(0, maxNumberOfAsteroidsPerCluster)
     );
     addAsteroidCluster(
       scene,
@@ -149,16 +155,10 @@ function addSun(scene: Scene, cameraPosition: Position) {
 
 function addSector(scene: Scene, cameraPosition: Position) {
   // this will create 100 sectors right now
-  for (
-    let x = -Config.Galaxy.Size / 2;
-    x < Config.Galaxy.Size / 2;
-    x += Config.Sector.Size
-  ) {
-    for (
-      let y = -Config.Galaxy.Size / 2;
-      y < Config.Galaxy.Size / 2;
-      y += Config.Sector.Size
-    ) {
+  let galaxySize = 100000;
+  let sectorSize = 10000;
+  for (let x = -galaxySize / 2; x < galaxySize / 2; x += sectorSize) {
+    for (let y = -galaxySize / 2; y < galaxySize / 2; y += sectorSize) {
       let sector = Sector(scene, { x, y }, cameraPosition);
       sector.bodies.forEach(s => scene.addSprite(s));
     }

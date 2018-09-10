@@ -63,21 +63,16 @@ export function ShipShield(
     },
 
     render() {
+      const barWidth = 100;
+      const barHeight = 5;
       // render bar
-      let shieldWidth = Math.ceil(
-        (this.shield * Config.UI.Bar.Width) / this.maxShield
-      );
+      let shieldWidth = Math.ceil((this.shield * barWidth) / this.maxShield);
 
       this.context.fillStyle = "#00edff";
-      this.context.fillRect(this.x, this.y, shieldWidth, Config.UI.Bar.Height);
+      this.context.fillRect(this.x, this.y, shieldWidth, barHeight);
       // bar container
       this.context.strokeStyle = "white";
-      this.context.strokeRect(
-        this.x,
-        this.y,
-        Config.UI.Bar.Width,
-        Config.UI.Bar.Height
-      );
+      this.context.strokeRect(this.x, this.y, barWidth, barHeight);
 
       // actual shield
       if (this.shield === 0) return;
@@ -141,7 +136,6 @@ export function ShipShield(
     },
 
     disable() {
-      if (Config.debug) console.log("shield offline!!");
       this.isEnabled = false;
     }
   });

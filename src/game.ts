@@ -58,14 +58,14 @@ export default class Game {
   }
 
   preloadTextures() {
+    /*
     if (Config.debug && Config.verbose)
       console.log("preloading planet textures");
+      */
     // preloads textures for planets
     // to ensure 60fps when the game starts playing
-    PlanetTypes.forEach(p =>
-      this.preloadPlanetTexture(p, Config.Textures.Planet)
-    );
-    this.preloadPlanetTexture(PlanetType.Sun, Config.Textures.Sun);
+    PlanetTypes.forEach(p => this.preloadPlanetTexture(p, 100));
+    this.preloadPlanetTexture(PlanetType.Sun, 100);
     this.preloadElderTexture(ElderColors.granate);
     this.preloadElderTexture(ElderColors.green);
   }
@@ -83,8 +83,8 @@ export default class Game {
     OffscreenCanvas.instance().getPatternBasedOnColors(
       ElderColors.grey,
       accent,
-      Config.Textures.Elder,
-      Config.Textures.Elder
+      20,
+      20
     );
   }
 }

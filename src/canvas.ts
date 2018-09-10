@@ -13,7 +13,7 @@ export default class OffscreenCanvas {
 
   private constructor() {
     // initialize canvas
-    if (Config.debug) console.log("initializing offscreen canvas");
+    // if (Config.debug) console.log("initializing offscreen canvas");
     this.canvas = document.createElement("canvas");
     this.canvas.width = 16;
     this.canvas.height = 16;

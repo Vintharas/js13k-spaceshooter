@@ -30,19 +30,16 @@ export default function createShip(scene: Scene, faction: Faction) {
   const factionConfig = Config.Factions[faction];
   const modifiers = factionConfig.Modifiers;
   const collisionWidth = 20;
-  const x = Config.Ship.InitialPosition.x;
-  const y = Config.Ship.InitialPosition.y;
+  const x = Config.canvasWidth / 2;
+  const y = Config.canvasHeight / 2;
   const energy = ShipEnergy(
-    Config.Ship.Energy + modifiers.Energy,
+    700 + modifiers.Energy,
     scene,
     modifiers.EnergyRechargeRate
   );
-  const life = ShipLife(
-    Config.Ship.Life + modifiers.Life,
-    modifiers.LifeRepairRate
-  );
+  const life = ShipLife(300 + modifiers.Life, modifiers.LifeRepairRate);
   const shield = ShipShield(
-    Config.Ship.Shield + modifiers.Shield,
+    400 + modifiers.Shield,
     energy,
     { x, y },
     collisionWidth,
@@ -111,7 +108,7 @@ export default function createShip(scene: Scene, faction: Faction) {
         this.wasDamaged = true;
       }
       if (this.life.get() <= 0) {
-        if (Config.debug) console.log("SHIP DIED");
+        // if (Config.debug) console.log("SHIP DIED");
         this.ttl = 0; // game over mothafucka!
       }
     },
@@ -147,6 +144,7 @@ export default function createShip(scene: Scene, faction: Faction) {
         this.context.fillRect(-16, -16, 32, 32);
       }
 
+      /*
       // Drawing asteroids as a circle
       // this is what we use for collision
       // useful for debugging
@@ -156,6 +154,7 @@ export default function createShip(scene: Scene, faction: Faction) {
         this.context.arc(0, 0, this.collisionWidth, 0, Math.PI * 2);
         this.context.stroke(); // outline the circle
       }
+      */
       this.context.restore();
 
       this.parts.forEach((s: Sprite) => s.render());
@@ -186,14 +185,16 @@ export default function createShip(scene: Scene, faction: Faction) {
       const sin = Math.sin(degreesToRadians(this.rotation));
       const acceleration = 0.1 + modifiers.Speed;
 
+      const thrustCost = 1;
+      const brakeCost = 1;
       if (
         kontra.keys.pressed("up") &&
-        this.energy.hasEnoughEnergy(Config.Ship.EnergyCost.Thrust)
+        this.energy.hasEnoughEnergy(thrustCost)
       ) {
         this.ddx = cos * acceleration;
         this.ddy = sin * acceleration;
         // reduce energy
-        this.energy.consume(Config.Ship.EnergyCost.Thrust);
+        this.energy.consume(thrustCost);
         // create particles from this position
         for (let i = 0; i < 2; i++) {
           let particle = this.createShipParticle(ship.rotation + 180, {
@@ -204,12 +205,12 @@ export default function createShip(scene: Scene, faction: Faction) {
         }
       } else if (
         kontra.keys.pressed("down") &&
-        this.energy.hasEnoughEnergy(Config.Ship.EnergyCost.Brake)
+        this.energy.hasEnoughEnergy(brakeCost)
       ) {
         this.ddx = (cos * -acceleration) / 2;
         this.ddy = (sin * -acceleration) / 2;
         // reduce energy
-        this.energy.consume(Config.Ship.EnergyCost.Brake);
+        this.energy.consume(brakeCost);
         // create particles from this position
 
         let particleLeft = this.createShipParticle(ship.rotation + 75, {

@@ -29,6 +29,8 @@ export interface PlanetOptions {
   drawOuterRadius?: boolean;
 }
 
+const PlanetResources = 3000;
+
 export function createPlanet(
   origin: Position,
   orbit: number,
@@ -41,8 +43,8 @@ export function createPlanet(
 ): Planet {
   //let textureWidth = Math.round(getValueInRange(64, radius));
   //let textureHeight = Math.round(getValueInRange(64, radius));
-  let textureWidth = Config.Textures.Planet;
-  let textureHeight = Config.Textures.Planet;
+  let textureWidth = 100;
+  let textureHeight = 100;
 
   // sun orbit
   let startingAngle = getValueInRange(0, 360);
@@ -78,9 +80,10 @@ export function createPlanet(
       return this.claimedBy !== undefined;
     },
     increaseClaim(faction: Faction, percentage: number): void {
+      let factionName = Config.Factions[faction].Name;
       if (!this.beingClaimed) {
         // text
-        scene.showMessage(`${faction} FACTION CLAIMING ${planetName}`);
+        scene.showMessage(`${factionName} FACTION CLAIMING ${planetName}`);
         this.beingClaimed = true;
       }
 
@@ -90,13 +93,13 @@ export function createPlanet(
         this.claimedPercentage = 100;
         this.beingClaimed = false;
         this.claimedBy = faction;
-        scene.showMessage(`${faction} FACTION CLAIMED ${planetName}`);
+        scene.showMessage(`${factionName} FACTION CLAIMED ${planetName}`);
       }
     },
 
     // collecting logic
     beingCollected: false,
-    resources: Config.Planet.Resources,
+    resources: PlanetResources,
 
     update() {
       this.rotation += 1 / 4;
