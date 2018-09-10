@@ -15,7 +15,7 @@ export interface ShipWeapons extends Sprite, ShipSystem {
   ): void;
 }
 
-const ShootCost = 10;
+let ShootCost = 10;
 
 export function ShipWeapons(
   scene: Scene,
@@ -53,7 +53,7 @@ export function ShipWeapons(
         this.dt = 0;
         energy.consume(ShootCost);
 
-        const bullet = createBullet(
+        let bullet = createBullet(
           this.position,
           this.velocity,
           this.rotation,

@@ -11,8 +11,8 @@ import { Sun } from "./sun";
 import { Vector } from "./vector";
 import { Bullet } from "./bullet";
 
-const EnergyBoost = 20;
-const LifeBoost = 10;
+let EnergyBoost = 20;
+let LifeBoost = 10;
 
 /*
 Improvements for collision engine:

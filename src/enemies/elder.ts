@@ -142,7 +142,7 @@ interface ElderCharacteristics {
   renderElder(this: Elder, position: Position): void;
 }
 
-const ElderCharacteristics: EldersCharacteristics = {
+let ElderCharacteristics: EldersCharacteristics = {
   [ElderType.Drone]: {
     width: 10,
     speed: 2,
@@ -250,7 +250,7 @@ const ElderCharacteristics: EldersCharacteristics = {
   }
 };
 
-export const ElderColors = {
+export let ElderColors = {
   grey: { h: 0, s: 0, l: 50 },
   granate: { h: 295, s: 100, l: 50, r: 243, g: 0, b: 255 },
   green: { h: 120, s: 100, l: 50, r: 0, g: 255, b: 0 }

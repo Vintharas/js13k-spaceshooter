@@ -9,9 +9,9 @@ export interface ShipRadar extends Sprite, ShipSystem {
   isInRange(s: Sprite, cameraPosition: Position): boolean;
 }
 
-const RadarSize = 100;
-const RadarRadius = 45;
-const RadarRange = 1000;
+let RadarSize = 100;
+let RadarRadius = 45;
+let RadarRange = 1000;
 
 // TODO: I should be able to optimize
 // the performance of this when I divide

@@ -4,9 +4,9 @@ import Game from "../game";
 import Config from "../config";
 
 export default function createOpenScene() {
-  const scene = createScene({ update });
+  let scene = createScene({ update });
 
-  const titleText = createText(
+  let titleText = createText(
     "JS13K SPACE SHOOTER",
     { x: undefined, y: 250 },
     {},
@@ -14,7 +14,7 @@ export default function createOpenScene() {
   );
   scene.addSprite(titleText);
 
-  const startText = createText("Press ENTER to start", {
+  let startText = createText("Press ENTER to start", {
     x: undefined,
     y: 300
   });

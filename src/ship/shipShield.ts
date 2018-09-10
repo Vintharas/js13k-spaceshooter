@@ -63,8 +63,8 @@ export function ShipShield(
     },
 
     render() {
-      const barWidth = 100;
-      const barHeight = 5;
+      let barWidth = 100;
+      let barHeight = 5;
       // render bar
       let shieldWidth = Math.ceil((this.shield * barWidth) / this.maxShield);
 

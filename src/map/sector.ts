@@ -15,7 +15,7 @@ export interface Sector extends Position {
   asteroids?: Asteroid[];
 }
 
-const SectorSize = 10000;
+let SectorSize = 10000;
 
 export function Sector(
   scene: Scene,
@@ -23,8 +23,8 @@ export function Sector(
   cameraPosition: Position,
   name = generateName()
 ): Sector {
-  const sun = createSectorSun(position, cameraPosition);
-  const planets = createPlanets(sun, scene, cameraPosition);
+  let sun = createSectorSun(position, cameraPosition);
+  let planets = createPlanets(sun, scene, cameraPosition);
   return {
     // this position represents the
     // top-left corner of the sector

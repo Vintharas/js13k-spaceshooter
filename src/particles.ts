@@ -30,8 +30,8 @@ export function createStaticParticle(
   let ParticleAxisVariance = getValueInRange(-20, 20);
   let maxTTL = 70;
 
-  const cos = Math.cos(degreesToRadians(particleAxis + ParticleAxisVariance));
-  const sin = Math.sin(degreesToRadians(particleAxis + ParticleAxisVariance));
+  let cos = Math.cos(degreesToRadians(particleAxis + ParticleAxisVariance));
+  let sin = Math.sin(degreesToRadians(particleAxis + ParticleAxisVariance));
 
   return kontra.sprite({
     type: SpriteType.Particle,
@@ -94,8 +94,8 @@ export function createParticle(
 ): any {
   let ParticleAxisVariance = getValueInRange(-5, 5);
 
-  const cos = Math.cos(degreesToRadians(particleAxis + ParticleAxisVariance));
-  const sin = Math.sin(degreesToRadians(particleAxis + ParticleAxisVariance));
+  let cos = Math.cos(degreesToRadians(particleAxis + ParticleAxisVariance));
+  let sin = Math.sin(degreesToRadians(particleAxis + ParticleAxisVariance));
 
   return kontra.sprite({
     type: SpriteType.Particle,
@@ -154,8 +154,8 @@ export function createExplosionParticle(
   let maxTTL = 30;
 
   //let ParticleAxisVariance = getValueInRange(-15, 15);
-  //const cos = Math.cos(degreesToRadians(particleAxis + ParticleAxisVariance));
-  //const sin = Math.sin(degreesToRadians(particleAxis + ParticleAxisVariance));
+  //let cos = Math.cos(degreesToRadians(particleAxis + ParticleAxisVariance));
+  //let sin = Math.sin(degreesToRadians(particleAxis + ParticleAxisVariance));
 
   return kontra.sprite({
     type: SpriteType.Particle,

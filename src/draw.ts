@@ -1,4 +1,4 @@
-export const Draw = {
+export let Draw = {
   drawCircle(
     context: CanvasRenderingContext2D,
     x: number,

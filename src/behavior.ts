@@ -85,7 +85,7 @@ export function Shoot(scene: Scene, target: Sprite): Behavior {
       if (this.dts > 0.5 && distanceToShip < 300) {
         this.dts = 0;
         let angle = radiansToDegrees(Math.atan2(this.dy, this.dx));
-        const bullet = createBullet(
+        let bullet = createBullet(
           this,
           this,
           angle,

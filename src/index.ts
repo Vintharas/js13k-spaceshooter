@@ -29,5 +29,5 @@ kontra.assets
     console.log("error loading assets");
   });
 
-const game = Game.instance();
+let game = Game.instance();
 game.start();

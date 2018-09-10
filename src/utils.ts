@@ -19,7 +19,7 @@ export interface HSL {
   l: number;
 }
 
-export const Color = {
+export let Color = {
   get(alpha: number) {
     let red = getValueInRange(0, 255);
     let green = getValueInRange(0, 255);
@@ -38,7 +38,7 @@ export const Color = {
   }
 };
 
-export const Positions = {
+export let Positions = {
   areNear(pos1: Position, pos2: Position, distance: number): boolean {
     return (
       Math.abs(pos1.x - pos2.x) < distance &&
@@ -88,7 +88,7 @@ export function getCanvasPosition(
   return canvasPosition;
 }
 
-const OutOfBoundsDistance = 10000;
+let OutOfBoundsDistance = 10000;
 export function isObjectOutOfBounds(
   objectPosition: Position,
   cameraPosition: Position
@@ -117,7 +117,7 @@ export function getIntegerInRange(bottom: number, top: number): number {
 }
 
 export function getRandomValueOf(values: any[]) {
-  const max = values.length - 1;
-  const index = getIntegerInRange(0, max);
+  let max = values.length - 1;
+  let index = getIntegerInRange(0, max);
   return values[index];
 }

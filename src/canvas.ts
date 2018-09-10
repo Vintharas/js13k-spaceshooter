@@ -53,21 +53,20 @@ export default class OffscreenCanvas {
     this.canvas.height = height;
 
     // 1. define color theme
-    const baseColor = (a: number) => Color.hsla(hue, saturation, light, a);
-    const nearBaseColor = (a: number) =>
+    let baseColor = (a: number) => Color.hsla(hue, saturation, light, a);
+    let nearBaseColor = (a: number) =>
       Color.hsla(hue, saturation, light - 5, a);
-    const darkShade = (a: number) => Color.hsla(hue, saturation, light - 10, a);
-    const darkestShade = (a: number) =>
+    let darkShade = (a: number) => Color.hsla(hue, saturation, light - 10, a);
+    let darkestShade = (a: number) =>
       Color.hsla(hue, saturation, light - 20, a);
-    const lightShade = (a: number) =>
-      Color.hsla(hue, saturation, light + 10, a);
-    const lightestShade = (a: number) =>
+    let lightShade = (a: number) => Color.hsla(hue, saturation, light + 10, a);
+    let lightestShade = (a: number) =>
       Color.hsla(hue, saturation, light + 20, a);
 
-    const colors = [baseColor, darkShade, lightShade];
+    let colors = [baseColor, darkShade, lightShade];
     // 2. put colors in buckets with distributions (how much of color x)
     // 50% base color, 30% dark, 20% light:
-    const innerBuckets = [
+    let innerBuckets = [
       baseColor,
       baseColor,
       baseColor,
@@ -79,7 +78,7 @@ export default class OffscreenCanvas {
       lightShade,
       darkShade
     ];
-    const outerBuckets = [
+    let outerBuckets = [
       baseColor,
       baseColor,
       baseColor,
@@ -112,7 +111,7 @@ export default class OffscreenCanvas {
       }
     }
 
-    const pattern = this.context.createPattern(this.canvas, "repeat");
+    let pattern = this.context.createPattern(this.canvas, "repeat");
     this.savedPatterns.set(key(hue, saturation, light, width, height), pattern);
     return pattern;
 
@@ -138,7 +137,7 @@ export default class OffscreenCanvas {
     this.canvas.width = width;
     this.canvas.height = height;
 
-    const baseColor = (a: number) => Color.hsla(color.h, color.s, color.l, a);
+    let baseColor = (a: number) => Color.hsla(color.h, color.s, color.l, a);
     for (let x = 0; x < this.canvas.width; x += pixelSize) {
       for (let y = 0; y <= this.canvas.height; y += pixelSize) {
         let pickedColor = baseColor(
@@ -150,7 +149,7 @@ export default class OffscreenCanvas {
     }
 
     this.context.rotate(degreesToRadians(30));
-    const pattern = this.context.createPattern(this.canvas, "repeat");
+    let pattern = this.context.createPattern(this.canvas, "repeat");
     this.savedPatterns.set(key, pattern);
 
     return pattern;
@@ -177,15 +176,15 @@ export default class OffscreenCanvas {
     this.canvas.height = height;
 
     // 1. define color theme
-    const p = primary;
-    const s = secondary;
+    let p = primary;
+    let s = secondary;
 
-    const baseColor = (a: number) => Color.hsla(p.h, p.s, p.l, a);
-    const lightShade = (a: number) => Color.hsla(p.h, p.s, p.l + 10, a);
-    const darkShade = (a: number) => Color.hsla(p.h, p.s, p.l - 10, a);
-    const accent = (a: number) => Color.hsla(s.h, s.s, s.l, a);
+    let baseColor = (a: number) => Color.hsla(p.h, p.s, p.l, a);
+    let lightShade = (a: number) => Color.hsla(p.h, p.s, p.l + 10, a);
+    let darkShade = (a: number) => Color.hsla(p.h, p.s, p.l - 10, a);
+    let accent = (a: number) => Color.hsla(s.h, s.s, s.l, a);
 
-    const buckets = [
+    let buckets = [
       baseColor,
       baseColor,
       baseColor,
@@ -207,7 +206,7 @@ export default class OffscreenCanvas {
       }
     }
 
-    const pattern = this.context.createPattern(this.canvas, "repeat");
+    let pattern = this.context.createPattern(this.canvas, "repeat");
     this.savedPatterns.set(
       twocolorkey(primary, secondary, width, height),
       pattern
@@ -247,7 +246,7 @@ function twocolorkey(
 }
 
 function pickColor(buckets: any) {
-  const index = Math.round(getValueInRange(0, 9));
-  const alpha = 1;
+  let index = Math.round(getValueInRange(0, 9));
+  let alpha = 1;
   return buckets[index](alpha);
 }

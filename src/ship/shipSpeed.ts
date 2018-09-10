@@ -7,9 +7,9 @@ export interface ShipSpeedAndLocation extends Sprite {
   updateShipInformation(ship: Ship): void;
 }
 
-const IndicatorWidth = 225;
-const IndicatorHeight = 10;
-const SpeedIndicatorX = 125;
+let IndicatorWidth = 225;
+let IndicatorHeight = 10;
+let SpeedIndicatorX = 125;
 
 export function ShipSpeedAndLocation() {
   return kontra.sprite({

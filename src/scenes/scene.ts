@@ -67,7 +67,7 @@ export function createScene({
   render = () => {},
   props = {}
 }: SceneOptions = {}): Scene {
-  const sprites = new Sprites();
+  let sprites = new Sprites();
 
   let loop = kontra.gameLoop({
     update: after(update, updateLoop, showMessageWhenAvailable()),

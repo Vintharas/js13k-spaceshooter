@@ -3,7 +3,7 @@ import { PlanetType } from "./planet";
 
 // TODO: create separate branch where I inline
 // all this and see whether it affects the resulting size
-const Config = {
+let Config = {
   get canvasWidth() {
     return kontra.canvas && kontra.canvas.width / this.scale;
   },

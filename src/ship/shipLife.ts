@@ -57,5 +57,5 @@ export function ShipLife(life: number, modifier = 0) {
 }
 
 // TODO: extract to config
-const barWidth = 100;
-const barHeight = 5;
+let barWidth = 100;
+let barHeight = 5;

@@ -11,8 +11,8 @@ import { GameData } from "../data/gamedata";
 import { ElderPool, ElderType } from "../enemies/elder";
 
 export default function createSpaceScene(gameData: GameData) {
-  const camera = createCamera();
-  const scene = createScene({
+  let camera = createCamera();
+  let scene = createScene({
     camera,
     props: { isTransitioningToGameOver: false },
     update() {
@@ -30,7 +30,7 @@ export default function createSpaceScene(gameData: GameData) {
     }
   });
 
-  const ship = createShip(scene, gameData.faction);
+  let ship = createShip(scene, gameData.faction);
   camera.position = ship;
 
   // initial state

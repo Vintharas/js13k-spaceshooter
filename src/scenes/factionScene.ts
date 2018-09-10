@@ -7,9 +7,9 @@ import { Faction } from "../factions";
 import { createPlanet } from "../planet";
 
 export function createChooseFactionScene() {
-  const scene = createScene({ update });
+  let scene = createScene({ update });
 
-  const titleText = createText(
+  let titleText = createText(
     "CHOOSE YOUR FACTION",
     { x: undefined, y: 100 },
     {},
@@ -17,7 +17,7 @@ export function createChooseFactionScene() {
   );
   scene.addSprite(titleText);
 
-  const factionSelector = createFactionSelector(scene);
+  let factionSelector = createFactionSelector(scene);
   scene.addSprite(factionSelector);
 
   return scene;

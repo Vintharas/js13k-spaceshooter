@@ -29,8 +29,6 @@ export interface PlanetOptions {
   drawOuterRadius?: boolean;
 }
 
-const PlanetResources = 3000;
-
 export function createPlanet(
   origin: Position,
   orbit: number,
@@ -99,7 +97,7 @@ export function createPlanet(
 
     // collecting logic
     beingCollected: false,
-    resources: PlanetResources,
+    resources: 3000,
 
     update() {
       this.rotation += 1 / 4;
@@ -245,7 +243,7 @@ export const enum PlanetType {
   Paradise,
   Sun
 }
-export const PlanetTypes = [
+export let PlanetTypes = [
   PlanetType.Red,
   PlanetType.Green,
   PlanetType.Blue,
@@ -253,7 +251,7 @@ export const PlanetTypes = [
   PlanetType.Barren,
   PlanetType.Paradise
 ];
-export const PlanetBaseColors = [
+export let PlanetBaseColors = [
   /*Red*/ { h: 0, s: 70, l: 45 },
   /*Green*/ { h: 120, s: 100, l: 39 },
   /*Blue*/ { h: 195, s: 100, l: 50 },
@@ -265,8 +263,8 @@ export const PlanetBaseColors = [
 
 function getPlanetType(): PlanetType {
   // TODO: extract thiiiiiis, I've used this pattern a thousand times now
-  const index = Math.round(getValueInRange(0, 2));
-  const types = [PlanetType.Red, PlanetType.Green, PlanetType.Blue];
+  let index = Math.round(getValueInRange(0, 2));
+  let types = [PlanetType.Red, PlanetType.Green, PlanetType.Blue];
   return types[index];
 }
 

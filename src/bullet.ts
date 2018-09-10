@@ -16,8 +16,6 @@ export interface Bullet extends Sprite {
   damage: number;
 }
 
-const NumberOfParticles = 2;
-
 export default function createBullet(
   position: Position,
   velocity: Velocity,
@@ -55,7 +53,7 @@ export default function createBullet(
     update() {
       this.followNearTarget();
       this.advance();
-      for (let i = 0; i <= NumberOfParticles; i++) {
+      for (let i = 0; i <= 2 /* number of particles */; i++) {
         let particle = createParticle(
           { x: this.x, y: this.y },
           { dx: this.dx, dy: this.dy },

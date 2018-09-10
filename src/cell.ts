@@ -14,11 +14,6 @@ export interface Cell extends Sprite {
   outerRadius: number;
 }
 
-const OuterRadius = 8;
-const InnerRadius = 2;
-const TTL = 240;
-const Speed = 0.7;
-
 export default function createCell(
   position: Position,
   cameraPosition: Position,
@@ -34,16 +29,16 @@ export default function createCell(
     cellType,
     x: position.x,
     y: position.y,
-    dx: cos * Speed,
-    dy: sin * Speed,
-    outerRadius: OuterRadius,
-    ttl: TTL,
+    dx: cos * 0.7 /*speed*/,
+    dy: sin * 0.7 /*speed*/,
+    outerRadius: 8,
+    ttl: 240,
     render() {
       if (isObjectOutOfBounds(this, cameraPosition)) return;
       let position = getCanvasPosition(this, cameraPosition);
 
       // two concentric circles one filled one don't
-      let alpha = 1 - (TTL - this.ttl) / TTL;
+      let alpha = 1 - (240 /*maxTTL*/ - this.ttl) / 240;
       let color = cellTypeToColor(cellType, alpha);
       this.context.save();
       this.context.strokeStyle = color;
@@ -51,12 +46,24 @@ export default function createCell(
 
       this.context.beginPath(); // start drawing a shape
 
-      this.context.arc(position.x, position.y, InnerRadius, 0, Math.PI * 2);
+      this.context.arc(
+        position.x,
+        position.y,
+        2 /*InnerRadius*/,
+        0,
+        Math.PI * 2
+      );
       this.context.stroke();
       this.context.fill();
 
       this.context.beginPath(); // start drawing a shape
-      this.context.arc(position.x, position.y, OuterRadius, 0, Math.PI * 2);
+      this.context.arc(
+        position.x,
+        position.y,
+        this.outerRadius,
+        0,
+        Math.PI * 2
+      );
       this.context.stroke(); // outline the circle
 
       this.context.restore();

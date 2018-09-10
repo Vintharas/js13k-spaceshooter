@@ -46,8 +46,8 @@ export function createAsteroid(
       this.context.rotate(Math.PI / 2);
 
       // Drawing asteroids as a polygon
-      const angle = () => getValueInRange(30, 70);
-      const length = () => this.radius * (1 + getValueInRange(-0.2, 0.2));
+      let angle = () => getValueInRange(30, 70);
+      let length = () => this.radius * (1 + getValueInRange(-0.2, 0.2));
 
       this.context.beginPath(); // start drawing a shape
       this.context.moveTo(0, 0); // since I translated to the position of the asteroid

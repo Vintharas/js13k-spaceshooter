@@ -1,6 +1,6 @@
 import { Position } from "./utils";
 
-export const Vector = {
+export let Vector = {
   getMagnitude(position: Position): number {
     return Math.sqrt(Math.pow(position.x, 2) + Math.pow(position.y, 2));
   },

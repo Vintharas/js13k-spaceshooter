@@ -46,8 +46,8 @@ export function ShipEnergy(
     },
     render() {
       // energy bar
-      const barWidth = 100;
-      const barHeight = 5;
+      let barWidth = 100;
+      let barHeight = 5;
       let energyWidth = Math.ceil((this.energy * barWidth) / this.maxEnergy);
 
       this.context.fillStyle = "green";
