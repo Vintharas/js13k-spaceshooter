@@ -14,6 +14,13 @@ export interface Cell extends Sprite {
   outerRadius: number;
 }
 
+/*
+const OuterRadius = 8;
+const InnerRadius = 2;
+const TTL = 240;
+const Speed = 0.7;
+*/
+
 export default function createCell(
   position: Position,
   cameraPosition: Position,
@@ -46,24 +53,12 @@ export default function createCell(
 
       this.context.beginPath(); // start drawing a shape
 
-      this.context.arc(
-        position.x,
-        position.y,
-        2 /*InnerRadius*/,
-        0,
-        Math.PI * 2
-      );
+      this.context.arc(position.x, position.y, 2/*InnerRadius*/, 0, Math.PI * 2);
       this.context.stroke();
       this.context.fill();
 
       this.context.beginPath(); // start drawing a shape
-      this.context.arc(
-        position.x,
-        position.y,
-        this.outerRadius,
-        0,
-        Math.PI * 2
-      );
+      this.context.arc(position.x, position.y, this.outerRadius, 0, Math.PI * 2);
       this.context.stroke(); // outline the circle
 
       this.context.restore();
@@ -83,7 +78,7 @@ function cellTypeToColor(type: CellType, alpha: number): string {
 }
 
 export function getRandomCellType(): CellType {
-  const cellTypes = [CellType.Energy, CellType.Life];
-  const index = Math.round(Math.random());
+  let cellTypes = [CellType.Energy, CellType.Life];
+  let index = Math.round(Math.random());
   return cellTypes[index];
 }

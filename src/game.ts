@@ -11,11 +11,13 @@ import Config from "./config";
 import { HSL } from "./utils";
 import { ElderColors } from "./enemies/elder";
 import { createGameStatusText } from "./text";
+import { GameMusic, Track } from "./music/music";
 
 export default class Game {
   private static game: Game;
   public currentScene: Scene;
   public gameData: GameData;
+  private gameMusic = GameMusic();
 
   private constructor() {
     this.currentScene = createOpenScene();
@@ -32,12 +34,14 @@ export default class Game {
   }
 
   goToSpaceScene(selectedFaction: Faction): void {
-    // TODO: use faction to create game data
+    // can have more music in other parts of the game
+    this.gameMusic.play(Track.Space);
     this.gameData = GameData(selectedFaction);
     this.switchToScene(createSpaceScene(this.gameData));
   }
 
   goToGameOverScene(): any {
+    this.gameMusic.stop();
     this.switchToScene(createGameOverScene());
     this.gameData = null;
   }
