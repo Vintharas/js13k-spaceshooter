@@ -7,16 +7,37 @@ import { Faction } from "./factions";
 import { GameData } from "./data/gamedata";
 import OffscreenCanvas from "./canvas";
 import { PlanetType, PlanetBaseColors, PlanetTypes } from "./planet";
-import Config from "./config";
 import { HSL } from "./utils";
 import { ElderColors } from "./enemies/elder";
-import { createGameStatusText } from "./text";
 import { GameMusic, Track } from "./music/music";
+
+function GameAssets(): Assets {
+  let images: any = {};
+
+  return {
+    images,
+    load(...imagesUrls: string[]) {
+      imagesUrls.forEach(url => {
+        let image = new Image();
+        image.src = url;
+
+        image.onload = function loadImageOnLoad() {
+          images[getName(url)] = images[url] = this;
+        };
+      });
+    }
+  };
+
+  function getName(url: string): string {
+    return url.split(".")[0].toLowerCase();
+  }
+}
 
 export default class Game {
   private static game: Game;
   public currentScene: Scene;
   public gameData: GameData;
+  public assets: Assets = GameAssets();
   private gameMusic = GameMusic();
 
   private constructor() {

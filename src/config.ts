@@ -1,5 +1,6 @@
 import { Faction, FactionShipModifiers } from "./factions";
 import { PlanetType } from "./planet";
+import Game from "./game";
 
 // TODO: create separate branch where I inline
 // all this and see whether it affects the resulting size
@@ -124,7 +125,7 @@ let Config = {
       Objective: "War & Conquest",
       Description: "House Harkonnen...",
       get Ship() {
-        return kontra.assets.images.redship;
+        return Game.instance().assets.images.redship;
       },
       Color: { r: 255, g: 0, b: 0 },
       Modifiers: {
@@ -149,7 +150,7 @@ let Config = {
       Objective: "Freedom & Liberty",
       Description: "House Atreides...",
       get Ship() {
-        return kontra.assets.images.blueship;
+        return Game.instance().assets.images.blueship;
       },
       Modifiers: {
         Life: -100,
@@ -173,7 +174,7 @@ let Config = {
       Objective: "Wealth & Power",
       Description: "House Corrino...",
       get Ship() {
-        return kontra.assets.images.greenship;
+        return Game.instance().assets.images.greenship;
       },
       Modifiers: {
         Life: 0,

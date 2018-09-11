@@ -20,6 +20,7 @@ kontra.init();
 kontra.context.scale(Config.scale, Config.scale);
 
 // load assets
+/*
 kontra.assets
   .load(RedShip, BlueShip, GreenShip)
   .then(function() {
@@ -28,6 +29,8 @@ kontra.assets
   .catch(function(err: any) {
     console.log("error loading assets");
   });
+*/
 
 let game = Game.instance();
+game.assets.load(RedShip, BlueShip, GreenShip);
 game.start();
