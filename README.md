@@ -21,7 +21,10 @@
 
 - simplify
   - earth dies
-    - generate sun system and put the ship beside it
+    - [*] generate sun system and put the ship beside it
+    - place ship beside the earth!
+    - have earth planet always have a fixed angle (easy)
+    - do inside planets travel faster?
     - do animation turning from paradise to red planet
   - find a new home for manking before X time
     - create counter

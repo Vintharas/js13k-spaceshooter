@@ -86,6 +86,7 @@ interface PlanetData {
   radius: number;
   name: string;
   type: PlanetType;
+  angle?: number;
 }
 function createSunSystemPlanets(
   sun: Sun,
@@ -95,7 +96,13 @@ function createSunSystemPlanets(
   let planets: PlanetData[] = [
     { orbit: 300, radius: 30, name: "mercury", type: PlanetType.Barren },
     { orbit: 500, radius: 70, name: "venus", type: PlanetType.Red },
-    { orbit: 700, radius: 50, name: "*earth*", type: PlanetType.Paradise },
+    {
+      orbit: 700,
+      radius: 50,
+      name: "*earth*",
+      type: PlanetType.Paradise,
+      angle: 40
+    },
     { orbit: 900, radius: 40, name: "mars", type: PlanetType.Red },
     { orbit: 1500, radius: 150, name: "jupiter", type: PlanetType.Barren },
     { orbit: 2100, radius: 130, name: "saturn", type: PlanetType.Red },
@@ -105,7 +112,8 @@ function createSunSystemPlanets(
   return planets.map(p =>
     createPlanet(sun, p.orbit, p.radius, cameraPosition, scene, {
       name: p.name,
-      type: p.type
+      type: p.type,
+      startingAngle: p.angle
     })
   );
 }

@@ -31,8 +31,8 @@ export default function createShip(scene: Scene, faction: Faction) {
   //let modifiers = factionConfig.Modifiers;
   //let x = Config.canvasWidth / 2;
   //let y = Config.canvasHeight / 2;
-  let x = 5500;
-  let y = 5500;
+  let x = 5600;
+  let y = 5600;
   let collisionWidth = 20;
   let energy = ShipEnergy(
     700, // + modifiers.Energy,

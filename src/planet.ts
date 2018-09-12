@@ -28,6 +28,7 @@ export interface PlanetOptions {
   drawOuterRadius?: boolean;
   type?: PlanetType;
   name?: string;
+  startingAngle?: number;
 }
 
 export function createPlanet(
@@ -39,7 +40,8 @@ export function createPlanet(
   {
     drawOuterRadius = true,
     type = getPlanetType(),
-    name = generateName()
+    name = generateName(),
+    startingAngle = getValueInRange(0, 360)
   }: PlanetOptions = {}
 ): Planet {
   //let textureWidth = Math.round(getValueInRange(64, radius));
@@ -48,7 +50,6 @@ export function createPlanet(
   let textureHeight = 100;
 
   // sun orbit
-  let startingAngle = getValueInRange(0, 360);
   let startingPosition = Positions.inCircleGivenAngle(
     origin,
     orbit,
