@@ -27,9 +27,11 @@
     - [*] have earth planet always have a fixed angle (easy)
     - [*] do animation turning from paradise to red planet
   - find a new home for manking before X time
-    - create counter
+    - [*] create counter
     - find a paradise class planet
-    - fix other planet types, specially paradise class planet
+      - fix other planet types, specially paradise class planet
+      - create single paradise planet, which happens to be owned by aliens
+    - show provide some breadcrumbs to find that planet
   - [*] remove factions, remove intro
   - [*] narrate game with more stuff
   - messages should appear immediately if there are not messages being shown
@@ -39,7 +41,10 @@
     - if you remain at two low energy for two
   - narration during game
     - when things happen
-    - when counter gets down
+    - when doing things for the first time
+      - asteroids
+      - claiming planets
+    - [*] when counter gets down
     - arbitrary thoughts from hal
     - when visiting new systems...
 

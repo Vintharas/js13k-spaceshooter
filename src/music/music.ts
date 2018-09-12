@@ -156,6 +156,30 @@ interface MusicTrack {
   start(): void;
   stop(): void;
 }
+
+function GameOpeningMusic(ac: AudioContext): MusicTrack {
+  let b1 = Beating(ac, 330, 330.2, 0.5);
+  let b2 = Beating(ac, 440, 440.33, 0.5);
+  let b3 = Beating(ac, 587, 587.25, 0.5);
+  let masterGain = Gain(ac, 0.1);
+
+  Connect({ to: masterGain }, b1, b2, b3);
+  masterGain.connect(ac.destination);
+
+  return {
+    start() {
+      b1.start();
+      b2.start();
+      b3.start();
+    },
+    stop() {
+      b1.stop();
+      b2.stop();
+      b3.stop();
+    }
+  };
+}
+
 function SpaceMusic(ac: AudioContext): MusicTrack {
   let G4 = 440 * Math.pow(2, -2 / 12);
   let A4 = 440;
@@ -234,6 +258,7 @@ function SpaceMusic(ac: AudioContext): MusicTrack {
 }
 
 export const enum Track {
+  Opening,
   Space
 }
 
@@ -249,9 +274,11 @@ export function GameMusic(): GameMusic {
   return {
     currentTrack: undefined,
     play(track: Track) {
-      if (track === Track.Space) {
-        this.currentTrack = SpaceMusic(ac);
+      if (this.currentTrack) {
+        this.currentTrack.stop();
       }
+      let musicTrack = Tracks[track];
+      this.currentTrack = musicTrack(ac);
       this.currentTrack.start();
     },
     stop() {
@@ -259,3 +286,11 @@ export function GameMusic(): GameMusic {
     }
   };
 }
+
+interface Tracks {
+  [key: number]: (ac: AudioContext) => MusicTrack;
+}
+const Tracks: Tracks = {
+  [Track.Opening]: GameOpeningMusic,
+  [Track.Space]: SpaceMusic
+};

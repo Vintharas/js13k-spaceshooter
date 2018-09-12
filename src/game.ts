@@ -43,6 +43,7 @@ export default class Game {
   private gameMusic = GameMusic();
 
   private constructor() {
+    this.gameMusic.play(Track.Opening);
     this.currentScene = createOpenScene();
     this.preloadTextures();
   }
