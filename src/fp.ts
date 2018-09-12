@@ -1,3 +1,5 @@
+export function noop() {}
+
 export function before(func: any, beforeFunc: any) {
   return function(...args: any[]) {
     beforeFunc.apply(this, args);

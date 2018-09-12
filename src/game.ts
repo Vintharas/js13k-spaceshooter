@@ -2,7 +2,6 @@ import createSpaceScene from "./scenes/spaceScene";
 import { Scene } from "./scenes/scene";
 import createOpenScene from "./scenes/openScene";
 import createGameOverScene from "./scenes/gameOverScene";
-//import { createChooseFactionScene } from "./scenes/factionScene";
 import { Faction } from "./factions";
 import { GameData } from "./data/gamedata";
 import OffscreenCanvas from "./canvas";
@@ -10,6 +9,7 @@ import { PlanetType, PlanetBaseColors, PlanetTypes } from "./planet";
 import { HSL } from "./utils";
 import { ElderColors } from "./enemies/elder";
 import { GameMusic, Track } from "./music/music";
+import { GameStory } from "./story";
 
 function GameAssets(): Assets {
   let images: any = {};
@@ -38,6 +38,8 @@ export default class Game {
   public currentScene: Scene;
   public gameData: GameData;
   public assets: Assets = GameAssets();
+  public story: GameStory = GameStory();
+
   private gameMusic = GameMusic();
 
   private constructor() {

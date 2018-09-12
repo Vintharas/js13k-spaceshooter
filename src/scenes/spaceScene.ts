@@ -11,8 +11,10 @@ import { GameData } from "../data/gamedata";
 import { ElderPool, ElderType } from "../enemies/elder";
 import { PlanetType } from "../planet";
 import { createGameStatusText, Message, MessageType } from "../text";
+import { Counter } from "../counter";
 
 export default function createSpaceScene(gameData: GameData) {
+  let game = Game.instance();
   let camera = createCamera();
   let scene = createScene({
     camera,
@@ -22,7 +24,7 @@ export default function createSpaceScene(gameData: GameData) {
         if (this.isTransitioningToGameOver) return;
         this.isTransitioningToGameOver = true;
         setTimeout(() => {
-          Game.instance().goToGameOverScene();
+          game.goToGameOverScene();
         }, 2000);
       }
       // remove sprites too far from camera
@@ -47,23 +49,14 @@ export default function createSpaceScene(gameData: GameData) {
   scene.addSprite(ship);
 
   // setup earth animation
-  Game.instance().gameData.earth.changePlanetTo(PlanetType.Red);
-  scene.showMessage(
-    Message("Hmm...."),
-    Message("Err..."),
-    Message("Fuck."),
-    Message("I was kinda hoping it wouldn't get to that"),
-    Message("- INCOMING TRANSMISSION -", MessageType.Transmission),
-    Message("This is a recorded message.", MessageType.Transmission),
-    Message("I'm the president of Earth", MessageType.Transmission),
-    Message("Earth has been destroyed.", MessageType.Transmission),
-    Message("HAL 9000, You're mankind's last hope", MessageType.Transmission),
-    Message("Find a new earth", MessageType.Transmission),
-    Message("*fast*", MessageType.Transmission),
-    Message("Farewell and good luck", MessageType.Transmission),
-    Message("God save us all", MessageType.Transmission),
-    Message("Donal Trump.", MessageType.Transmission)
-  );
+  game.gameData.earth.changePlanetTo(PlanetType.Red);
+  game.story.playIntro(scene);
+
+  // add counter after intro is played
+  setTimeout(() => {
+    let counter = Counter(10, Config.canvasHeight - 10, 15);
+    scene.addSprite(counter, { sceneLayer: SceneLayer.Shell });
+  }, 14 * 2 * 1000);
 
   return scene;
 }

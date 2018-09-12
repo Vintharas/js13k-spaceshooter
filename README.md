@@ -20,17 +20,29 @@
 ## Prioritize
 
 - simplify
-  - earth dies
+
+  - [*] earth dies
     - [*] generate sun system and put the ship beside it
     - [*] place ship beside the earth!
     - [*] have earth planet always have a fixed angle (easy)
-    - do animation turning from paradise to red planet
+    - [*] do animation turning from paradise to red planet
   - find a new home for manking before X time
     - create counter
     - find a paradise class planet
-  - remove factions, remove intro
-  - narrate game with more stuff
+    - fix other planet types, specially paradise class planet
+  - [*] remove factions, remove intro
+  - [*] narrate game with more stuff
   - messages should appear immediately if there are not messages being shown
+  - game mechanics
+    - encounters
+    - energy is not recovered over time. If you lose it you die. and mankind dies with you.
+    - if you remain at two low energy for two
+  - narration during game
+    - when things happen
+    - when counter gets down
+    - arbitrary thoughts from hal
+    - when visiting new systems...
+
 - good to haves
   - resize canvas on screen change
   - do inside planets travel faster?

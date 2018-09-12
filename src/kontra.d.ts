@@ -96,3 +96,7 @@ interface Kontra {
 }
 
 declare var kontra: Kontra;
+
+interface String {
+  padStart(length: number, char: string): string;
+}
