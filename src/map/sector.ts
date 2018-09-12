@@ -4,7 +4,7 @@ import { Asteroid } from "../asteroid";
 import { Sun, createSun } from "../sun";
 import { generateName } from "../names";
 import { Scene } from "../scenes/scene";
-import Config from "../config";
+import { Faction } from "../factions";
 
 export interface Sector extends Position {
   name: string;
@@ -87,6 +87,7 @@ interface PlanetData {
   name: string;
   type: PlanetType;
   angle?: number;
+  claimedBy?: Faction;
 }
 function createSunSystemPlanets(
   sun: Sun,
@@ -101,7 +102,8 @@ function createSunSystemPlanets(
       radius: 50,
       name: "*earth*",
       type: PlanetType.Paradise,
-      angle: 40
+      angle: 40,
+      claimedBy: Faction.Blue
     },
     { orbit: 900, radius: 40, name: "mars", type: PlanetType.Red },
     { orbit: 1500, radius: 150, name: "jupiter", type: PlanetType.Barren },
@@ -113,7 +115,8 @@ function createSunSystemPlanets(
     createPlanet(sun, p.orbit, p.radius, cameraPosition, scene, {
       name: p.name,
       type: p.type,
-      startingAngle: p.angle
+      startingAngle: p.angle,
+      claimedBy: p.claimedBy
     })
   );
 }

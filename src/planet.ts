@@ -23,12 +23,15 @@ export interface Planet extends Sprite {
 
   claimedBy: Faction;
   increaseClaim(faction: Faction, percentage: number): void;
+
+  changePlanetTo(planetType: PlanetType): void;
 }
 export interface PlanetOptions {
   drawOuterRadius?: boolean;
   type?: PlanetType;
   name?: string;
   startingAngle?: number;
+  claimedBy?: Faction;
 }
 
 export function createPlanet(
@@ -41,11 +44,13 @@ export function createPlanet(
     drawOuterRadius = true,
     type = getPlanetType(),
     name = generateName(),
-    startingAngle = getValueInRange(0, 360)
+    startingAngle = getValueInRange(0, 360),
+    claimedBy
   }: PlanetOptions = {}
 ): Planet {
   //let textureWidth = Math.round(getValueInRange(64, radius));
   //let textureHeight = Math.round(getValueInRange(64, radius));
+  let planetType = type;
   let textureWidth = 100;
   let textureHeight = 100;
 
@@ -59,6 +64,7 @@ export function createPlanet(
 
   let planet = kontra.sprite({
     type: SpriteType.Planet,
+    name,
 
     origin,
     orbit,
@@ -75,7 +81,7 @@ export function createPlanet(
 
     // TODO: I could extract this into mixins
     // claiming logic
-    claimedBy: undefined,
+    claimedBy,
     beingClaimed: false, // controls whether the claiming
     claimedPercentage: 0,
     isClaimed() {
@@ -99,6 +105,18 @@ export function createPlanet(
       }
     },
 
+    // change planet to other type
+    // only for earth animation right now
+    isChangingPlanetType: false,
+    dcpt: 0,
+    count: 13,
+    oldPlanetType: planetType,
+    newPlanetType: undefined,
+    changePlanetTo(planetType: PlanetType) {
+      this.newPlanetType = planetType;
+      this.isChangingPlanetType = true;
+    },
+
     // collecting logic
     beingCollected: false,
     resources: 3000,
@@ -114,6 +132,22 @@ export function createPlanet(
       );
       this.x = newPosition.x;
       this.y = newPosition.y;
+
+      // extract to behavior/mixin
+      if (this.isChangingPlanetType) {
+        this.dcpt += 1 / 60;
+        // the change of planet type will
+        // happen progressively faster
+        if (this.dcpt > this.count * 0.05) {
+          this.dcpt = 0;
+          this.count--;
+          if (planetType === this.oldPlanetType)
+            planetType = this.newPlanetType;
+          else planetType = this.oldPlanetType;
+
+          if (this.count === 0) this.isChangingPlanetType = false;
+        }
+      }
     },
     render(this: Planet) {
       if (isObjectOutOfBounds(this, cameraPosition)) return;
@@ -134,7 +168,11 @@ export function createPlanet(
       this.context.translate(position.x, position.y);
       this.context.rotate(degreesToRadians(this.rotation));
 
-      this.context.fillStyle = getPattern(textureWidth, textureHeight, type);
+      this.context.fillStyle = getPattern(
+        textureWidth,
+        textureHeight,
+        planetType
+      );
       this.context.beginPath(); // start drawing a shape
       this.context.arc(0, 0, this.radius, 0, Math.PI * 2);
       this.context.fill(); // outline the circle

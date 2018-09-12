@@ -9,6 +9,7 @@ import { Sector } from "../map/sector";
 import { SpaceBackground } from "../background";
 import { GameData } from "../data/gamedata";
 import { ElderPool, ElderType } from "../enemies/elder";
+import { PlanetType } from "../planet";
 
 export default function createSpaceScene(gameData: GameData) {
   let camera = createCamera();
@@ -43,6 +44,9 @@ export default function createSpaceScene(gameData: GameData) {
   addEnemies(scene, ship);
 
   scene.addSprite(ship);
+
+  // setup earth animation
+  Game.instance().gameData.earth.changePlanetTo(PlanetType.Red);
 
   return scene;
 }
@@ -134,25 +138,6 @@ function addAsteroidCluster(
   }
 }
 
-/*
-function addPlanets(scene: Scene, cameraPosition: Position) {
-  let spaceBetweenPlanets = 900;
-  for (let x = -1000; x <= 1000; x += spaceBetweenPlanets) {
-    for (let y = -1000; y <= 1000; y += spaceBetweenPlanets) {
-      let radius = getValueInRange(50, 100);
-      let planet = createPlanet({ x, y }, radius, cameraPosition, scene);
-      scene.addSprite(planet);
-    }
-  }
-}
-
-function addSun(scene: Scene, cameraPosition: Position) {
-  let sun = createSun({ x: 0, y: 0 }, 150, cameraPosition);
-  scene.addSprite(sun);
-}
-
-*/
-
 function addSector(scene: Scene, cameraPosition: Position) {
   // this will create 100 sectors right now
   let galaxySize = 100000;
@@ -163,6 +148,9 @@ function addSector(scene: Scene, cameraPosition: Position) {
       if (x === 0 && y === 0) {
         // create sun sector
         sector = Sector(scene, { x, y }, cameraPosition, "sun");
+        Game.instance().gameData.earth = sector.planets.find(
+          p => p.name === "*earth*"
+        );
       } else {
         sector = Sector(scene, { x, y }, cameraPosition);
       }
