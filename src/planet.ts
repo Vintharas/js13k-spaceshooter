@@ -6,7 +6,8 @@ import {
   getValueInRange,
   Positions,
   Color,
-  getRandomValueOf
+  getRandomValueOf,
+  HSL
 } from "./utils";
 import OffscreenCanvas from "./canvas";
 import Config from "./config";
@@ -295,7 +296,7 @@ export let PlanetTypes = [
   PlanetType.Barren,
   PlanetType.Paradise
 ];
-export let PlanetBaseColors = [
+export let PlanetBaseColors: HSL[] = [
   /*Red*/ { h: 16, s: 100, l: 66 },
   /*Scorched*/ { h: 0, s: 70, l: 45 },
   /*Green*/ { h: 120, s: 100, l: 39 },
@@ -313,10 +314,26 @@ function getPlanetType(): PlanetType {
 
 export function getPattern(width: number, height: number, type: PlanetType) {
   let color = PlanetBaseColors[type];
+  if (type === PlanetType.Paradise)
+    return getParadisePattern(width, height, color);
   return OffscreenCanvas.instance().getPatternBasedOnColor(
     color.h,
     color.s,
     color.l,
+    width,
+    height,
+    3
+  );
+}
+
+export function getParadisePattern(
+  width: number,
+  height: number,
+  primary: HSL
+) {
+  return OffscreenCanvas.instance().getPatternBasedOnColors(
+    primary,
+    /* greenish */ { h: 120, s: 61, l: 34 },
     width,
     height,
     3
