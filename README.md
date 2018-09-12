@@ -29,12 +29,24 @@
   - find a new home for manking before X time
     - [*] create counter
     - find a paradise class planet
-      - fix other planet types, specially paradise class planet
-      - create single paradise planet, which happens to be owned by aliens
+      - [*] fix other planet types, specially paradise class planet
+      - [*] create single paradise planet, which happens to be owned by aliens
+      - [*] create victory condition and make sure it works
+      - create single paradise planet randomly
     - show provide some breadcrumbs to find that planet
+  - refactor planet to reduce Kb
+    - refactor drawing primitives
+    - review other heavy source code files
   - [*] remove factions, remove intro
   - [*] narrate game with more stuff
-  - messages should appear immediately if there are not messages being shown
+  - [*] messages should appear immediately if there are not messages being shown
+  - fix regressions
+    - asteroid collision
+    - alien follow
+  - sector creation
+    - asteroids
+    - aliens, the further the more aliens in systems
+    - add some more randomness in sector creation
   - game mechanics
     - encounters
     - energy is not recovered over time. If you lose it you die. and mankind dies with you.

@@ -67,6 +67,7 @@ export function createPlanet(
 
   let planet = kontra.sprite({
     type: SpriteType.Planet,
+    planetType,
     name,
 
     origin,
@@ -144,9 +145,9 @@ export function createPlanet(
         if (this.dcpt > this.count * 0.05) {
           this.dcpt = 0;
           this.count--;
-          if (planetType === this.oldPlanetType)
-            planetType = this.newPlanetType;
-          else planetType = this.oldPlanetType;
+          if (this.planetType === this.oldPlanetType)
+            this.planetType = this.newPlanetType;
+          else this.planetType = this.oldPlanetType;
 
           if (this.count === 0) this.isChangingPlanetType = false;
         }
@@ -174,7 +175,7 @@ export function createPlanet(
       this.context.fillStyle = getPattern(
         textureWidth,
         textureHeight,
-        planetType
+        this.planetType
       );
       this.context.beginPath(); // start drawing a shape
       this.context.arc(0, 0, this.radius, 0, Math.PI * 2);
@@ -219,8 +220,8 @@ export function createPlanet(
       this.context.translate(position.x, position.y - radius - 45);
       this.context.fillStyle = "rgba(255,255,255,0.8)";
       this.context.font = `normal normal 14px monospace`;
-      let textOffset = (name.length / 2) * 10;
-      this.context.fillText(name.toUpperCase(), -textOffset, 0);
+      let textOffset = (this.name.length / 2) * 10;
+      this.context.fillText(this.name.toUpperCase(), -textOffset, 0);
       this.context.restore();
 
       // #5. planet energy
@@ -309,7 +310,9 @@ export let PlanetBaseColors: HSL[] = [
 ];
 
 function getPlanetType(): PlanetType {
-  return getRandomValueOf(PlanetTypes);
+  // can randomly create all types of planets
+  // but for paradise planet, (there'll be only one left to find)
+  return getRandomValueOf(PlanetTypes.filter(p => p !== PlanetType.Paradise));
 }
 
 export function getPattern(width: number, height: number, type: PlanetType) {

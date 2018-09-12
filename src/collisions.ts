@@ -6,10 +6,12 @@ import { createExplosionParticle } from "./particles";
 import createCell, { CellType, Cell, getRandomCellType } from "./cell";
 import { Ship } from "./ship/ship";
 import { createText } from "./text";
-import { Planet } from "./planet";
+import { Planet, PlanetType } from "./planet";
 import { Sun } from "./sun";
 import { Vector } from "./vector";
 import { Bullet } from "./bullet";
+import Game from "./game";
+import { Story } from "./story";
 
 let EnergyBoost = 20;
 let LifeBoost = 10;
@@ -289,6 +291,23 @@ export default class CollisionsEngine {
         }
       } else {
         planet.increaseClaim(ship.faction, 1 / 2);
+        if (
+          planet.claimedBy === ship.faction &&
+          planet.planetType === PlanetType.Paradise
+        ) {
+          // TODO: extract to method
+
+          let duration = Game.instance().story.play(
+            this.scene,
+            Story.FoundNewEarth
+          );
+          setTimeout(() => {
+            planet.name = "orion (new earth)";
+          }, duration * 1000);
+          setTimeout(() => {
+            Game.instance().goToGameOverScene({ win: true });
+          }, duration * 1000 + 2000);
+        }
       }
     }
   }

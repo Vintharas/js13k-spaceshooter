@@ -5,7 +5,8 @@ export const enum Story {
   Intro,
   EndingCounterFinished,
   CounterNearEnding,
-  ShipDestroyedEnding
+  ShipDestroyedEnding,
+  FoundNewEarth
 }
 
 export interface GameStory {
@@ -69,5 +70,16 @@ const Stories: Stories = {
     ),
     Message("disappeared from the face of the cosmos...", MessageType.Narrator),
     Message("You had one job.", MessageType.Narrator)
+  ],
+  [Story.FoundNewEarth]: [
+    Message("A new world!", MessageType.Narrator),
+    Message("The mythical Orion", MessageType.Narrator),
+    Message("You've found it!", MessageType.Narrator),
+    Message(
+      "Now we can start anew and build a better world",
+      MessageType.Narrator
+    ),
+    Message("Will we?", MessageType.Narrator),
+    Message("(Evil chipmunk)", MessageType.Narrator)
   ]
 };

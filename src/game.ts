@@ -64,9 +64,8 @@ export default class Game {
     this.switchToScene(createSpaceScene(this.gameData));
   }
 
-  goToGameOverScene(): any {
-    this.gameMusic.stop();
-    this.switchToScene(createGameOverScene());
+  goToGameOverScene({ win = false } = {}): any {
+    this.switchToScene(createGameOverScene({ win }));
     this.gameData = null;
   }
 
@@ -82,6 +81,7 @@ export default class Game {
   }
 
   switchToScene(scene: Scene) {
+    this.gameMusic.stop();
     this.currentScene.stop();
     this.currentScene = scene;
     this.start();

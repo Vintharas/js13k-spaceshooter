@@ -188,6 +188,9 @@ function addSector(scene: Scene, cameraPosition: Position) {
         Game.instance().gameData.earth = sector.planets.find(
           p => p.name === "*earth*"
         );
+      } else if (x === 10000 && y === 0) {
+        // test creating paradise planet here
+        sector = Sector(scene, { x, y }, cameraPosition, "orion");
       } else {
         sector = Sector(scene, { x, y }, cameraPosition);
       }

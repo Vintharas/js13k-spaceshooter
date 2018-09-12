@@ -98,8 +98,11 @@ export function createScene({
     },
     cameraPosition: camera,
     //logGameObjects,
-    showMessage(...text: Message[]) {
-      if (this.messageQueue.length === 0) {
+    showMessage(this: Scene, ...text: Message[]) {
+      if (
+        this.messageQueue.length === 0 &&
+        !this.sprites.shell.find(s => s.type === SpriteType.Text)
+      ) {
         let first;
         [first, ...text] = text;
         let firstText = createGameStatusText(first.text, first.type);
@@ -134,6 +137,9 @@ export function createScene({
 
     // TODO: this should be handled by pools :D
     this.sprites.foreground = this.sprites.foreground.filter((sprite: Sprite) =>
+      sprite.isAlive()
+    );
+    this.sprites.shell = this.sprites.shell.filter((sprite: Sprite) =>
       sprite.isAlive()
     );
   }

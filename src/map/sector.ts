@@ -23,9 +23,15 @@ export function Sector(
   cameraPosition: Position,
   name = generateName()
 ): Sector {
+  // HAXOR
   let isSunSystem = name === "sun";
+  let isOrion = name === "orion";
+
   let sun = createSectorSun(position, cameraPosition, name);
-  let planets = createPlanets(sun, scene, cameraPosition, isSunSystem);
+  let planets = createPlanets(sun, scene, cameraPosition, {
+    isSunSystem,
+    isOrion
+  });
   return {
     // this position represents the
     // top-left corner of the sector
@@ -58,9 +64,10 @@ function createPlanets(
   sun: Sun,
   scene: Scene,
   cameraPosition: Position,
-  isSunSystem = false
+  { isSunSystem = false, isOrion = false }
 ) {
   if (isSunSystem) return createSunSystemPlanets(sun, scene, cameraPosition);
+  if (isOrion) return createOrionSystemPlanets(sun, scene, cameraPosition);
 
   let numberOfPlanets = getIntegerInRange(1, 5);
   let planets = [];
@@ -119,4 +126,17 @@ function createSunSystemPlanets(
       claimedBy: p.claimedBy
     })
   );
+}
+
+function createOrionSystemPlanets(
+  sun: Sun,
+  scene: Scene,
+  cameraPosition: Position
+) {
+  return [
+    createPlanet(sun, 700, 100, cameraPosition, scene, {
+      name: "orion",
+      type: PlanetType.Paradise
+    })
+  ];
 }

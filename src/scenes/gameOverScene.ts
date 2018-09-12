@@ -2,17 +2,19 @@ import { createScene } from "./scene";
 import { createText } from "../text";
 import Game from "../game";
 
-export default function createGameOverScene() {
+export default function createGameOverScene({ win = false } = {}) {
   let scene = createScene({ update });
 
-  // TODO: we may be able to extract this into some common
-  // text based scene
-  let titleText = createText("GAME OVER", { x: 100, y: 250 }, undefined, {
+  let text = win ? "VICTORY!!!!" : "GAME OVER";
+  let titleText = createText(text, { x: undefined, y: 250 }, undefined, {
     size: 48
   });
   scene.addSprite(titleText);
 
-  let startText = createText("Press ENTER to play again", { x: 200, y: 300 });
+  let startText = createText("Press ENTER to play again", {
+    x: undefined,
+    y: 300
+  });
   scene.addSprite(startText);
 
   return scene;
