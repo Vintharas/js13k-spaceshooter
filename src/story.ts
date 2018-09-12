@@ -4,7 +4,8 @@ import { Scene } from "./scenes/scene";
 export const enum Story {
   Intro,
   EndingCounterFinished,
-  CounterNearEnding
+  CounterNearEnding,
+  ShipDestroyedEnding
 }
 
 export interface GameStory {
@@ -40,6 +41,11 @@ const Stories: Stories = {
     Message("Farewell and good luck", MessageType.Transmission),
     Message("God save us all", MessageType.Transmission),
     Message("D. Trump.", MessageType.Transmission)
+  ],
+  [Story.ShipDestroyedEnding]: [
+    Message("OOoops, that had to hurt"),
+    Message("And thus the once bright light of humankind..."),
+    Message("disappeared from the face of the cosmos...")
   ],
   [Story.CounterNearEnding]: [
     Message("Humans aren't very durable creatures"),

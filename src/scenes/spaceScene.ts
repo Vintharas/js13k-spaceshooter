@@ -20,7 +20,7 @@ export default function createSpaceScene(gameData: GameData) {
   let scene = createScene({
     camera,
     props: {
-      isTransitioningToGameOver: false,
+      shipDestroyedEndingPlayed: false,
       counterNearEndingPlayed: false,
       counterEndingPlayed: false,
       checkCounterNearEnding() {
@@ -37,10 +37,10 @@ export default function createSpaceScene(gameData: GameData) {
         }
       },
       checkShipIsAlive() {
-        if (!ship.isAlive()) {
-          if (this.isTransitioningToGameOver) return;
-          this.isTransitioningToGameOver = true;
-          this.goToGameOver(2);
+        if (!ship.isAlive() && !this.shipDestroyedEndingPlayed) {
+          this.shipDestroyedEndingPlayed = true;
+          let duration = game.story.play(scene, Story.ShipDestroyedEnding);
+          this.goToGameOver(duration);
         }
       },
       goToGameOver(seconds: number) {
