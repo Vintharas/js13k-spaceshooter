@@ -96,7 +96,7 @@ function createSunSystemPlanets(
 ) {
   let planets: PlanetData[] = [
     { orbit: 300, radius: 30, name: "mercury", type: PlanetType.Barren },
-    { orbit: 500, radius: 70, name: "venus", type: PlanetType.Red },
+    { orbit: 500, radius: 70, name: "venus", type: PlanetType.Desert },
     {
       orbit: 700,
       radius: 50,
@@ -106,8 +106,8 @@ function createSunSystemPlanets(
       claimedBy: Faction.Blue
     },
     { orbit: 900, radius: 40, name: "mars", type: PlanetType.Red },
-    { orbit: 1500, radius: 150, name: "jupiter", type: PlanetType.Barren },
-    { orbit: 2100, radius: 130, name: "saturn", type: PlanetType.Red },
+    { orbit: 1500, radius: 150, name: "jupiter", type: PlanetType.GasGiant },
+    { orbit: 2100, radius: 130, name: "saturn", type: PlanetType.GasGiant },
     { orbit: 2700, radius: 110, name: "uranus", type: PlanetType.Blue },
     { orbit: 3500, radius: 110, name: "neptune", type: PlanetType.Blue }
   ];

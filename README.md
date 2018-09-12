@@ -45,8 +45,11 @@
       - asteroids
       - claiming planets
     - [*] when counter gets down
+    - when energy runs out
     - arbitrary thoughts from hal
     - when visiting new systems...
+
+- delay start of first screen till patterns are loaded in memory
 
 - good to haves
   - resize canvas on screen change

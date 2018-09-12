@@ -5,7 +5,8 @@ import {
   degreesToRadians,
   getValueInRange,
   Positions,
-  Color
+  Color,
+  getRandomValueOf
 } from "./utils";
 import OffscreenCanvas from "./canvas";
 import Config from "./config";
@@ -275,36 +276,39 @@ export function createPlanet(
 
 export const enum PlanetType {
   Red,
+  Scorched,
   Green,
   Blue,
   Desert,
+  GasGiant,
   Barren,
   Paradise,
   Sun
 }
 export let PlanetTypes = [
   PlanetType.Red,
+  PlanetType.Scorched,
   PlanetType.Green,
   PlanetType.Blue,
   PlanetType.Desert,
+  PlanetType.GasGiant,
   PlanetType.Barren,
   PlanetType.Paradise
 ];
 export let PlanetBaseColors = [
-  /*Red*/ { h: 0, s: 70, l: 45 },
+  /*Red*/ { h: 16, s: 100, l: 66 },
+  /*Scorched*/ { h: 0, s: 70, l: 45 },
   /*Green*/ { h: 120, s: 100, l: 39 },
   /*Blue*/ { h: 195, s: 100, l: 50 },
-  /*Desert*/ { h: 195, s: 100, l: 50 }, //TODO
-  /*Barren*/ { h: 195, s: 100, l: 50 }, //TODO
-  /*Paradise*/ { h: 195, s: 100, l: 50 }, //TODO
+  /*Desert*/ { h: 48, s: 100, l: 76 },
+  /*GasGiant*/ { h: 28, s: 87, l: 67 },
+  /*Barren*/ { h: 0, s: 0, l: 83 },
+  /*Paradise*/ { h: 199, s: 98, l: 48 }, //TODO, special planet
   /*Sun*/ { h: 60, s: 100, l: 50 }
 ];
 
 function getPlanetType(): PlanetType {
-  // TODO: extract thiiiiiis, I've used this pattern a thousand times now
-  let index = Math.round(getValueInRange(0, 2));
-  let types = [PlanetType.Red, PlanetType.Green, PlanetType.Blue];
-  return types[index];
+  return getRandomValueOf(PlanetTypes);
 }
 
 export function getPattern(width: number, height: number, type: PlanetType) {

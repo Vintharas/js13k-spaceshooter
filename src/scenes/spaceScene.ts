@@ -75,7 +75,7 @@ export default function createSpaceScene(gameData: GameData) {
   scene.addSprite(ship);
 
   // setup earth animation
-  game.gameData.earth.changePlanetTo(PlanetType.Red);
+  game.gameData.earth.changePlanetTo(PlanetType.Scorched);
   let duration = game.story.play(scene, Story.Intro);
 
   let counter = Counter(10, Config.canvasHeight - 10, 15);
