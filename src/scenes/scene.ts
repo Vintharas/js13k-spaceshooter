@@ -42,7 +42,7 @@ export interface Scene {
   sprites: Sprites;
   pools: Pool[];
   messageQueue: string[];
-  showMessage(text: string): void;
+  showMessage(...text: string[]): void;
   activePoolObjects(): Sprite[];
   update(dt: number): void;
   addSprite(this: Scene, sprite: Sprite, options?: SpriteOptions): void;
@@ -98,8 +98,14 @@ export function createScene({
     },
     cameraPosition: camera,
     //logGameObjects,
-    showMessage(text: string) {
-      this.messageQueue.push(text);
+    showMessage(...text: string[]) {
+      if (this.messageQueue.length === 0) {
+        let first;
+        [first, ...text] = text;
+        let firstText = createGameStatusText(first);
+        this.addSprite(firstText, { sceneLayer: SceneLayer.Shell });
+      }
+      text.forEach(t => this.messageQueue.push(t));
     }
   });
   scene.collisionEngine = new CollisionsEngine(scene);

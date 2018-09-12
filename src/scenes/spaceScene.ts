@@ -10,6 +10,7 @@ import { SpaceBackground } from "../background";
 import { GameData } from "../data/gamedata";
 import { ElderPool, ElderType } from "../enemies/elder";
 import { PlanetType } from "../planet";
+import { createGameStatusText } from "../text";
 
 export default function createSpaceScene(gameData: GameData) {
   let camera = createCamera();
@@ -47,6 +48,11 @@ export default function createSpaceScene(gameData: GameData) {
 
   // setup earth animation
   Game.instance().gameData.earth.changePlanetTo(PlanetType.Red);
+  scene.showMessage(
+    "Hmm....",
+    "Fuck",
+    "I was kinda hoping it wouldn't get to that"
+  );
 
   return scene;
 }
