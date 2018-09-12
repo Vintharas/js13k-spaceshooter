@@ -11,7 +11,7 @@ let Config = {
   get canvasHeight() {
     return kontra.canvas && kontra.canvas.height / this.scale;
   },
-  //scale: 1
+  //scale: 1,
   scale: 1.5,
 
   // collisions

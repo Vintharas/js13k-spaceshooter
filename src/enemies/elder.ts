@@ -1,5 +1,3 @@
-import { Ship } from "../ship/ship";
-import Config from "../config";
 import {
   Position,
   getCanvasPosition,
@@ -28,7 +26,7 @@ export interface Elder extends Sprite, ElderCharacteristics {
   elderType: ElderType;
 }
 
-export function ElderPool(scene: Scene, ship: Ship): Pool {
+export function ElderPool(scene: Scene, ship: Position): Pool {
   let color = getElderColor();
   return kontra.pool({
     create() {
@@ -101,17 +99,17 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
           Object.assign(this, args);
           if (this.elderType === ElderType.Sentry) {
             composeBehavior(elder, PatrolAroundTarget(PatrolType.Orbit, 200));
-            composeBehavior(elder, FollowSteadyBehavior(ship, 300));
-            composeBehavior(elder, Shoot(scene, ship));
+            composeBehavior(elder, FollowSteadyBehavior(this.ship, 300));
+            composeBehavior(elder, Shoot(scene, this.ship));
           } else if (this.elderType === ElderType.Drone) {
             // change this behavior to follow fast
             composeBehavior(elder, PatrolAroundTarget(PatrolType.Random));
-            composeBehavior(elder, FollowSteadyBehavior(ship, 400));
-            composeBehavior(elder, Shoot(scene, ship));
+            composeBehavior(elder, FollowSteadyBehavior(this.ship, 400));
+            composeBehavior(elder, Shoot(scene, this.ship));
           } else {
             // mothership
-            composeBehavior(elder, FollowSteadyBehavior(ship, 300));
-            composeBehavior(elder, Shoot(scene, ship));
+            composeBehavior(elder, FollowSteadyBehavior(this.ship, 300));
+            composeBehavior(elder, Shoot(scene, this.ship));
           }
         }
       });

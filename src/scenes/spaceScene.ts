@@ -64,11 +64,7 @@ export default function createSpaceScene(gameData: GameData) {
 
   // initial state
   addBackground(scene, ship);
-  addSector(scene, ship);
-
-  // add enemies for testing
-  addEnemies(scene, ship);
-
+  addSectors(scene, ship);
   scene.addSprite(ship);
 
   // setup earth animation
@@ -194,7 +190,7 @@ function addAsteroidCluster(
   }
 }
 
-function addSector(scene: Scene, cameraPosition: Position) {
+function addSectors(scene: Scene, cameraPosition: Position) {
   // this will create 100 sectors right now
   let galaxySize = 100000; // - 50K to 50K
   let sectorSize = 10000;
@@ -213,6 +209,7 @@ function addSector(scene: Scene, cameraPosition: Position) {
       if (x === 0 && y === 0) {
         // only add moving asteroids in the current sector
         addAsteroids(scene, cameraPosition, x, y);
+        addEnemies(scene, cameraPosition, { x: x + 5000, y: y + 5000 });
       }
     }
   }
@@ -240,7 +237,6 @@ function createSector(
     Game.instance().gameData.orion = sector.planets.find(
       p => p.name === "orion"
     );
-    console.log(Game.instance().gameData);
   } else {
     sector = Sector(scene, pos, cameraPosition);
   }
@@ -257,22 +253,23 @@ function getParadiseSectorCoordinates() {
   return { paradiseSectorX, paradiseSectorY };
 }
 
-function addEnemies(scene: Scene, ship: Ship) {
-  let elderPool = ElderPool(scene, ship);
+function addEnemies(scene: Scene, shipPosition: Position, pos: Position) {
+  let elderPool = ElderPool(scene, shipPosition);
 
   elderPool.get({
-    x: 300,
-    y: 300,
+    x: pos.x + 300,
+    y: pos.y + 300,
     ttl: Infinity,
     dx: 0,
     dy: 0,
     elderType: ElderType.MotherShip
   });
 
+  /*
   for (let x = 0; x <= 60; x += 20) {
     elderPool.get({
-      x: 200 + x,
-      y: 200 + x,
+      x: pos.x + 200 + x,
+      y: pos.y + 200 + x,
       ttl: Infinity,
       dx: 0,
       dy: 0,
@@ -284,11 +281,12 @@ function addEnemies(scene: Scene, ship: Ship) {
       angle: x
     });
   }
+  */
 
-  for (let x = 0; x < 500; x += 100) {
+  for (let x = 0; x < 100; x += 100) {
     elderPool.get({
-      x,
-      y: x,
+      x: pos.x + x,
+      y: pos.y + x,
       ttl: Infinity,
       dx: 0,
       dy: 0,

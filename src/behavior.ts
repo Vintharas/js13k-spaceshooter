@@ -6,7 +6,7 @@ import { doThisEvery } from "./Time";
 import { after, before } from "./fp";
 
 export const enum BehaviorType {
-  FollowSteady,
+  FollowSteady = 1,
   Shoot,
   PatrolAroundTarget
 }
@@ -38,7 +38,7 @@ export function composeBehavior(sprite: Sprite, behavior: Behavior) {
 }
 
 export function FollowSteadyBehavior(
-  target: Sprite,
+  target: Position,
   distanceToFollow: number = 500
 ): Behavior {
   return {
@@ -63,6 +63,7 @@ export function FollowSteadyBehavior(
       ) {
         // if the target goes further away
         // after a while stop
+        this.dtfs = 0;
         this.dx = 0;
         this.dy = 0;
         this.activeBehavior = undefined;
@@ -71,7 +72,7 @@ export function FollowSteadyBehavior(
   };
 }
 
-export function Shoot(scene: Scene, target: Sprite): Behavior {
+export function Shoot(scene: Scene, target: Position): Behavior {
   return {
     type: BehaviorType.Shoot,
     properties: {
@@ -109,7 +110,7 @@ export const enum PatrolType {
 export function PatrolAroundTarget(
   patrolType: PatrolType = PatrolType.Orbit,
   patrolOrbit = 150,
-  target: Sprite = undefined
+  target: Position = undefined
 ): Behavior {
   return {
     type: BehaviorType.PatrolAroundTarget,

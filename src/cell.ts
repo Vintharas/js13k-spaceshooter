@@ -36,8 +36,8 @@ export default function createCell(
     cellType,
     x: position.x,
     y: position.y,
-    dx: cos * 0.7 /*speed*/,
-    dy: sin * 0.7 /*speed*/,
+    dx: cos * 0.5 /*speed*/,
+    dy: sin * 0.5 /*speed*/,
     outerRadius: 8,
     ttl: 240,
     render() {
