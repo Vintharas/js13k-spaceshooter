@@ -40,21 +40,34 @@ const Stories: Stories = {
     Message("*fast*", MessageType.Transmission),
     Message("Farewell and good luck", MessageType.Transmission),
     Message("God save us all", MessageType.Transmission),
-    Message("D. Trump.", MessageType.Transmission)
+    Message("D. Trump.", MessageType.Transmission),
+    Message("Find a New Earth. Fast", MessageType.Narrator)
   ],
   [Story.ShipDestroyedEnding]: [
-    Message("OOoops, that had to hurt"),
-    Message("And thus the once bright light of humankind..."),
-    Message("disappeared from the face of the cosmos...")
+    Message("OOoops, that had to hurt", MessageType.Narrator),
+    Message(
+      "And thus the once bright light of humankind...",
+      MessageType.Narrator
+    ),
+    Message("disappeared from the face of the cosmos...", MessageType.Narrator)
   ],
   [Story.CounterNearEnding]: [
-    Message("Humans aren't very durable creatures"),
-    Message("As time passes the cryogenic devices start to fail"),
-    Message("and first dozens, then hundreds, the thousands peril...")
+    Message("Humans aren't very durable creatures", MessageType.Narrator),
+    Message(
+      "As time passes the cryogenic devices start to fail",
+      MessageType.Narrator
+    ),
+    Message(
+      "and first dozens, then hundreds, the thousands peril...",
+      MessageType.Narrator
+    )
   ],
   [Story.EndingCounterFinished]: [
-    Message("And thus the once bright light of humankind..."),
-    Message("disappeared from the face of the cosmos..."),
-    Message("You had one job.")
+    Message(
+      "And thus the once bright light of humankind...",
+      MessageType.Narrator
+    ),
+    Message("disappeared from the face of the cosmos...", MessageType.Narrator),
+    Message("You had one job.", MessageType.Narrator)
   ]
 };

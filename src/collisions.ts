@@ -170,7 +170,7 @@ export default class CollisionsEngine {
       if (sprite.takeDamage) sprite.takeDamage(bullet.damage);
       bullet.ttl = 0;
 
-      // add explostion when sprite doesn't have any life left
+      // add explosion when sprite doesn't have any life left
       if (sprite.ttl === 0)
         // particle explosion
         this.addExplosion(this.scene, sprite);
@@ -295,9 +295,12 @@ export default class CollisionsEngine {
 
   handleCollisionBetweenSunAndShip(sun: Sun, ship: Ship): void {
     if (shipWithinRadius(ship, sun, sun.damageOuterRadius)) {
-      if (this.dt > 0.4) {
+      if (this.dt > 0.4 && ship.ttl > 0) {
         this.dt = 0;
         ship.takeDamage(100);
+        if (ship.ttl === 0) {
+          this.addExplosion(this.scene, ship);
+        }
       }
     } else if (shipWithinRadius(ship, sun, sun.energyOuterRadius)) {
       if (this.dt > 0.4) {

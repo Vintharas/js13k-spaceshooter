@@ -23,9 +23,14 @@ export function Message(text: string, type = MessageType.Thought): Message {
 }
 export const enum MessageType {
   Thought,
-  Transmission
+  Transmission,
+  Narrator
 }
-const MessageTypeStyles = [{}, { style: "italic" }];
+const MessageTypeStyles = [
+  {},
+  { style: "italic" },
+  { color: { r: 0, g: 255, b: 0 } }
+];
 
 export function createText(
   text: string,
@@ -95,7 +100,7 @@ export function createGameStatusText(
       x: Config.canvasWidth / 2 - textOffset,
       y: Config.canvasHeight / 2 + 100
     },
-    { ttl: 120 },
+    { ttl: 120, color: typeStyles.color },
     { size: 18, family: "monospace", style: typeStyles.style }
   );
 }
