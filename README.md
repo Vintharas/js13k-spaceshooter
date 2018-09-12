@@ -28,12 +28,13 @@
     - [*] do animation turning from paradise to red planet
   - find a new home for manking before X time
     - [*] create counter
-    - find a paradise class planet
+    - [*] find a paradise class planet
       - [*] fix other planet types, specially paradise class planet
       - [*] create single paradise planet, which happens to be owned by aliens
       - [*] create victory condition and make sure it works
-      - create single paradise planet randomly
-    - show provide some breadcrumbs to find that planet
+      - [*] create single paradise planet randomly
+    - show messages and provide some breadcrumbs to find that planet
+      - transmission from some aliens?
   - refactor planet to reduce Kb
     - refactor drawing primitives
     - review other heavy source code files
@@ -43,6 +44,8 @@
   - fix regressions
     - asteroid collision
     - alien follow
+    - end of galaxy, go to the other side
+    - there's something wrong with the stars in the background. particularly when going towards negative numbers. they disappear when they shouldnt
   - sector creation
     - asteroids
     - aliens, the further the more aliens in systems
@@ -51,6 +54,8 @@
     - encounters
     - energy is not recovered over time. If you lose it you die. and mankind dies with you.
     - if you remain at two low energy for two
+    - ship status offline/online should work separately from narration and
+      have its own queue
   - narration during game
     - when things happen
     - when doing things for the first time

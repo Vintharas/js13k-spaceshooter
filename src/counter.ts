@@ -10,6 +10,7 @@ export function Counter(x: number, y: number, minutes: number): Counter {
     seconds,
     x,
     y,
+    ttl: Infinity,
     isStarted: false,
     start() {
       this.isStarted = true;

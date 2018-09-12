@@ -1,7 +1,7 @@
 import { Scene, createScene, SceneLayer } from "./scene";
 import { createAsteroid } from "../asteroid";
 import createShip, { Ship } from "../ship/ship";
-import { isObjectOutOfBounds, Position, getValueInRange } from "../utils";
+import { Position, getValueInRange, getIntegerInRange } from "../utils";
 import Game from "../game";
 import Config from "../config";
 import { createCamera } from "./camera";
@@ -10,7 +10,6 @@ import { SpaceBackground } from "../background";
 import { GameData } from "../data/gamedata";
 import { ElderPool, ElderType } from "../enemies/elder";
 import { PlanetType } from "../planet";
-import { createGameStatusText, Message, MessageType } from "../text";
 import { Counter } from "../counter";
 import { Story } from "../story";
 
@@ -66,8 +65,6 @@ export default function createSpaceScene(gameData: GameData) {
   // initial state
   addBackground(scene, ship);
   addSector(scene, ship);
-  addAsteroids(scene, ship);
-  addStaticAsteroids(scene, ship);
 
   // add enemies for testing
   addEnemies(scene, ship);
@@ -106,19 +103,12 @@ function addBackground(scene: Scene, cameraPosition: Position) {
   scene.addSprite(background, { sceneLayer: SceneLayer.Background });
 }
 
-function addAsteroids(scene: Scene, cameraPosition: Position) {
-  let maxNumberOfClusters = 5;
-  let maxNumberOfAsteroidsPerCluster = 5;
-  // create some clusters of varying sizes
-  for (let i = 0; i < maxNumberOfClusters; i++) {
-    let clusterSize = Math.ceil(
-      getValueInRange(0, maxNumberOfAsteroidsPerCluster)
-    );
-    addAsteroidCluster(scene, cameraPosition, clusterSize);
-  }
-}
-
-function addStaticAsteroids(scene: Scene, cameraPosition: Position) {
+function addAsteroids(
+  scene: Scene,
+  cameraPosition: Position,
+  sectorX: number,
+  sectorY: number
+) {
   let maxNumberOfClusters = 5;
   let maxNumberOfAsteroidsPerCluster = 5;
   // create some clusters of varying sizes
@@ -130,8 +120,35 @@ function addStaticAsteroids(scene: Scene, cameraPosition: Position) {
       scene,
       cameraPosition,
       clusterSize,
+      /*isStatic*/ false,
+      /*separation*/ 100,
+      sectorX,
+      sectorY
+    );
+  }
+}
+
+function addStaticAsteroids(
+  scene: Scene,
+  cameraPosition: Position,
+  sectorX: number,
+  sectorY: number
+) {
+  let maxNumberOfClusters = 20;
+  let maxNumberOfAsteroidsPerCluster = 7;
+  // create some clusters of varying sizes
+  for (let i = 0; i < maxNumberOfClusters; i++) {
+    let clusterSize = Math.ceil(
+      getValueInRange(0, maxNumberOfAsteroidsPerCluster)
+    );
+    addAsteroidCluster(
+      scene,
+      cameraPosition,
+      clusterSize,
       /*isStatic*/ true,
-      /*separation*/ 500
+      /*separation*/ 100,
+      sectorX,
+      sectorY
     );
   }
 }
@@ -143,10 +160,12 @@ function addAsteroidCluster(
   // extract to object
   clusterSize: number,
   isStatic: boolean = false,
-  separation: number = 100
+  separation: number = 100,
+  sectorX = 0,
+  sectorY = 0
 ) {
-  let x = getValueInRange(-1000, 1000);
-  let y = getValueInRange(-1000, 1000);
+  let x = sectorX + getValueInRange(-10000, 10000);
+  let y = sectorY + getValueInRange(-10000, 10000);
 
   let dx = 0;
   let dy = 0;
@@ -177,26 +196,65 @@ function addAsteroidCluster(
 
 function addSector(scene: Scene, cameraPosition: Position) {
   // this will create 100 sectors right now
-  let galaxySize = 100000;
+  let galaxySize = 100000; // - 50K to 50K
   let sectorSize = 10000;
+
+  let { paradiseSectorX, paradiseSectorY } = getParadiseSectorCoordinates();
   for (let x = -galaxySize / 2; x < galaxySize / 2; x += sectorSize) {
     for (let y = -galaxySize / 2; y < galaxySize / 2; y += sectorSize) {
-      let sector;
-      if (x === 0 && y === 0) {
-        // create sun sector
-        sector = Sector(scene, { x, y }, cameraPosition, "sun");
-        Game.instance().gameData.earth = sector.planets.find(
-          p => p.name === "*earth*"
-        );
-      } else if (x === 10000 && y === 0) {
-        // test creating paradise planet here
-        sector = Sector(scene, { x, y }, cameraPosition, "orion");
-      } else {
-        sector = Sector(scene, { x, y }, cameraPosition);
-      }
+      let sector = createSector(
+        scene,
+        cameraPosition,
+        { x, y },
+        { x: paradiseSectorX, y: paradiseSectorY }
+      );
       sector.bodies.forEach(s => scene.addSprite(s));
+      addStaticAsteroids(scene, cameraPosition, x, y);
+      if (x === 0 && y === 0) {
+        // only add moving asteroids in the current sector
+        addAsteroids(scene, cameraPosition, x, y);
+      }
     }
   }
+}
+
+function createSector(
+  scene: Scene,
+  cameraPosition: Position,
+  pos: Position,
+  paradiseSectorPosition: Position
+) {
+  let sector;
+  if (pos.x === 0 && pos.y === 0) {
+    // create sun sector
+    sector = Sector(scene, pos, cameraPosition, "sun");
+    Game.instance().gameData.earth = sector.planets.find(
+      p => p.name === "*earth*"
+    );
+  } else if (
+    pos.x === paradiseSectorPosition.x &&
+    pos.y === paradiseSectorPosition.y
+  ) {
+    // test creating paradise planet here
+    sector = Sector(scene, pos, cameraPosition, "orion");
+    Game.instance().gameData.orion = sector.planets.find(
+      p => p.name === "orion"
+    );
+    console.log(Game.instance().gameData);
+  } else {
+    sector = Sector(scene, pos, cameraPosition);
+  }
+  return sector;
+}
+
+function getParadiseSectorCoordinates() {
+  let paradiseSectorX = 0;
+  let paradiseSectorY = 0;
+  while (paradiseSectorX == 0 && paradiseSectorY == 0) {
+    paradiseSectorX = getIntegerInRange(-5, 4) * 10000;
+    paradiseSectorY = getIntegerInRange(-5, 4) * 10000;
+  }
+  return { paradiseSectorX, paradiseSectorY };
 }
 
 function addEnemies(scene: Scene, ship: Ship) {
