@@ -12,21 +12,47 @@ import { ElderPool, ElderType } from "../enemies/elder";
 import { PlanetType } from "../planet";
 import { createGameStatusText, Message, MessageType } from "../text";
 import { Counter } from "../counter";
+import { Story } from "../story";
 
 export default function createSpaceScene(gameData: GameData) {
   let game = Game.instance();
   let camera = createCamera();
   let scene = createScene({
     camera,
-    props: { isTransitioningToGameOver: false },
-    update() {
-      if (!ship.isAlive()) {
-        if (this.isTransitioningToGameOver) return;
-        this.isTransitioningToGameOver = true;
+    props: {
+      isTransitioningToGameOver: false,
+      counterNearEndingPlayed: false,
+      counterEndingPlayed: false,
+      checkCounterNearEnding() {
+        if (counter.seconds <= 0 && !this.counterNearEndingPlayed) {
+          this.counterNearEndingPlayed = true;
+          game.story.play(scene, Story.CounterNearEnding);
+        }
+      },
+      checkCounterIsFinished() {
+        if (counter.seconds <= 0 && !this.counterEndingPlayed) {
+          this.counterEndingPlayed = true;
+          let duration = game.story.play(scene, Story.EndingCounterFinished);
+          this.goToGameOver(duration);
+        }
+      },
+      checkShipIsAlive() {
+        if (!ship.isAlive()) {
+          if (this.isTransitioningToGameOver) return;
+          this.isTransitioningToGameOver = true;
+          this.goToGameOver(2);
+        }
+      },
+      goToGameOver(seconds: number) {
         setTimeout(() => {
           game.goToGameOverScene();
-        }, 2000);
+        }, seconds * 1000);
       }
+    },
+    update() {
+      this.checkCounterNearEnding();
+      this.checkCounterIsFinished();
+      this.checkShipIsAlive();
       // remove sprites too far from camera
       // TODO: enable this as soon as I implement
       // support for pools and rehidrating objects
@@ -50,13 +76,14 @@ export default function createSpaceScene(gameData: GameData) {
 
   // setup earth animation
   game.gameData.earth.changePlanetTo(PlanetType.Red);
-  game.story.playIntro(scene);
+  let duration = game.story.play(scene, Story.Intro);
 
+  let counter = Counter(10, Config.canvasHeight - 10, 15);
   // add counter after intro is played
   setTimeout(() => {
-    let counter = Counter(10, Config.canvasHeight - 10, 15);
     scene.addSprite(counter, { sceneLayer: SceneLayer.Shell });
-  }, 14 * 2 * 1000);
+    counter.start();
+  }, duration * 1000);
 
   return scene;
 }

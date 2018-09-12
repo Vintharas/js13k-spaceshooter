@@ -1,13 +1,19 @@
 import { doThisEvery } from "./Time";
 import { after, noop } from "./fp";
 
-export interface Counter extends Sprite {}
+export interface Counter extends Sprite {
+  start(): void;
+}
 export function Counter(x: number, y: number, minutes: number): Counter {
   let seconds = minutes * 60;
   return kontra.sprite({
     seconds,
     x,
     y,
+    isStarted: false,
+    start() {
+      this.isStarted = true;
+    },
     update: after(noop, decreaseCounterEverySecond()),
     render() {
       let minutes = Math.floor(this.seconds / 60);
@@ -24,6 +30,9 @@ function decreaseCounterEverySecond() {
   // returns a function that
   // takes an item from a message queue and shows it
   return doThisEvery({
+    condition() {
+      return this.isStarted;
+    },
     action(this: Counter) {
       this.seconds--;
     },
