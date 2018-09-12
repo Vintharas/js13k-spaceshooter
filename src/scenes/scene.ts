@@ -16,7 +16,8 @@ export class Sprites {
     return [
       ...this.background,
       ...this.foreground,
-      ...this.activePoolObjects(),
+      //...this.activePoolObjects(),
+      ...this.pools,
       ...this.shell
     ][Symbol.iterator]();
   }

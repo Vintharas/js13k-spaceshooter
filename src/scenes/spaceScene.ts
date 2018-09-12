@@ -62,9 +62,12 @@ export default function createSpaceScene(gameData: GameData) {
   let ship = createShip(scene, gameData.faction);
   camera.position = ship;
 
+  let elderPool = ElderPool(scene, ship);
+  scene.addPool(elderPool);
+
   // initial state
   addBackground(scene, ship);
-  addSectors(scene, ship);
+  addSectors(scene, ship, elderPool);
   scene.addSprite(ship);
 
   // setup earth animation
@@ -190,7 +193,7 @@ function addAsteroidCluster(
   }
 }
 
-function addSectors(scene: Scene, cameraPosition: Position) {
+function addSectors(scene: Scene, cameraPosition: Position, elderPool: Pool) {
   // this will create 100 sectors right now
   let galaxySize = 100000; // - 50K to 50K
   let sectorSize = 10000;
@@ -209,7 +212,10 @@ function addSectors(scene: Scene, cameraPosition: Position) {
       if (x === 0 && y === 0) {
         // only add moving asteroids in the current sector
         addAsteroids(scene, cameraPosition, x, y);
-        addEnemies(scene, cameraPosition, { x: x + 5000, y: y + 5000 });
+        addEnemies(scene, cameraPosition, elderPool, {
+          x: x + 5000,
+          y: y + 5000
+        });
       }
     }
   }
@@ -253,9 +259,12 @@ function getParadiseSectorCoordinates() {
   return { paradiseSectorX, paradiseSectorY };
 }
 
-function addEnemies(scene: Scene, shipPosition: Position, pos: Position) {
-  let elderPool = ElderPool(scene, shipPosition);
-
+function addEnemies(
+  scene: Scene,
+  shipPosition: Position,
+  elderPool: Pool,
+  pos: Position
+) {
   elderPool.get({
     x: pos.x + 300,
     y: pos.y + 300,
@@ -296,6 +305,4 @@ function addEnemies(scene: Scene, shipPosition: Position, pos: Position) {
         .filter(s => s.elderType === ElderType.MotherShip)[0]
     });
   }
-
-  scene.addPool(elderPool);
 }
