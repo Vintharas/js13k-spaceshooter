@@ -21,7 +21,8 @@
 
 - simplify
   - earth dies
-    - do animation
+    - generate sun system and put the ship beside it
+    - do animation turning from paradise to red planet
   - find a new home for manking before X time
     - create counter
     - find a paradise class planet

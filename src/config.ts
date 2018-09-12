@@ -32,7 +32,7 @@ let Config = {
       get Ship() {
         return Game.instance().assets.images.blueship;
       },
-      Color: { r: 255, g: 0, b: 0 }
+      Color: { r: 0, g: 227, b: 255 }
     }
   }
 

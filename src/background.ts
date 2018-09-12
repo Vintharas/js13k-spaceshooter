@@ -7,7 +7,7 @@ export interface SpaceBackground extends Sprite {
 }
 
 export function SpaceBackground(cameraPosition: Position) {
-  let shipInitialX = Config.canvasWidth / 2;
+  let shipInitialX = 5500; // harcoded fuuu
   let spaceBetweenStars = 75;
   let offset = 500;
   let start = shipInitialX - Config.canvasWidth / 2 - offset;

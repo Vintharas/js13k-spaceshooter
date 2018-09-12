@@ -11,7 +11,6 @@ import OffscreenCanvas from "./canvas";
 import Config from "./config";
 import { generateName } from "./names";
 import { Faction } from "./factions";
-import { createGameStatusText } from "./text";
 import { Scene } from "./scenes/scene";
 
 export interface Planet extends Sprite {
@@ -27,6 +26,8 @@ export interface Planet extends Sprite {
 }
 export interface PlanetOptions {
   drawOuterRadius?: boolean;
+  type?: PlanetType;
+  name?: string;
 }
 
 export function createPlanet(
@@ -35,9 +36,11 @@ export function createPlanet(
   radius: number,
   cameraPosition: Position,
   scene: Scene,
-  { drawOuterRadius = true }: PlanetOptions = {},
-  planetType: PlanetType = getPlanetType(),
-  planetName: string = generateName()
+  {
+    drawOuterRadius = true,
+    type = getPlanetType(),
+    name = generateName()
+  }: PlanetOptions = {}
 ): Planet {
   //let textureWidth = Math.round(getValueInRange(64, radius));
   //let textureHeight = Math.round(getValueInRange(64, radius));
@@ -81,7 +84,7 @@ export function createPlanet(
       let factionName = Config.Factions[faction].Name;
       if (!this.beingClaimed) {
         // text
-        scene.showMessage(`${factionName} FACTION CLAIMING ${planetName}`);
+        scene.showMessage(`${factionName} FACTION CLAIMING ${name}`);
         this.beingClaimed = true;
       }
 
@@ -91,7 +94,7 @@ export function createPlanet(
         this.claimedPercentage = 100;
         this.beingClaimed = false;
         this.claimedBy = faction;
-        scene.showMessage(`${factionName} FACTION CLAIMED ${planetName}`);
+        scene.showMessage(`${factionName} FACTION CLAIMED ${name}`);
       }
     },
 
@@ -130,11 +133,7 @@ export function createPlanet(
       this.context.translate(position.x, position.y);
       this.context.rotate(degreesToRadians(this.rotation));
 
-      this.context.fillStyle = getPattern(
-        textureWidth,
-        textureHeight,
-        planetType
-      );
+      this.context.fillStyle = getPattern(textureWidth, textureHeight, type);
       this.context.beginPath(); // start drawing a shape
       this.context.arc(0, 0, this.radius, 0, Math.PI * 2);
       this.context.fill(); // outline the circle
@@ -178,8 +177,8 @@ export function createPlanet(
       this.context.translate(position.x, position.y - radius - 45);
       this.context.fillStyle = "rgba(255,255,255,0.8)";
       this.context.font = `normal normal 14px monospace`;
-      let textOffset = (planetName.length / 2) * 10;
-      this.context.fillText(planetName.toUpperCase(), -textOffset, 0);
+      let textOffset = (name.length / 2) * 10;
+      this.context.fillText(name.toUpperCase(), -textOffset, 0);
       this.context.restore();
 
       // #5. planet energy

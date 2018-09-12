@@ -27,36 +27,38 @@ export interface Ship extends Sprite {
 }
 
 export default function createShip(scene: Scene, faction: Faction) {
-  const factionConfig = Config.Factions[faction];
-  //const modifiers = factionConfig.Modifiers;
-  const collisionWidth = 20;
-  const x = Config.canvasWidth / 2;
-  const y = Config.canvasHeight / 2;
-  const energy = ShipEnergy(
+  let factionConfig = Config.Factions[faction];
+  //let modifiers = factionConfig.Modifiers;
+  //let x = Config.canvasWidth / 2;
+  //let y = Config.canvasHeight / 2;
+  let x = 5500;
+  let y = 5500;
+  let collisionWidth = 20;
+  let energy = ShipEnergy(
     700, // + modifiers.Energy,
     scene
     //modifiers.EnergyRechargeRate
   );
-  const life = ShipLife(300); //+ modifiers.Life, modifiers.LifeRepairRate);
-  const shield = ShipShield(
+  let life = ShipLife(300); //+ modifiers.Life, modifiers.LifeRepairRate);
+  let shield = ShipShield(
     400, // + modifiers.Shield,
     energy,
-    { x, y },
+    { x: Config.canvasWidth / 2, y: Config.canvasHeight / 2 },
     collisionWidth,
     scene
     //modifiers.ShieldRechargeRate
   );
-  const speed = ShipSpeedAndLocation();
-  const radar = ShipRadar(scene, energy);
-  const weapons = ShipWeapons(
+  let speed = ShipSpeedAndLocation();
+  let radar = ShipRadar(scene, energy);
+  let weapons = ShipWeapons(
     scene,
     energy,
     0, //modifiers.FireRate,
     factionConfig.Color
   );
-  const vision = ShipVision(scene, energy);
+  let vision = ShipVision(scene, energy);
 
-  const ship = kontra.sprite({
+  let ship = kontra.sprite({
     type: SpriteType.Ship,
     faction,
     parts: [energy, life, shield, speed, radar, weapons, vision],
@@ -120,7 +122,7 @@ export default function createShip(scene: Scene, faction: Faction) {
 
       // the ship is always in the middle of the canvas
       // we move the camera instead, which affects all other objects
-      this.context.translate(x, y);
+      this.context.translate(Config.canvasWidth / 2, Config.canvasHeight / 2);
       this.context.rotate(degreesToRadians(this.rotation));
       /*
       // draw ship as a triangle
@@ -240,7 +242,7 @@ export default function createShip(scene: Scene, faction: Faction) {
       offset: Position = { x: 0, y: 0 }
     ): Particle {
       return createStaticParticle(
-        { x, y }, // ship position remains static in the canvas
+        { x: Config.canvasWidth / 2, y: Config.canvasHeight / 2 }, // ship position remains static in the canvas
         { dx: 1, dy: 1 }, // base speed for particles
         // the particle axis is opposite to the rotation
         // of the ship (in the back)

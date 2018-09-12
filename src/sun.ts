@@ -2,11 +2,11 @@ import {
   Position,
   getCanvasPosition,
   degreesToRadians,
-  getValueInRange
+  getValueInRange,
+  isObjectOutOfBounds
 } from "./utils";
 import { generateName } from "./names";
 import { PlanetType, getPattern } from "./planet";
-import Config from "./config";
 
 export interface Sun extends Sprite {
   radius: number;
@@ -43,6 +43,8 @@ export function createSun(
       this.rotation += 1 / 10;
     },
     render(this: Sun) {
+      if (isObjectOutOfBounds(this, cameraPosition)) return;
+
       let position = getCanvasPosition(this, cameraPosition);
 
       // #1. Actual planet and texture

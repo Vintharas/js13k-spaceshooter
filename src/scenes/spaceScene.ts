@@ -159,7 +159,13 @@ function addSector(scene: Scene, cameraPosition: Position) {
   let sectorSize = 10000;
   for (let x = -galaxySize / 2; x < galaxySize / 2; x += sectorSize) {
     for (let y = -galaxySize / 2; y < galaxySize / 2; y += sectorSize) {
-      let sector = Sector(scene, { x, y }, cameraPosition);
+      let sector;
+      if (x === 0 && y === 0) {
+        // create sun sector
+        sector = Sector(scene, { x, y }, cameraPosition, "sun");
+      } else {
+        sector = Sector(scene, { x, y }, cameraPosition);
+      }
       sector.bodies.forEach(s => scene.addSprite(s));
     }
   }
