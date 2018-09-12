@@ -14,18 +14,6 @@ let Config = {
   //scale: 1
   scale: 1.5,
 
-  /*
-  TODO: Commenting this to save space for the js13k competition
-  I'll inline these in every specific file they're used
-
-
-  // an object far from the camera
-  // more than this constant will be recycled
-  // TODO: make this smaller, temporarily increasing for
-  // debugging's sake
-  mapBoundary: 10000,
-
-  */
   // collisions
   collidableTypes: [
     SpriteType.Asteroid,
@@ -36,7 +24,28 @@ let Config = {
     SpriteType.Sun,
     SpriteType.Elder
   ],
+
+  Factions: {
+    [Faction.Blue]: {
+      Name: "Earth",
+      Planet: PlanetType.Paradise,
+      get Ship() {
+        return Game.instance().assets.images.blueship;
+      },
+      Color: { r: 255, g: 0, b: 0 }
+    }
+  }
+
   /*
+  TODO: Commenting this to save space for the js13k competition
+  I'll inline these in every specific file they're used
+
+
+  // an object far from the camera
+  // more than this constant will be recycled
+  // TODO: make this smaller, temporarily increasing for
+  // debugging's sake
+  mapBoundary: 10000,
 
   // enable debug printouts
   debug: false,
@@ -115,7 +124,6 @@ let Config = {
   Planet: {
     Resources: 3000
   },
-  */
 
   Factions: {
     [Faction.Red]: {

@@ -1,3 +1,4 @@
+/*
 import { Position } from "../utils";
 import { Scene, createScene } from "./scene";
 import { createText } from "../text";
@@ -98,8 +99,8 @@ function createFactionSelector(scene: Scene): FactionSelector {
           y: 300
         };
         this.planets[index] = createPlanet(
-          /* origin */ sunPosition,
-          /* orbit */ 0,
+          sunPosition, // origin
+          0, // orbit
           radius,
           { x: Config.canvasWidth / 2, y: Config.canvasHeight / 2 },
           scene,
@@ -111,20 +112,18 @@ function createFactionSelector(scene: Scene): FactionSelector {
       this.planets[index].render();
 
       // emblems
-      /*
-      if (!this.emblems[index]) {
-        this.emblems[index] = kontra.sprite({
-          image: kontra.assets.images.blueemblem,
-          x: index * factionWidth + outerMargin + factionWidth / 2,
-          y: 300,
-          render() {
-            let context: CanvasRenderingContext2D = this.context;
-            context.drawImage(this.image, this.x, this.y, 128, 128);
-          }
-        });
-      }
-      this.emblems[index].render();
-      */
+      // if (!this.emblems[index]) {
+      //   this.emblems[index] = kontra.sprite({
+      //     image: kontra.assets.images.blueemblem,
+      //     x: index * factionWidth + outerMargin + factionWidth / 2,
+      //     y: 300,
+      //     render() {
+      //       let context: CanvasRenderingContext2D = this.context;
+      //       context.drawImage(this.image, this.x, this.y, 128, 128);
+      //     }
+      //   });
+      // }
+      // this.emblems[index].render();
 
       // description
       this.context.font = "normal normal 12px monospace";
@@ -150,3 +149,4 @@ function createFactionSelector(scene: Scene): FactionSelector {
     }
   });
 }
+*/

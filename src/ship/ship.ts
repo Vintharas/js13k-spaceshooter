@@ -28,30 +28,30 @@ export interface Ship extends Sprite {
 
 export default function createShip(scene: Scene, faction: Faction) {
   const factionConfig = Config.Factions[faction];
-  const modifiers = factionConfig.Modifiers;
+  //const modifiers = factionConfig.Modifiers;
   const collisionWidth = 20;
   const x = Config.canvasWidth / 2;
   const y = Config.canvasHeight / 2;
   const energy = ShipEnergy(
-    700 + modifiers.Energy,
-    scene,
-    modifiers.EnergyRechargeRate
+    700, // + modifiers.Energy,
+    scene
+    //modifiers.EnergyRechargeRate
   );
-  const life = ShipLife(300 + modifiers.Life, modifiers.LifeRepairRate);
+  const life = ShipLife(300); //+ modifiers.Life, modifiers.LifeRepairRate);
   const shield = ShipShield(
-    400 + modifiers.Shield,
+    400, // + modifiers.Shield,
     energy,
     { x, y },
     collisionWidth,
-    scene,
-    modifiers.ShieldRechargeRate
+    scene
+    //modifiers.ShieldRechargeRate
   );
   const speed = ShipSpeedAndLocation();
   const radar = ShipRadar(scene, energy);
   const weapons = ShipWeapons(
     scene,
     energy,
-    modifiers.FireRate,
+    0, //modifiers.FireRate,
     factionConfig.Color
   );
   const vision = ShipVision(scene, energy);
@@ -166,14 +166,14 @@ export default function createShip(scene: Scene, faction: Faction) {
 
       // rotate the ship left or right
       if (kontra.keys.pressed("left")) {
-        this.rotation -= 3 + modifiers.Rotation;
+        this.rotation -= 3; // + modifiers.Rotation;
         let particle = this.createShipParticle(ship.rotation + 75, {
           x: 5,
           y: -10
         });
         scene.addSprite(particle);
       } else if (kontra.keys.pressed("right")) {
-        this.rotation += 3 + modifiers.Rotation;
+        this.rotation += 3; // + modifiers.Rotation;
         let particle = this.createShipParticle(ship.rotation - 75, {
           x: 5,
           y: 10
@@ -183,7 +183,7 @@ export default function createShip(scene: Scene, faction: Faction) {
       // move the ship forward in the direction it's facing
       const cos = Math.cos(degreesToRadians(this.rotation));
       const sin = Math.sin(degreesToRadians(this.rotation));
-      const acceleration = 0.1 + modifiers.Speed;
+      const acceleration = 0.1; // + modifiers.Speed;
 
       const thrustCost = 1;
       const brakeCost = 1;

@@ -7,7 +7,7 @@ export default function createOpenScene() {
   let scene = createScene({ update });
 
   let titleText = createText(
-    "JS13K SPACE SHOOTER",
+    "Earth-That-Was",
     { x: undefined, y: 250 },
     {},
     { size: 48 }
@@ -24,7 +24,8 @@ export default function createOpenScene() {
 
   function update() {
     if (kontra.keys.pressed("enter")) {
-      Game.instance().goToChooseFaction();
+      //Game.instance().goToChooseFaction();
+      Game.instance().goToSpaceScene();
     }
   }
 }

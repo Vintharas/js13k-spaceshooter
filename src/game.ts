@@ -2,7 +2,7 @@ import createSpaceScene from "./scenes/spaceScene";
 import { Scene } from "./scenes/scene";
 import createOpenScene from "./scenes/openScene";
 import createGameOverScene from "./scenes/gameOverScene";
-import { createChooseFactionScene } from "./scenes/factionScene";
+//import { createChooseFactionScene } from "./scenes/factionScene";
 import { Faction } from "./factions";
 import { GameData } from "./data/gamedata";
 import OffscreenCanvas from "./canvas";
@@ -54,7 +54,7 @@ export default class Game {
     this.currentScene.start();
   }
 
-  goToSpaceScene(selectedFaction: Faction): void {
+  goToSpaceScene(selectedFaction: Faction = Faction.Blue): void {
     // can have more music in other parts of the game
     this.gameMusic.play(Track.Space);
     this.gameData = GameData(selectedFaction);
@@ -67,9 +67,11 @@ export default class Game {
     this.gameData = null;
   }
 
+  /*
   goToChooseFaction(): any {
     this.switchToScene(createChooseFactionScene());
   }
+  */
 
   goToOpenScene(): any {
     // TODO: cache scene

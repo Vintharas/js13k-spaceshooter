@@ -19,15 +19,27 @@
 
 ## Prioritize
 
-- Size. Get under 13 K mother fucker
+- simplify
+  - earth dies
+    - do animation
+  - find a new home for manking before X time
+    - create counter
+    - find a paradise class planet
+  - remove factions, remove intro
+  - narrate game with more stuff
+  - pixel font
+- good to haves
+  - resize canvas on screen change
+
+* Size. Get under 13 K mother fucker
   - refactor offscreen canvas remove
   - refactor collision engine
   - refactor particle generator
   - UI bars in shell, use one single component
-- Regressions
+* Regressions
   - BUG. Fix regression with alien ships following the ship
   - BUG. Collisions with asteroids
-- Playability and Basic gameplay
+* Playability and Basic gameplay
   - [*] Fix player bullet shooting. It looks weird. I think it has to do with the
     speed of the ship.
   - [*] detect enemies in radar
@@ -39,8 +51,8 @@
   - Make bullets follow targets
   - Planets
     - stations, defences, production
-- Change types for enums instead of strings
-- Map generation
+* Change types for enums instead of strings
+* Map generation
   - Add first version of all planets
   - [*] create a map of a starting number of sectors (Test having everything in memory first)
     - get to the end of the map you appear on the other side
@@ -58,12 +70,12 @@
     - other factions/elders taking control of planets, etc
   - reuse objects using object pool
   - save state in an object
-- Victory conditions
+* Victory conditions
   - reclaim earth
   - Red: Conquest x plantes
   - Blue: Reclaim x planets from elders
   - Green: Establish commerce in x planets
-- Enemies
+* Enemies
   - motherships.
     - make mother ship move steady in a direction
     - make mother ship spawn new drones up to a limit every so often until it is destroyed
@@ -75,7 +87,7 @@
   - shoot bullets with color of your own faction (including particles)
     - red, blue, green for the factions
     - purple for the evil elder race
-- define game story and goals
+* define game story and goals
   - complete faction selection process
     - would be cool to add some information and background about the factions
       - blue
@@ -86,14 +98,14 @@
         - victory condition conquest
     - 3 victory conditions
       - way to store game data
-- support for multiple weapons
-- planets orbiting around sun
+* support for multiple weapons
+* planets orbiting around sun
   - add gradient using the sun in the center as source of illumination
-- make planets smarter
+* make planets smarter
   - defend themselves before they can be claimed
   - build defence systems over time
-- investigate generative music
-- make a way to deliver game story
+* investigate generative music
+* make a way to deliver game story
 
 ## BUILD - minimize assets to 13K
 
