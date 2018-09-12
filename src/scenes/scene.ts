@@ -2,7 +2,7 @@ import { Position, Positions, isObjectOutOfBounds } from "../utils";
 import CollisionsEngine from "../collisions";
 import Config from "../config";
 import { Camera, createCamera } from "./camera";
-import { createGameStatusText } from "../text";
+import { createGameStatusText, Message } from "../text";
 import { after } from "../fp";
 import { doThisEvery } from "../Time";
 
@@ -41,8 +41,8 @@ export const enum SceneLayer {
 export interface Scene {
   sprites: Sprites;
   pools: Pool[];
-  messageQueue: string[];
-  showMessage(...text: string[]): void;
+  messageQueue: Message[];
+  showMessage(...text: Message[]): void;
   activePoolObjects(): Sprite[];
   update(dt: number): void;
   addSprite(this: Scene, sprite: Sprite, options?: SpriteOptions): void;
@@ -98,11 +98,11 @@ export function createScene({
     },
     cameraPosition: camera,
     //logGameObjects,
-    showMessage(...text: string[]) {
+    showMessage(...text: Message[]) {
       if (this.messageQueue.length === 0) {
         let first;
         [first, ...text] = text;
-        let firstText = createGameStatusText(first);
+        let firstText = createGameStatusText(first.text, first.type);
         this.addSprite(firstText, { sceneLayer: SceneLayer.Shell });
       }
       text.forEach(t => this.messageQueue.push(t));
@@ -227,7 +227,8 @@ export function showMessageWhenAvailable() {
       return this.messageQueue.length > 0;
     },
     action(this: Scene) {
-      let text = createGameStatusText(this.messageQueue.shift());
+      let message = this.messageQueue.shift();
+      let text = createGameStatusText(message.text, message.type);
       this.addSprite(text, { sceneLayer: SceneLayer.Shell });
     },
     t: 2

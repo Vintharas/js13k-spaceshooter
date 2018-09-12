@@ -14,6 +14,19 @@ export interface TextOptions {
   cameraPosition?: Position;
 }
 
+export interface Message {
+  text: string;
+  type: MessageType;
+}
+export function Message(text: string, type = MessageType.Thought): Message {
+  return { text, type };
+}
+export const enum MessageType {
+  Thought,
+  Transmission
+}
+const MessageTypeStyles = [{}, { style: "italic" }];
+
 export function createText(
   text: string,
   { x, y }: Position,
@@ -69,8 +82,12 @@ export function createText(
   });
 }
 
-export function createGameStatusText(text: string) {
+export function createGameStatusText(
+  text: string,
+  type: MessageType = MessageType.Thought
+) {
   // in order to center the text in the screen
+  let typeStyles = MessageTypeStyles[type];
   let textOffset = (text.length * 12) / 2;
   return createText(
     text.toUpperCase(),
@@ -79,6 +96,6 @@ export function createGameStatusText(text: string) {
       y: Config.canvasHeight / 2 + 100
     },
     { ttl: 120 },
-    { size: 18, family: "monospace" }
+    { size: 18, family: "monospace", style: typeStyles.style }
   );
 }

@@ -12,6 +12,7 @@ import Config from "./config";
 import { generateName } from "./names";
 import { Faction } from "./factions";
 import { Scene } from "./scenes/scene";
+import { Message } from "./text";
 
 export interface Planet extends Sprite {
   radius: number;
@@ -91,7 +92,7 @@ export function createPlanet(
       let factionName = Config.Factions[faction].Name;
       if (!this.beingClaimed) {
         // text
-        scene.showMessage(`${factionName} FACTION CLAIMING ${name}`);
+        scene.showMessage(Message(`${factionName} FACTION CLAIMING ${name}`));
         this.beingClaimed = true;
       }
 
@@ -101,7 +102,7 @@ export function createPlanet(
         this.claimedPercentage = 100;
         this.beingClaimed = false;
         this.claimedBy = faction;
-        scene.showMessage(`${factionName} FACTION CLAIMED ${name}`);
+        scene.showMessage(Message(`${factionName} FACTION CLAIMED ${name}`));
       }
     },
 

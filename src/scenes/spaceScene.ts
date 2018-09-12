@@ -10,7 +10,7 @@ import { SpaceBackground } from "../background";
 import { GameData } from "../data/gamedata";
 import { ElderPool, ElderType } from "../enemies/elder";
 import { PlanetType } from "../planet";
-import { createGameStatusText } from "../text";
+import { createGameStatusText, Message, MessageType } from "../text";
 
 export default function createSpaceScene(gameData: GameData) {
   let camera = createCamera();
@@ -49,9 +49,20 @@ export default function createSpaceScene(gameData: GameData) {
   // setup earth animation
   Game.instance().gameData.earth.changePlanetTo(PlanetType.Red);
   scene.showMessage(
-    "Hmm....",
-    "Fuck",
-    "I was kinda hoping it wouldn't get to that"
+    Message("Hmm...."),
+    Message("Err..."),
+    Message("Fuck."),
+    Message("I was kinda hoping it wouldn't get to that"),
+    Message("- INCOMING TRANSMISSION -", MessageType.Transmission),
+    Message("This is a recorded message.", MessageType.Transmission),
+    Message("I'm the president of Earth", MessageType.Transmission),
+    Message("Earth has been destroyed.", MessageType.Transmission),
+    Message("HAL 9000, You're mankind's last hope", MessageType.Transmission),
+    Message("Find a new earth", MessageType.Transmission),
+    Message("*fast*", MessageType.Transmission),
+    Message("Farewell and good luck", MessageType.Transmission),
+    Message("God save us all", MessageType.Transmission),
+    Message("Donal Trump.", MessageType.Transmission)
   );
 
   return scene;

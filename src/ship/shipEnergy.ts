@@ -1,6 +1,7 @@
 import { Scene } from "../scenes/scene";
 import Config from "../config";
 import { ShipSystem } from "./shipSystems";
+import { Message } from "../text";
 
 export interface ShipEnergy extends Sprite {
   consume(energy: number): void;
@@ -74,7 +75,7 @@ export function ShipEnergy(
     },
 
     addOfflineText(text: string) {
-      scene.showMessage(text);
+      scene.showMessage(Message(text));
     }
   });
 }
