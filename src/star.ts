@@ -1,7 +1,7 @@
 import {
   Position,
   getCanvasPosition,
-  isObjectOutOfBounds,
+  isObjectOutOfRenderBounds,
   getNumberWithVariance,
   getValueInRange,
   Color
@@ -32,8 +32,8 @@ export function createStar({ x, y, cameraPosition }: StarBuilder) {
     size,
     update() {},
     render() {
-      if (isObjectOutOfBounds(this, cameraPosition)) {
-        console.log(`star out of bounds `, this);
+      if (isObjectOutOfRenderBounds(this, cameraPosition)) {
+        //console.log(`star out of bounds `, this);
         return;
       }
       // the more distant stars appear dimmer

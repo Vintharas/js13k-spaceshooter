@@ -1,7 +1,7 @@
 import {
   Position,
   getCanvasPosition,
-  isObjectOutOfBounds,
+  isObjectOutOfRenderBounds,
   Velocity,
   getValueInRange,
   degreesToRadians,
@@ -38,7 +38,7 @@ export function createAsteroid(
     dy: velocity.dy,
     dt: 0,
     render() {
-      if (isObjectOutOfBounds(this, cameraPosition)) return;
+      if (isObjectOutOfRenderBounds(this, cameraPosition)) return;
       let position = getCanvasPosition(this, cameraPosition);
 
       this.context.save();

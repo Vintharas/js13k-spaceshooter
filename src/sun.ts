@@ -3,7 +3,7 @@ import {
   getCanvasPosition,
   degreesToRadians,
   getValueInRange,
-  isObjectOutOfBounds
+  isObjectOutOfRenderBounds
 } from "./utils";
 import { generateName } from "./names";
 import { PlanetType, getPattern } from "./planet";
@@ -43,7 +43,7 @@ export function createSun(
       this.rotation += 1 / 10;
     },
     render(this: Sun) {
-      if (isObjectOutOfBounds(this, cameraPosition)) return;
+      if (isObjectOutOfRenderBounds(this, cameraPosition)) return;
 
       let position = getCanvasPosition(this, cameraPosition);
 

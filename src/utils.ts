@@ -88,14 +88,32 @@ export function getCanvasPosition(
   return canvasPosition;
 }
 
-let OutOfBoundsDistance = 10000;
-export function isObjectOutOfBounds(
+let OutOfBoundsDistance = 2000;
+export function isObjectOutOfCollisionBounds(
   objectPosition: Position,
   cameraPosition: Position
 ) {
   let dx = Math.abs(objectPosition.x - cameraPosition.x);
   let dy = Math.abs(objectPosition.y - cameraPosition.y);
   return dx > OutOfBoundsDistance || dy > OutOfBoundsDistance;
+}
+export function isObjectOutOfRenderBounds(
+  objectPosition: Position,
+  cameraPosition: Position
+) {
+  let dx = Math.abs(objectPosition.x - cameraPosition.x);
+  let dy = Math.abs(objectPosition.y - cameraPosition.y);
+  // normally it'd be half of this but adding some offset
+  return dx > Config.canvasWidth || dy > Config.canvasHeight;
+}
+export function isObjectOutOfSectorBounds(
+  objectPosition: Position,
+  cameraPosition: Position
+) {
+  let dx = Math.abs(objectPosition.x - cameraPosition.x);
+  let dy = Math.abs(objectPosition.y - cameraPosition.y);
+  // normally it'd be half of this but adding some offset
+  return dx > 10000 || dy > 10000;
 }
 
 export function getNumberWithVariance(n: number, variance: number): number {

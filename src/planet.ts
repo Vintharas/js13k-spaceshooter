@@ -1,13 +1,13 @@
 import {
   Position,
   getCanvasPosition,
-  isObjectOutOfBounds,
   degreesToRadians,
   getValueInRange,
   Positions,
   Color,
   getRandomValueOf,
-  HSL
+  HSL,
+  isObjectOutOfSectorBounds
 } from "./utils";
 import OffscreenCanvas from "./canvas";
 import Config from "./config";
@@ -154,7 +154,7 @@ export function createPlanet(
       }
     },
     render(this: Planet) {
-      if (isObjectOutOfBounds(this, cameraPosition)) return;
+      if (isObjectOutOfSectorBounds(this, cameraPosition)) return;
       let position = getCanvasPosition(this, cameraPosition);
 
       // #0. planet orbit around sun

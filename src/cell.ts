@@ -3,7 +3,7 @@ import {
   Position,
   getValueInRange,
   degreesToRadians,
-  isObjectOutOfBounds,
+  isObjectOutOfRenderBounds,
   getCanvasPosition,
   Color
 } from "./utils";
@@ -41,7 +41,7 @@ export default function createCell(
     outerRadius: 8,
     ttl: 240,
     render() {
-      if (isObjectOutOfBounds(this, cameraPosition)) return;
+      if (isObjectOutOfRenderBounds(this, cameraPosition)) return;
       let position = getCanvasPosition(this, cameraPosition);
 
       // two concentric circles one filled one don't
@@ -53,12 +53,24 @@ export default function createCell(
 
       this.context.beginPath(); // start drawing a shape
 
-      this.context.arc(position.x, position.y, 2/*InnerRadius*/, 0, Math.PI * 2);
+      this.context.arc(
+        position.x,
+        position.y,
+        2 /*InnerRadius*/,
+        0,
+        Math.PI * 2
+      );
       this.context.stroke();
       this.context.fill();
 
       this.context.beginPath(); // start drawing a shape
-      this.context.arc(position.x, position.y, this.outerRadius, 0, Math.PI * 2);
+      this.context.arc(
+        position.x,
+        position.y,
+        this.outerRadius,
+        0,
+        Math.PI * 2
+      );
       this.context.stroke(); // outline the circle
 
       this.context.restore();

@@ -90,7 +90,7 @@ function cleanupObjectIfOutOfBounds(scene: Scene) {
   // TODO: see how I can make better use of object pool
   // from kontra.js. This could be something I could take advantage of here
   scene.sprites.foreground.forEach((s: any) => {
-    if (isObjectOutOfBounds(s, scene.cameraPosition)) {
+    if (isObjectOutOfRenderBounds(s, scene.cameraPosition)) {
       s.ttl = 0;
       //if (Config.debug) console.log(`Object ${s.type} out of bounds`, s);
     }

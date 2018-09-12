@@ -7,7 +7,7 @@ import {
   degreesToRadians,
   HSL,
   RGB,
-  isObjectOutOfBounds
+  isObjectOutOfRenderBounds
 } from "../utils";
 import { Scene } from "../scenes/scene";
 import {
@@ -63,7 +63,7 @@ export function ElderPool(scene: Scene, ship: Ship): Pool {
           this.wasDamaged = true;
         },
         render(this: Elder) {
-          if (isObjectOutOfBounds(this, /* camera */ this.ship)) return;
+          if (isObjectOutOfRenderBounds(this, /* camera */ this.ship)) return;
           let position = getCanvasPosition(this, /* camera */ this.ship);
           this.renderElder(position);
 

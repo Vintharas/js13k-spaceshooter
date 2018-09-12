@@ -1,4 +1,4 @@
-import { Position, Positions, isObjectOutOfBounds } from "../utils";
+import { Position, Positions, isObjectOutOfRenderBounds } from "../utils";
 import CollisionsEngine from "../collisions";
 import Config from "../config";
 import { Camera, createCamera } from "./camera";

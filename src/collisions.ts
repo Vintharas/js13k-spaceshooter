@@ -1,6 +1,11 @@
 import { Scene } from "./scenes/scene";
 import { createAsteroid, Asteroid } from "./asteroid";
-import { Position, getValueInRange, RGB, isObjectOutOfBounds } from "./utils";
+import {
+  Position,
+  getValueInRange,
+  RGB,
+  isObjectOutOfCollisionBounds
+} from "./utils";
 import Config from "./config";
 import { createExplosionParticle } from "./particles";
 import createCell, { CellType, Cell, getRandomCellType } from "./cell";
@@ -48,7 +53,7 @@ export default class CollisionsEngine {
       ...this.scene.sprites.foreground,
       ...this.scene.sprites.activePoolObjects()
     ]
-      .filter(s => !isObjectOutOfBounds(s, this.scene.cameraPosition))
+      .filter(s => !isObjectOutOfCollisionBounds(s, this.scene.cameraPosition))
       .filter(s => Config.collidableTypes.includes(s.type))
       // with the current algorithm that
       // checks whether an asteroid has collided with X
@@ -67,8 +72,8 @@ export default class CollisionsEngine {
         for (let j = i + 1; j < collidableObjects.length; j++) {
           // don't check asteroid vs. asteroid collisions
           if (collidableObjects[j].type !== SpriteType.Asteroid) {
-            let asteroid = collidableObjects[i];
-            let sprite = collidableObjects[j];
+            let asteroid = collidableObjects[i] as Asteroid;
+            let sprite = collidableObjects[j] as Sprite;
             let collided = this.handleCollisionWithAsteroid(asteroid, sprite);
             if (collided) break;
           }
@@ -122,18 +127,18 @@ export default class CollisionsEngine {
     if (shipTypedSprites.length > 0) [this.ship] = shipTypedSprites;
   }
 
-  handleCollisionWithAsteroid(asteroid: any, sprite: any): boolean {
+  handleCollisionWithAsteroid(asteroid: Asteroid, sprite: Sprite): boolean {
     // circle vs. circle collision detection
     if (
       Vector.getDistanceMagnitude(asteroid, sprite) <
       asteroid.radius + sprite.width
     ) {
-      if (!["ship", "bullet"].includes(sprite.type)) return;
+      if (![SpriteType.Ship, SpriteType.Bullet].includes(sprite.type)) return;
 
       asteroid.ttl = 0;
-      if (sprite.type === "ship") {
+      if (sprite.type === SpriteType.Ship) {
         this.handleCollisionAsteroidWithShip(asteroid, sprite);
-      } else if (sprite.type === "bullet") {
+      } else if (sprite.type === SpriteType.Bullet) {
         sprite.ttl = 0;
       }
 
