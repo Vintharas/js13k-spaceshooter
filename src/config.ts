@@ -2,8 +2,6 @@ import { Faction, FactionShipModifiers } from "./factions";
 import { PlanetType } from "./planet";
 import Game from "./game";
 
-// TODO: create separate branch where I inline
-// all this and see whether it affects the resulting size
 let Config = {
   get canvasWidth() {
     return kontra.canvas && kontra.canvas.width / this.scale;
@@ -11,7 +9,6 @@ let Config = {
   get canvasHeight() {
     return kontra.canvas && kontra.canvas.height / this.scale;
   },
-  //scale: 1,
   scale: 1.5,
 
   // collisions
@@ -25,22 +22,6 @@ let Config = {
     SpriteType.Elder
   ],
 
-  Factions: {
-    [Faction.Blue]: {
-      Name: "Earth",
-      Planet: PlanetType.Paradise,
-      get Ship() {
-        return Game.instance().assets.images.blueship;
-      },
-      Color: { r: 0, g: 227, b: 255 }
-    }
-  }
-
-  /*
-  TODO: Commenting this to save space for the js13k competition
-  I'll inline these in every specific file they're used
-
-
   // an object far from the camera
   // more than this constant will be recycled
   // TODO: make this smaller, temporarily increasing for
@@ -48,7 +29,7 @@ let Config = {
   mapBoundary: 10000,
 
   // enable debug printouts
-  debug: false,
+  debug: true,
   renderDebugData: true,
   verbose: false, // prints all info of ships in console
   typesToLog: [
@@ -151,15 +132,16 @@ let Config = {
       } as FactionShipModifiers
     },
     [Faction.Blue]: {
-      Name: "Atreides",
+      Name: "Earth",
       Color: { r: 0, g: 227, b: 255 },
-      PlanetName: "",
+      PlanetName: "Earth",
       Planet: PlanetType.Paradise,
       Objective: "Freedom & Liberty",
-      Description: "House Atreides...",
+      Description: "Earth",
       get Ship() {
         return Game.instance().assets.images.blueship;
       },
+      // not being used at the moment
       Modifiers: {
         Life: -100,
         LifeRepairRate: 1,
@@ -198,9 +180,8 @@ let Config = {
         Protection: 0
       } as FactionShipModifiers
     }
-  }
+  },
 
-  /*
   Galaxy: {
     // start with fixed size 10x10 sectors
     Size: 100000
@@ -212,7 +193,7 @@ let Config = {
     MaxNumber: 500
   },
   Elders: {
-    MaxNumber: 100
+    MaxNumber: 1000
   },
   Bullets: {
     NumberOfParticles: 2
@@ -222,7 +203,6 @@ let Config = {
     Sun: 100,
     Elder: 20
   }
-  */
 };
 
 export default Config;

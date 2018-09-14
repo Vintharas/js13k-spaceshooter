@@ -1,7 +1,5 @@
 import {
-  Position,
   getCanvasPosition,
-  isObjectOutOfRenderBounds,
   getNumberWithVariance,
   getValueInRange,
   Color

@@ -4,17 +4,17 @@ declare module "*.png" {
 }
 
 declare const enum SpriteType {
-  Background,
-  Text,
-  Particle,
-  Asteroid,
-  Bullet,
-  Cell,
-  Planet,
-  Sun,
-  Star,
-  Elder,
-  Ship
+  Background = "Background",
+  Text = "Text",
+  Particle = "Particle",
+  Asteroid = "Asteroid",
+  Bullet = "Bullet",
+  Cell = "Cell",
+  Planet = "Planet",
+  Sun = "Sun",
+  Star = "Star",
+  Elder = "Elder",
+  Ship = "Ship"
 }
 
 interface Position {

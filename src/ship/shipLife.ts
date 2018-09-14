@@ -1,5 +1,6 @@
-import Config from "../config";
-import { ShipSystem } from "./shipSystems";
+import { after, noop } from "../fp";
+import { doThisEvery } from "../Time";
+import { Draw } from "../draw";
 
 export interface ShipLife extends Sprite {
   repair(value: number): void;
@@ -13,16 +14,15 @@ export function ShipLife(life: number, modifier = 0) {
     x: 5,
     y: 15,
 
-    dt: 0,
-
-    update() {
-      this.dt += 1 / 60;
-      if (this.dt > 1) {
-        // baseline for recharging energy
-        this.dt = 0;
-        this.repair(1 + modifier);
-      }
-    },
+    update: after(
+      noop,
+      doThisEvery({
+        action() {
+          this.repair(1 + modifier);
+        },
+        t: 1
+      })
+    ),
     repair(lifeBoost: number): void {
       if (this.life < this.maxLife) this.life += lifeBoost;
       if (this.life > this.maxLife) this.life = this.maxLife;
@@ -31,11 +31,16 @@ export function ShipLife(life: number, modifier = 0) {
       // energy bar
       let lifeWidth = Math.ceil((this.life * barWidth) / this.maxLife);
 
-      this.context.fillStyle = "red";
-      this.context.fillRect(this.x, this.y, lifeWidth, barHeight);
+      Draw.fillRect(this.context, this.x, this.y, lifeWidth, barHeight, "red");
       // energy bar container
-      this.context.strokeStyle = "white";
-      this.context.strokeRect(this.x, this.y, barWidth, barHeight);
+      Draw.strokeRect(
+        this.context,
+        this.x,
+        this.y,
+        barWidth,
+        barHeight,
+        "white"
+      );
     },
 
     damage(damage: number) {

@@ -301,7 +301,6 @@ export default class CollisionsEngine {
           planet.planetType === PlanetType.Paradise
         ) {
           // TODO: extract to method
-
           let duration = Game.instance().story.play(
             this.scene,
             Story.FoundNewEarth

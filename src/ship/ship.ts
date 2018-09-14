@@ -3,7 +3,7 @@ import { Scene } from "../scenes/scene";
 import { createStaticParticle, Particle } from "../particles";
 import Config from "../config";
 import { Faction } from "../factions";
-import { ShipRadar } from "./shipRadar";
+//import { ShipRadar } from "./shipRadar";
 import { ShipSpeedAndLocation } from "./shipSpeed";
 import { ShipShield } from "./shipShield";
 import { ShipEnergy } from "./shipEnergy";
@@ -20,7 +20,7 @@ export interface Ship extends Sprite {
   life: ShipLife;
   speed: ShipSpeedAndLocation;
   faction: Faction;
-  radar: ShipRadar;
+  //  radar: ShipRadar;
   weapons: ShipWeapons;
 
   takeDamage(damage: number): void;
@@ -49,7 +49,7 @@ export default function createShip(scene: Scene, faction: Faction) {
     //modifiers.ShieldRechargeRate
   );
   let speed = ShipSpeedAndLocation();
-  let radar = ShipRadar(scene, energy);
+  //  let radar = ShipRadar(scene, energy);
   let weapons = ShipWeapons(
     scene,
     energy,
@@ -61,7 +61,8 @@ export default function createShip(scene: Scene, faction: Faction) {
   let ship = kontra.sprite({
     type: SpriteType.Ship,
     faction,
-    parts: [energy, life, shield, speed, radar, weapons, vision],
+    //parts: [energy, life, shield, speed, radar, weapons, vision],
+    parts: [energy, life, shield, speed, weapons, vision],
 
     // TODO: factions will have different ships
     image: Config.Factions[faction].Ship,
@@ -87,7 +88,7 @@ export default function createShip(scene: Scene, faction: Faction) {
     life,
     shield,
     speed,
-    radar,
+    //    radar,
     weapons,
     vision,
 

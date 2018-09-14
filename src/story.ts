@@ -23,6 +23,14 @@ export function GameStory(): GameStory {
   };
 }
 
+let gameOverMessages = [
+  Message(
+    "And thus the once bright light of humankind...",
+    MessageType.Narrator
+  ),
+  Message("disappeared from the face of the cosmos...", MessageType.Narrator)
+];
+
 interface Stories {
   [key: number]: Message[];
 }
@@ -40,17 +48,11 @@ const Stories: Stories = {
     Message("Find a new earth", MessageType.Transmission),
     Message("*fast*", MessageType.Transmission),
     Message("Farewell and good luck", MessageType.Transmission),
-    Message("God save us all", MessageType.Transmission),
-    Message("D. Trump.", MessageType.Transmission),
     Message("Find a New Earth. Fast", MessageType.Narrator)
   ],
   [Story.ShipDestroyedEnding]: [
     Message("OOoops, that had to hurt", MessageType.Narrator),
-    Message(
-      "And thus the once bright light of humankind...",
-      MessageType.Narrator
-    ),
-    Message("disappeared from the face of the cosmos...", MessageType.Narrator)
+    ...gameOverMessages
   ],
   [Story.CounterNearEnding]: [
     Message("Humans aren't very durable creatures", MessageType.Narrator),
@@ -64,17 +66,11 @@ const Stories: Stories = {
     )
   ],
   [Story.EndingCounterFinished]: [
-    Message(
-      "And thus the once bright light of humankind...",
-      MessageType.Narrator
-    ),
-    Message("disappeared from the face of the cosmos...", MessageType.Narrator),
+    ...gameOverMessages,
     Message("You had one job.", MessageType.Narrator)
   ],
   [Story.FoundNewEarth]: [
     Message("A new world!", MessageType.Narrator),
-    Message("The mythical Orion", MessageType.Narrator),
-    Message("You've found it!", MessageType.Narrator),
     Message(
       "Now we can start anew and build a better world",
       MessageType.Narrator

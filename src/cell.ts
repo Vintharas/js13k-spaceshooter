@@ -1,4 +1,3 @@
-import { createStaticParticle } from "./particles";
 import {
   Position,
   getValueInRange,
@@ -7,7 +6,7 @@ import {
   getCanvasPosition,
   Color
 } from "./utils";
-import Config from "./config";
+import { Draw } from "./draw";
 
 export interface Cell extends Sprite {
   cellType: CellType;
@@ -48,31 +47,14 @@ export default function createCell(
       let alpha = 1 - (240 /*maxTTL*/ - this.ttl) / 240;
       let color = cellTypeToColor(cellType, alpha);
       this.context.save();
-      this.context.strokeStyle = color;
-      this.context.fillStyle = color;
-
-      this.context.beginPath(); // start drawing a shape
-
-      this.context.arc(
-        position.x,
-        position.y,
-        2 /*InnerRadius*/,
-        0,
-        Math.PI * 2
-      );
-      this.context.stroke();
-      this.context.fill();
-
-      this.context.beginPath(); // start drawing a shape
-      this.context.arc(
+      Draw.fillCircle(this.context, position.x, position.y, 2, color);
+      Draw.drawCircle(
+        this.context,
         position.x,
         position.y,
         this.outerRadius,
-        0,
-        Math.PI * 2
+        color
       );
-      this.context.stroke(); // outline the circle
-
       this.context.restore();
     }
   });

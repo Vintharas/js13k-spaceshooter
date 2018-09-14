@@ -1,7 +1,12 @@
 import { Scene, createScene, SceneLayer } from "./scene";
 import { createAsteroid } from "../asteroid";
-import createShip, { Ship } from "../ship/ship";
-import { Position, getValueInRange, getIntegerInRange } from "../utils";
+import createShip from "../ship/ship";
+import {
+  Position,
+  getValueInRange,
+  getIntegerInRange,
+  getRandomValueOf
+} from "../utils";
 import Game from "../game";
 import Config from "../config";
 import { createCamera } from "./camera";
@@ -9,7 +14,7 @@ import { Sector } from "../map/sector";
 import { SpaceBackground } from "../background";
 import { GameData } from "../data/gamedata";
 import { ElderPool, ElderType } from "../enemies/elder";
-import { PlanetType } from "../planet";
+import { PlanetType, Planet } from "../planet";
 import { Counter } from "../counter";
 import { Story } from "../story";
 
@@ -106,32 +111,8 @@ function addAsteroids(
   scene: Scene,
   cameraPosition: Position,
   sectorX: number,
-  sectorY: number
-) {
-  let maxNumberOfClusters = 5;
-  let maxNumberOfAsteroidsPerCluster = 5;
-  // create some clusters of varying sizes
-  for (let i = 0; i < maxNumberOfClusters; i++) {
-    let clusterSize = Math.ceil(
-      getValueInRange(0, maxNumberOfAsteroidsPerCluster)
-    );
-    addAsteroidCluster(
-      scene,
-      cameraPosition,
-      clusterSize,
-      /*isStatic*/ false,
-      /*separation*/ 100,
-      sectorX,
-      sectorY
-    );
-  }
-}
-
-function addStaticAsteroids(
-  scene: Scene,
-  cameraPosition: Position,
-  sectorX: number,
-  sectorY: number
+  sectorY: number,
+  isStatic: boolean = false
 ) {
   let maxNumberOfClusters = 20;
   let maxNumberOfAsteroidsPerCluster = 7;
@@ -144,7 +125,7 @@ function addStaticAsteroids(
       scene,
       cameraPosition,
       clusterSize,
-      /*isStatic*/ true,
+      /*isStatic*/ isStatic,
       /*separation*/ 100,
       sectorX,
       sectorY
@@ -208,14 +189,29 @@ function addSectors(scene: Scene, cameraPosition: Position, elderPool: Pool) {
         { x: paradiseSectorX, y: paradiseSectorY }
       );
       sector.bodies.forEach(s => scene.addSprite(s));
-      addStaticAsteroids(scene, cameraPosition, x, y);
+      addAsteroids(scene, cameraPosition, x, y, /*static*/ true);
       if (x === 0 && y === 0) {
         // only add moving asteroids in the current sector
         addAsteroids(scene, cameraPosition, x, y);
-        addEnemies(scene, cameraPosition, elderPool, {
-          x: x + 5000,
-          y: y + 5000
+      }
+      if (x === paradiseSectorX && y === paradiseSectorY)
+        addFullFleetEnemies(elderPool, {
+          x: paradiseSectorX + 5000,
+          y: paradiseSectorY + 5000
         });
+      else if (x !== 0 && y !== 0) {
+        let planet = getRandomValueOf(sector.planets);
+        // could not find enemies
+        // probably the pool reaches the limit and that's why
+        // some sectors have no enemies (fingers crossed, review this)
+        addEnemies(
+          elderPool,
+          {
+            x: x + 5000,
+            y: y + 5000
+          },
+          planet
+        );
       }
     }
   }
@@ -259,22 +255,34 @@ function getParadiseSectorCoordinates() {
   return { paradiseSectorX, paradiseSectorY };
 }
 
-function addEnemies(
-  scene: Scene,
-  shipPosition: Position,
-  elderPool: Pool,
-  pos: Position
-) {
+function addEnemies(elderPool: Pool, pos: Position, planet: Planet) {
+  let numberOfSentries = getIntegerInRange(1, 6);
+  for (let x = 0; x <= 20 * numberOfSentries; x += 20) {
+    elderPool.get({
+      x: pos.x + 200 + x,
+      y: pos.y + 200 + x,
+      ttl: Infinity,
+      dx: 0,
+      dy: 0,
+      elderType: ElderType.Drone,
+      patrolTarget: planet,
+      patrolOrbit: 100 + x,
+      angle: x
+    });
+  }
+}
+
+function addFullFleetEnemies(elderPool: Pool, pos: Position) {
   elderPool.get({
     x: pos.x + 300,
     y: pos.y + 300,
     ttl: Infinity,
     dx: 0,
     dy: 0,
-    elderType: ElderType.MotherShip
+    elderType: ElderType.MotherShip,
+    patrolTarget: Game.instance().gameData.orion
   });
 
-  /*
   for (let x = 0; x <= 60; x += 20) {
     elderPool.get({
       x: pos.x + 200 + x,
@@ -290,9 +298,8 @@ function addEnemies(
       angle: x
     });
   }
-  */
 
-  for (let x = 0; x < 100; x += 100) {
+  for (let x = 0; x < 1000; x += 100) {
     elderPool.get({
       x: pos.x + x,
       y: pos.y + x,

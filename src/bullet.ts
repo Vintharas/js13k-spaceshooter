@@ -8,9 +8,7 @@ import {
 } from "./utils";
 import { Scene } from "./scenes/scene";
 import { createParticle } from "./particles";
-import Config from "./config";
 import { Draw } from "./draw";
-import { Vector } from "./vector";
 
 export interface Bullet extends Sprite {
   damage: number;
@@ -51,7 +49,7 @@ export default function createBullet(
     height: 2,
     color,
     update() {
-      this.followNearTarget();
+      //this.followNearTarget();
       this.advance();
       for (let i = 0; i <= 2 /* number of particles */; i++) {
         let particle = createParticle(
@@ -64,13 +62,21 @@ export default function createBullet(
         scene.addSprite(particle);
       }
     },
+    /*
     followNearTarget() {
       // HERE
     },
+    */
     render() {
       let position = getCanvasPosition(this, cameraPosition);
-      this.context.fillStyle = Color.rgb(this.color);
-      this.context.fillRect(position.x, position.y, this.width, this.height);
+      Draw.fillRect(
+        this.context,
+        position.x,
+        position.y,
+        this.width,
+        this.height,
+        Color.rgb(this.color)
+      );
 
       /*
       if (Config.debug && Config.showPath) {

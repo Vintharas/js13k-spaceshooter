@@ -1,5 +1,4 @@
-import Config from "./config";
-import { getValueInRange, Color, HSL, degreesToRadians } from "./utils";
+import { getValueInRange, Color, HSL } from "./utils";
 
 // don't like this name
 export default class OffscreenCanvas {
@@ -26,15 +25,7 @@ export default class OffscreenCanvas {
     return this.offscreenCanvas;
   }
 
-  getPattern() {
-    // generate some pattern
-    this.context.fillStyle = "white";
-    this.context.fillRect(0, 0, 16, 8);
-    this.context.fillStyle = "pink";
-    this.context.fillRect(0, 8, 16, 8);
-    return this.context.createPattern(this.canvas, "repeat");
-  }
-
+  /*
   getPatternBasedOnColor(
     hue: number,
     saturation: number,
@@ -121,7 +112,9 @@ export default class OffscreenCanvas {
     // Also it would be interestin with different distributions in outer/inner
     // parts. That would result in landmasses? for instance
   }
+  */
 
+  /*
   getPatternWithTransparency(
     color: HSL,
     width: number = 16,
@@ -154,6 +147,7 @@ export default class OffscreenCanvas {
 
     return pattern;
   }
+  */
 
   getPatternBasedOnColors(
     primary: HSL,
@@ -224,6 +218,7 @@ function key(
 ) {
   return `${hue}/${saturation}/${light}/${width}/${height}`;
 }
+/*
 function tkey(
   hue: number,
   saturation: number,
@@ -233,6 +228,7 @@ function tkey(
 ) {
   return `t/${key(hue, saturation, light, width, height)}`;
 }
+*/
 
 function twocolorkey(
   primary: HSL,

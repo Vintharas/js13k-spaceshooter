@@ -17,30 +17,17 @@
         - thrust
         - solar slowly recharges your energy
 
-## Prioritize
+## TODOs
 
-- simplify
-
-  - [*] earth dies
-    - [*] generate sun system and put the ship beside it
-    - [*] place ship beside the earth!
-    - [*] have earth planet always have a fixed angle (easy)
-    - [*] do animation turning from paradise to red planet
+- ship radar to be more like arrows showing points of interest overlayed
+    - switch on/switch off, 
+    - overlays on ship screen and show points of interest
   - find a new home for manking before X time
-    - [*] create counter
-    - [*] find a paradise class planet
-      - [*] fix other planet types, specially paradise class planet
-      - [*] create single paradise planet, which happens to be owned by aliens
-      - [*] create victory condition and make sure it works
-      - [*] create single paradise planet randomly
     - show messages and provide some breadcrumbs to find that planet
       - transmission from some aliens?
   - refactor planet to reduce Kb
     - refactor drawing primitives
     - review other heavy source code files
-  - [*] remove factions, remove intro
-  - [*] narrate game with more stuff
-  - [*] messages should appear immediately if there are not messages being shown
   - fix regressions
     - asteroid collision
     - alien follow
@@ -61,27 +48,26 @@
     - when doing things for the first time
       - asteroids
       - claiming planets
-    - [*] when counter gets down
     - when energy runs out
     - arbitrary thoughts from hal
     - when visiting new systems...
-
 - delay start of first screen till patterns are loaded in memory
+- refactor to make use of config file again
 
 - good to haves
   - resize canvas on screen change
   - do inside planets travel faster?
   - pixel font
 
-* Size. Get under 13 K mother fucker
+- Size. Get under 13 K mother fucker
   - refactor offscreen canvas remove
   - refactor collision engine
   - refactor particle generator
   - UI bars in shell, use one single component
-* Regressions
+- Regressions
   - BUG. Fix regression with alien ships following the ship
   - BUG. Collisions with asteroids
-* Playability and Basic gameplay
+- Playability and Basic gameplay
   - [*] Fix player bullet shooting. It looks weird. I think it has to do with the
     speed of the ship.
   - [*] detect enemies in radar
@@ -93,8 +79,8 @@
   - Make bullets follow targets
   - Planets
     - stations, defences, production
-* Change types for enums instead of strings
-* Map generation
+- Change types for enums instead of strings
+- Map generation
   - Add first version of all planets
   - [*] create a map of a starting number of sectors (Test having everything in memory first)
     - get to the end of the map you appear on the other side
@@ -112,12 +98,12 @@
     - other factions/elders taking control of planets, etc
   - reuse objects using object pool
   - save state in an object
-* Victory conditions
+- Victory conditions
   - reclaim earth
   - Red: Conquest x plantes
   - Blue: Reclaim x planets from elders
   - Green: Establish commerce in x planets
-* Enemies
+- Enemies
   - motherships.
     - make mother ship move steady in a direction
     - make mother ship spawn new drones up to a limit every so often until it is destroyed
@@ -129,7 +115,7 @@
   - shoot bullets with color of your own faction (including particles)
     - red, blue, green for the factions
     - purple for the evil elder race
-* define game story and goals
+- define game story and goals
   - complete faction selection process
     - would be cool to add some information and background about the factions
       - blue
@@ -140,14 +126,14 @@
         - victory condition conquest
     - 3 victory conditions
       - way to store game data
-* support for multiple weapons
-* planets orbiting around sun
+- support for multiple weapons
+- planets orbiting around sun
   - add gradient using the sun in the center as source of illumination
-* make planets smarter
+- make planets smarter
   - defend themselves before they can be claimed
   - build defence systems over time
-* investigate generative music
-* make a way to deliver game story
+- investigate generative music
+- make a way to deliver game story
 
 ## BUILD - minimize assets to 13K
 
@@ -330,6 +316,7 @@
   - extract receiving impact animation into something reusable
   - refactor collision engine to be more consistent across different types of objects
   - refactor objects types to Enums
+- allow the player to skip story
 
 ## Art
 
@@ -372,7 +359,32 @@
 
 - for some reason, a broken down asteroid doesn't collide with the ship, although it does collide with bullets. #wat
 
-# OLD NOTES
+# OLD NOTES, BACKLOG, HISTORY
+
+# 13th SEPTEMBER
+
+- simplify
+  - [*] earth dies
+    - [*] generate sun system and put the ship beside it
+    - [*] place ship beside the earth!
+    - [*] have earth planet always have a fixed angle (easy)
+    - [*] do animation turning from paradise to red planet
+  - find a new home for manking before X time
+    - [*] create counter
+    - [*] find a paradise class planet
+      - [*] fix other planet types, specially paradise class planet
+      - [*] create single paradise planet, which happens to be owned by aliens
+      - [*] create victory condition and make sure it works
+      - [*] create single paradise planet randomly
+    - show messages and provide some breadcrumbs to find that planet
+  - [*] remove factions, remove intro
+  - [*] narrate game with more stuff
+  - [*] messages should appear immediately if there are not messages being shown
+  - fix regressions
+    - [*] asteroid collision
+    - [*] alien follow
+  - comment history
+    - [*] when counter gets down
 
 # 8th SEPTEMBER
 

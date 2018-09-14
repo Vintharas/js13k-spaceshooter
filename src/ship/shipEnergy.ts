@@ -2,6 +2,9 @@ import { Scene } from "../scenes/scene";
 import Config from "../config";
 import { ShipSystem } from "./shipSystems";
 import { Message } from "../text";
+import { after, noop } from "../fp";
+import { doThisEvery } from "../Time";
+import { Draw } from "../draw";
 
 export interface ShipEnergy extends Sprite {
   consume(energy: number): void;
@@ -32,30 +35,43 @@ export function ShipEnergy(
     x: 5,
     y: 5,
 
-    dt: 0,
-
-    update(this: ShipEnergy) {
-      this.dt += 1 / 60;
-      if (this.dt > 0.25) {
-        // TODO: can be affected by proximity to sun
-        let maxEnergyRecharge = 5;
-        let activeSystems = this.systems.filter(s => s.isEnabled).length;
-        let energyToRecharge = maxEnergyRecharge - activeSystems;
-        this.recharge(energyToRecharge + modifier);
-        this.dt = 0;
-      }
-    },
+    update: after(
+      noop,
+      doThisEvery({
+        action(this: ShipEnergy) {
+          let maxEnergyRecharge = 5;
+          let activeSystems = this.systems.filter(function(s) {
+            return s.isEnabled;
+          }).length;
+          let energyToRecharge = maxEnergyRecharge - activeSystems;
+          this.recharge(energyToRecharge + modifier);
+        },
+        t: 0.25
+      })
+    ),
     render() {
       // energy bar
       let barWidth = 100;
       let barHeight = 5;
       let energyWidth = Math.ceil((this.energy * barWidth) / this.maxEnergy);
 
-      this.context.fillStyle = "green";
-      this.context.fillRect(this.x, this.y, energyWidth, barHeight);
+      Draw.fillRect(
+        this.context,
+        this.x,
+        this.y,
+        energyWidth,
+        barHeight,
+        "green"
+      );
       // energy bar container
-      this.context.strokeStyle = "white";
-      this.context.strokeRect(this.x, this.y, barWidth, barHeight);
+      Draw.strokeRect(
+        this.context,
+        this.x,
+        this.y,
+        barWidth,
+        barHeight,
+        "white"
+      );
     },
 
     consume(this: ShipEnergy, energyCost: number) {

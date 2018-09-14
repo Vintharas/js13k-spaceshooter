@@ -4,6 +4,7 @@ import { createGameStatusText } from "../text";
 import { Scene } from "../scenes/scene";
 import { ShipEnergy } from "./shipEnergy";
 import { ShipSystem, ShipSystemMixin } from "./shipSystems";
+import { Draw } from "../draw";
 
 export interface ShipShield extends Sprite, ShipSystem {
   isEnabled: boolean;
@@ -68,11 +69,23 @@ export function ShipShield(
       // render bar
       let shieldWidth = Math.ceil((this.shield * barWidth) / this.maxShield);
 
-      this.context.fillStyle = "#00edff";
-      this.context.fillRect(this.x, this.y, shieldWidth, barHeight);
+      Draw.fillRect(
+        this.context,
+        this.x,
+        this.y,
+        shieldWidth,
+        barHeight,
+        "#00edff"
+      );
       // bar container
-      this.context.strokeStyle = "white";
-      this.context.strokeRect(this.x, this.y, barWidth, barHeight);
+      Draw.strokeRect(
+        this.context,
+        this.x,
+        this.y,
+        barWidth,
+        barHeight,
+        "white"
+      );
 
       // actual shield
       if (this.shield === 0) return;

@@ -4,6 +4,7 @@ import { Color, Position } from "../utils";
 import { Vector } from "../vector";
 import { ShipEnergy } from "./shipEnergy";
 import { ShipSystem, ShipSystemMixin } from "./shipSystems";
+import { Draw } from "../draw";
 
 export interface ShipRadar extends Sprite, ShipSystem {
   isInRange(s: Sprite, cameraPosition: Position): boolean;
@@ -51,37 +52,24 @@ export function ShipRadar(scene: Scene, energy: ShipEnergy) {
       this.context.translate(this.x, this.y);
       // #1. render radar as concentric circles
       for (let r = RadarRadius; r > 15; r -= 5) {
-        this.context.beginPath();
-        this.context.strokeStyle = Color.rgba(255, 255, 255, 0.5);
-        this.context.arc(0, 0, r, 0, 2 * Math.PI);
-        this.context.stroke();
+        Draw.drawCircle(this.context, 0, 0, r, Color.rgba(255, 255, 255, 0.5));
       }
       this.context.closePath();
 
       // and two lines
       this.context.translate(-RadarSize / 2, 0);
-      this.context.beginPath();
-      this.context.moveTo(0, 0);
-      this.context.lineTo(RadarSize, 0);
-      this.context.stroke();
+      Draw.drawLine(this.context, 0, 0, RadarSize, 0);
       this.context.closePath();
 
       this.context.translate(RadarSize / 2, -RadarSize / 2);
-      this.context.beginPath();
-      this.context.moveTo(0, 0);
-      this.context.lineTo(0, RadarSize);
-      this.context.stroke();
+      Draw.drawLine(this.context, 0, 0, 0, RadarSize);
       this.context.closePath();
 
       // #2. render targets
       if (this.isEnabled) {
         this.context.translate(0, RadarSize / 2);
         this.targetsInRadar.forEach((t: RadarTarget) => {
-          this.context.fillStyle = t.color;
-          //this.context.fillRect(t.x, t.y, t.size, t.size);
-          this.context.beginPath();
-          this.context.arc(t.x, t.y, t.size / 2, 0, 2 * Math.PI);
-          this.context.fill();
+          Draw.fillCircle(this.context, t.x, t.y, t.size / 2, t.color);
         });
       }
 

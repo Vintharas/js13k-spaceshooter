@@ -15,6 +15,7 @@ import { generateName } from "./names";
 import { Faction } from "./factions";
 import { Scene } from "./scenes/scene";
 import { Message } from "./text";
+import { Draw } from "./draw";
 
 export interface Planet extends Sprite {
   radius: number;
@@ -161,10 +162,7 @@ export function createPlanet(
       this.context.save();
       let originInCanvas = getCanvasPosition(this.origin, cameraPosition);
       this.context.translate(originInCanvas.x, originInCanvas.y);
-      this.context.strokeStyle = "rgba(255,255,255,0.15";
-      this.context.beginPath();
-      this.context.arc(0, 0, this.orbit, 0, 2 * Math.PI);
-      this.context.stroke();
+      Draw.drawCircle(this.context, 0, 0, this.orbit, "rgba(255,255,255,0.15");
       this.context.restore();
 
       // #1. Actual planet and texture
@@ -172,14 +170,13 @@ export function createPlanet(
       this.context.translate(position.x, position.y);
       this.context.rotate(degreesToRadians(this.rotation));
 
-      this.context.fillStyle = getPattern(
-        textureWidth,
-        textureHeight,
-        this.planetType
+      Draw.fillCircle(
+        this.context,
+        0,
+        0,
+        this.radius,
+        getPattern(textureWidth, textureHeight, this.planetType)
       );
-      this.context.beginPath(); // start drawing a shape
-      this.context.arc(0, 0, this.radius, 0, Math.PI * 2);
-      this.context.fill(); // outline the circle
 
       // #2. Add some clouds
       /* TODO: improve this
@@ -201,27 +198,22 @@ export function createPlanet(
       );
       gradient.addColorStop(0, "rgba(0,0,0,0)");
       gradient.addColorStop(1, "rgba(0,0,0,0.7)");
-      this.context.fillStyle = gradient;
-      this.context.arc(0, 0, this.radius, 0, Math.PI * 2);
-      this.context.fill();
+      Draw.fillCircle(this.context, 0, 0, this.radius, gradient);
 
       // #3. radius where you can start collecting stuff
       if (drawOuterRadius) {
-        this.context.beginPath(); // start drawing a shape
-        this.context.strokeStyle = "turquoise";
-        this.context.setLineDash([3, 7]);
-        this.context.arc(0, 0, this.outerRadius, 0, Math.PI * 2);
-        this.context.stroke();
+        Draw.drawCircle(this.context, 0, 0, this.outerRadius, "turquoise", 1, [
+          3,
+          7
+        ]);
       }
       this.context.restore();
 
       // #4. planet name
       this.context.save();
       this.context.translate(position.x, position.y - radius - 45);
-      this.context.fillStyle = "rgba(255,255,255,0.8)";
-      this.context.font = `normal normal 14px monospace`;
       let textOffset = (this.name.length / 2) * 10;
-      this.context.fillText(this.name.toUpperCase(), -textOffset, 0);
+      Draw.fillText(this.context, this.name.toUpperCase(), -textOffset, 0);
       this.context.restore();
 
       // #5. planet energy
@@ -237,10 +229,8 @@ export function createPlanet(
         let width = (this.claimedPercentage / 100) * barWidth;
         this.context.save();
         this.context.translate(position.x - radius, position.y + radius + 35);
-        this.context.fillStyle = "white";
-        this.context.fillRect(0, 0, width, 5);
-        this.context.strokeStyle = "white";
-        this.context.strokeRect(0, 0, radius * 2, 5);
+        Draw.fillRect(this.context, 0, 0, width, 5, "white");
+        Draw.strokeRect(this.context, 0, 0, barWidth, 5, "white");
         this.context.restore();
       }
 
@@ -250,16 +240,11 @@ export function createPlanet(
         this.context.save();
         this.context.translate(position.x, position.y);
         let color = Config.Factions[this.claimedBy].Color;
-        this.context.strokeStyle = Color.rgb(color);
-        Config.Factions[this.claimedBy].Name.toLowerCase();
-        this.context.lineWidth = 5;
-        this.context.beginPath(); // start drawing a shape
-
-        this.context.arc(0, 0, factionRadius, 0, Math.PI * 2);
-        this.context.stroke();
+        Draw.drawCircle(this.context, 0, 0, factionRadius, Color.rgb(color), 5);
         this.context.restore();
       }
-    },
+    }
+    /*
     getCloudPattern(type: PlanetType) {
       let color = PlanetBaseColors[type];
       let cloudColor = { ...color };
@@ -271,6 +256,7 @@ export function createPlanet(
         3
       );
     }
+      */
   });
 
   return planet;
@@ -319,10 +305,12 @@ export function getPattern(width: number, height: number, type: PlanetType) {
   let color = PlanetBaseColors[type];
   if (type === PlanetType.Paradise)
     return getParadisePattern(width, height, color);
-  return OffscreenCanvas.instance().getPatternBasedOnColor(
-    color.h,
-    color.s,
-    color.l,
+  return OffscreenCanvas.instance().getPatternBasedOnColors(
+    color,
+    { h: color.h, s: color.s, l: color.l - 10 },
+    //color.h,
+    //color.s,
+    //color.l,
     width,
     height,
     3

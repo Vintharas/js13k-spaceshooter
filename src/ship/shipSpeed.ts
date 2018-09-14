@@ -2,6 +2,7 @@ import Config from "../config";
 
 import { Vector } from "../vector";
 import { Ship } from "./ship";
+import { Draw } from "../draw";
 
 export interface ShipSpeedAndLocation extends Sprite {
   updateShipInformation(ship: Ship): void;
@@ -27,10 +28,8 @@ export function ShipSpeedAndLocation() {
       let formattedSpeed = (this.speed * 100).toFixed(0);
       let text = `${formattedSpeed} zork/s`;
 
-      this.context.fillStyle = "white";
-      this.context.font = `normal normal 12px monospace`;
-      this.context.fillText(this.shipPosition, this.x, this.y);
-      this.context.fillText(text, this.x + SpeedIndicatorX, this.y);
+      Draw.fillText(this.context, this.shipPosition, this.x, this.y);
+      Draw.fillText(this.context, text, this.x + SpeedIndicatorX, this.y);
     }
   });
 }

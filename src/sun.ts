@@ -2,11 +2,11 @@ import {
   Position,
   getCanvasPosition,
   degreesToRadians,
-  getValueInRange,
   isObjectOutOfSectorBounds
 } from "./utils";
 import { generateName } from "./names";
 import { PlanetType, getPattern } from "./planet";
+import { Draw } from "./draw";
 
 export interface Sun extends Sprite {
   radius: number;
@@ -52,17 +52,15 @@ export function createSun(
       this.context.translate(position.x, position.y);
       this.context.rotate(degreesToRadians(this.rotation));
 
-      this.context.fillStyle = getPattern(
-        textureWidth,
-        textureHeight,
-        PlanetType.Sun
+      Draw.fillCircle(
+        this.context,
+        0,
+        0,
+        this.radius,
+        getPattern(textureWidth, textureHeight, PlanetType.Sun)
       );
-      this.context.beginPath(); // start drawing a shape
-      this.context.arc(0, 0, this.radius, 0, Math.PI * 2);
-      this.context.fill(); // outline the circle
 
       // #3. gradient to give it a 3d look
-      this.context.beginPath(); // start drawing a shape
       let gradient = this.context.createRadialGradient(
         0,
         0,
@@ -73,32 +71,26 @@ export function createSun(
       );
       gradient.addColorStop(0, "rgba(0,0,0,0)");
       gradient.addColorStop(1, "rgba(0,0,0,0.7)");
-      this.context.fillStyle = gradient;
-      this.context.arc(0, 0, this.radius, 0, Math.PI * 2);
-      this.context.fill();
+      Draw.fillCircle(this.context, 0, 0, this.radius, gradient);
 
-      // Damage radius + energy radius
-      this.context.beginPath(); // start drawing a shape
-      this.context.strokeStyle = "red";
-      this.context.setLineDash([2, 2]);
-      this.context.arc(0, 0, this.damageOuterRadius, 0, Math.PI * 2);
-      this.context.stroke();
-
-      this.context.beginPath(); // start drawing a shape
-      this.context.strokeStyle = "yellow";
-      this.context.setLineDash([3, 7]);
-      this.context.arc(0, 0, this.energyOuterRadius, 0, Math.PI * 2);
-      this.context.stroke();
+      // Damage radius
+      Draw.drawCircle(this.context, 0, 0, this.damageOuterRadius, "red", 1, [
+        2,
+        2
+      ]);
+      // Energy radius
+      Draw.drawCircle(this.context, 0, 0, this.energyOuterRadius, "yellow", 1, [
+        3,
+        7
+      ]);
 
       this.context.restore();
 
       // #4. sun name
       this.context.save();
       this.context.translate(position.x, position.y - radius - 45);
-      this.context.fillStyle = "rgba(255,255,255,0.8)";
-      this.context.font = `normal normal 14px monospace`;
       let textOffset = (sunName.length / 2) * 10;
-      this.context.fillText(sunName.toUpperCase(), -textOffset, 0);
+      Draw.fillText(this.context, sunName.toUpperCase(), -textOffset, 0);
       this.context.restore();
     }
   });

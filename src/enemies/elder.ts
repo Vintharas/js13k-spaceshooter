@@ -19,6 +19,7 @@ import {
 import OffscreenCanvas from "../canvas";
 import { Draw } from "../draw";
 import { after } from "../fp";
+import Config from "../config";
 
 // Elder race of aliens jara, jara
 // Using the elder name couldn't be more confusing XD
@@ -65,7 +66,6 @@ export function ElderPool(scene: Scene, ship: Position): Pool {
           let position = getCanvasPosition(this, /* camera */ this.ship);
           this.renderElder(position);
 
-          /*
           // Show elder ship path
           if (Config.debug && Config.showPath) {
             this.context.save();
@@ -79,9 +79,7 @@ export function ElderPool(scene: Scene, ship: Position): Pool {
             );
             this.context.restore();
           }
-          */
 
-          /*
           // Show elder ship collision area
           if (Config.debug && Config.renderCollisionArea) {
             this.context.save();
@@ -90,7 +88,6 @@ export function ElderPool(scene: Scene, ship: Position): Pool {
             Draw.drawCircle(this.context, 0, 0, this.width / 2, "red");
             this.context.restore();
           }
-          */
         },
         init(args: any) {
           // load defaults based on type
@@ -101,7 +98,8 @@ export function ElderPool(scene: Scene, ship: Position): Pool {
             composeBehavior(elder, PatrolAroundTarget(PatrolType.Orbit, 200));
             composeBehavior(elder, FollowSteadyBehavior(this.ship, 300));
             composeBehavior(elder, Shoot(scene, this.ship));
-          } else if (this.elderType === ElderType.Drone) {
+          }
+          if (this.elderType === ElderType.Drone) {
             // change this behavior to follow fast
             composeBehavior(elder, PatrolAroundTarget(PatrolType.Random));
             composeBehavior(elder, FollowSteadyBehavior(this.ship, 400));
@@ -115,8 +113,7 @@ export function ElderPool(scene: Scene, ship: Position): Pool {
       });
       return elder;
     },
-    //maxSize: Config.Elders.MaxNumber
-    maxSize: 100
+    maxSize: Config.Elders.MaxNumber
   });
 }
 
@@ -268,12 +265,8 @@ function getElderPattern(accent: HSL) {
   let pattern = OffscreenCanvas.instance().getPatternBasedOnColors(
     grey,
     accent,
-    //Config.Textures.Elder,
-    //Config.Textures.Elder
-    20,
-    20
+    Config.Textures.Elder,
+    Config.Textures.Elder
   );
   return pattern;
 }
-// TODO: could have a couple of patterns with purple and phosphorecent green
-// or something like that

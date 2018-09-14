@@ -59,9 +59,9 @@ export default class Game {
 
   goToSpaceScene(selectedFaction: Faction = Faction.Blue): void {
     // can have more music in other parts of the game
-    this.gameMusic.play(Track.Space);
     this.gameData = GameData(selectedFaction);
     this.switchToScene(createSpaceScene(this.gameData));
+    this.gameMusic.play(Track.Space);
   }
 
   goToGameOverScene({ win = false } = {}): any {
@@ -98,15 +98,23 @@ export default class Game {
     this.preloadPlanetTexture(PlanetType.Sun, 100);
     this.preloadElderTexture(ElderColors.granate);
     this.preloadElderTexture(ElderColors.green);
+    // preload asteroid texture
+    let color = { h: 37, s: 55, l: 57 };
+    OffscreenCanvas.instance().getPatternBasedOnColors(color, {
+      h: color.h,
+      s: color.s,
+      l: color.l + 10
+    });
   }
 
   preloadPlanetTexture(type: PlanetType, size: number) {
     let color = PlanetBaseColors[type];
-    OffscreenCanvas.instance().getPatternBasedOnColor(
-      color.h,
-      color.s,
-      color.s,
-      size
+    OffscreenCanvas.instance().getPatternBasedOnColors(
+      color,
+      { h: color.h, s: color.s, l: color.l + 10 },
+      size,
+      size,
+      3
     );
   }
   preloadElderTexture(accent: HSL) {

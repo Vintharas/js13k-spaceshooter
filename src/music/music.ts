@@ -1,3 +1,4 @@
+/*
 class HarmonicSynth {
   private masterGain: GainNode;
   private partials: OscillatorNode[] = [];
@@ -59,8 +60,10 @@ class HarmonicSynth {
     this.partials[0].onended = callback;
   }
 }
+*/
 
 // duration, quarter note = 1, half note = 0.5, etc
+/*
 interface Note {
   freq: number;
   duration: number;
@@ -68,8 +71,10 @@ interface Note {
 function Note(freq: number, duration: number): Note {
   return { freq, duration };
 }
+*/
 
 // tempo = beats per minute for this particular sequence
+/*
 function Sequence(
   ac: AudioContext,
   notes: Note[],
@@ -99,6 +104,7 @@ function Sequence(
     }
   };
 }
+*/
 
 /*
 // use ramps?
@@ -180,6 +186,7 @@ function GameOpeningMusic(ac: AudioContext): MusicTrack {
   };
 }
 
+/*
 function SpaceMusic(ac: AudioContext): MusicTrack {
   let G4 = 440 * Math.pow(2, -2 / 12);
   let A4 = 440;
@@ -256,6 +263,7 @@ function SpaceMusic(ac: AudioContext): MusicTrack {
     }
   };
 }
+*/
 
 export const enum Track {
   Opening,
@@ -292,5 +300,6 @@ interface Tracks {
 }
 const Tracks: Tracks = {
   [Track.Opening]: GameOpeningMusic,
-  [Track.Space]: SpaceMusic
+  //[Track.Space]: SpaceMusic
+  [Track.Space]: GameOpeningMusic
 };

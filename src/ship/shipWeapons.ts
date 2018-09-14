@@ -1,6 +1,5 @@
 import { Scene } from "../scenes/scene";
 import { ShipEnergy } from "./shipEnergy";
-import Config from "../config";
 import { Position, RGB } from "../utils";
 import createBullet from "../bullet";
 import { ShipSystem, ShipSystemMixin } from "./shipSystems";

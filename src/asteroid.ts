@@ -69,10 +69,10 @@ export function createAsteroid(
 
       // this is a brownish color
       // could have different colors for different clusters of asteroids
-      this.context.fillStyle = OffscreenCanvas.instance().getPatternBasedOnColor(
-        37,
-        55,
-        57
+      let color = { h: 37, s: 55, l: 57 };
+      this.context.fillStyle = OffscreenCanvas.instance().getPatternBasedOnColors(
+        color,
+        { h: color.h, s: color.s, l: color.l + 10 }
       );
       this.context.fill(); // fill circle
       this.context.restore();
