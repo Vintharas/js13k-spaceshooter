@@ -29,7 +29,7 @@ let Config = {
   mapBoundary: 10000,
 
   // enable debug printouts
-  debug: true,
+  debug: false,
   renderDebugData: true,
   verbose: false, // prints all info of ships in console
   typesToLog: [
