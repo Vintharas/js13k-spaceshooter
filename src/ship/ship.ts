@@ -1,6 +1,6 @@
 import { degreesToRadians, Position } from "../utils";
 import { Scene } from "../scenes/scene";
-import { createStaticParticle, Particle } from "../particles";
+import { StaticParticle, Particle } from "../particles";
 import Config from "../config";
 import { Faction } from "../factions";
 //import { ShipRadar } from "./shipRadar";
@@ -242,7 +242,7 @@ export default function createShip(scene: Scene, faction: Faction) {
       particleAxis: number,
       offset: Position = { x: 0, y: 0 }
     ): Particle {
-      return createStaticParticle(
+      return StaticParticle(
         { x: Config.canvasWidth / 2, y: Config.canvasHeight / 2 }, // ship position remains static in the canvas
         { dx: 1, dy: 1 }, // base speed for particles
         // the particle axis is opposite to the rotation

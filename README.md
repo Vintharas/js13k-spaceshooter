@@ -19,9 +19,19 @@
 
 ## TODOs
 
+- improve fps
+  - minimize gc thrasing. use pools
+    - in general minimize work update/render for objects the player can't interact with
+    - particles
+    - planets/suns/asteroids/elders
+      - use pools.
+      - remove objects when you're not in system their system
+      - load objects in new system
+    - bullets
+  - instead of creating everything in memory. Try creating all the data in memory, but not the game objects
 - ship radar to be more like arrows showing points of interest overlayed
-    - switch on/switch off, 
-    - overlays on ship screen and show points of interest
+  - switch on/switch off,
+  - overlays on ship screen and show points of interest
   - find a new home for manking before X time
     - show messages and provide some breadcrumbs to find that planet
       - transmission from some aliens?
@@ -29,8 +39,6 @@
     - refactor drawing primitives
     - review other heavy source code files
   - fix regressions
-    - asteroid collision
-    - alien follow
     - end of galaxy, go to the other side
     - there's something wrong with the stars in the background. particularly when going towards negative numbers. they disappear when they shouldnt
   - sector creation
@@ -55,6 +63,7 @@
 - refactor to make use of config file again
 
 - good to haves
+
   - resize canvas on screen change
   - do inside planets travel faster?
   - pixel font

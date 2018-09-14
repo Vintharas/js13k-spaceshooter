@@ -7,7 +7,7 @@ import {
   Color
 } from "./utils";
 import { Scene } from "./scenes/scene";
-import { createParticle } from "./particles";
+import { Particle } from "./particles";
 import { Draw } from "./draw";
 
 export interface Bullet extends Sprite {
@@ -52,7 +52,7 @@ export default function createBullet(
       //this.followNearTarget();
       this.advance();
       for (let i = 0; i <= 2 /* number of particles */; i++) {
-        let particle = createParticle(
+        let particle = Particle(
           { x: this.x, y: this.y },
           { dx: this.dx, dy: this.dy },
           cameraPosition,

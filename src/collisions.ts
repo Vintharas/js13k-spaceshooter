@@ -7,7 +7,7 @@ import {
   isObjectOutOfCollisionBounds
 } from "./utils";
 import Config from "./config";
-import { createExplosionParticle } from "./particles";
+import { ExplosionParticle } from "./particles";
 import createCell, { CellType, Cell, getRandomCellType } from "./cell";
 import { Ship } from "./ship/ship";
 import { createText } from "./text";
@@ -17,6 +17,7 @@ import { Vector } from "./vector";
 import { Bullet } from "./bullet";
 import Game from "./game";
 import { Story } from "./story";
+import { Explosion } from "./effects/explosion";
 
 let EnergyBoost = 20;
 let LifeBoost = 10;
@@ -199,25 +200,8 @@ export default class CollisionsEngine {
   }
 
   addExplosion(scene: Scene, sprite: Sprite) {
-    // TODO: extract colors and selection
-    // to a helper function
-    let red = { r: 255, g: 0, b: 0 };
-    let orange = { r: 255, g: 165, b: 0 };
-    let yellow = { r: 255, g: 255, b: 0 };
-    let explosionColors = [red, orange, yellow];
-
-    // TODO: unify this for the love of gooood!
-    let spriteSize = sprite.radius || sprite.width || sprite.size;
-    let numberOfParticles = spriteSize * 10;
-    for (let i = 0; i < numberOfParticles; i++) {
-      let colorIndex = Math.round(Math.random() * 2);
-      let particle = createExplosionParticle(sprite, scene.cameraPosition, {
-        ttl: 50,
-        color: explosionColors[colorIndex],
-        magnitude: spriteSize / 2
-      });
-      scene.addSprite(particle);
-    }
+    let explosion = Explosion(scene, sprite);
+    for (let particle of explosion.particles) scene.addSprite(particle);
   }
 
   releaseCells(scene: Scene, asteroid: Asteroid) {

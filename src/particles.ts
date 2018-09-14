@@ -19,7 +19,7 @@ export interface ParticleOptions {
 // particles that don't take into account cameraPosition
 // TODO: refactor these two so they use common code
 // right now it is quite specific to the ships exhaust when moving the ship
-export function createStaticParticle(
+export function StaticParticle(
   position: Position,
   velocity: Velocity,
   particleAxis: number,
@@ -85,7 +85,7 @@ export function createStaticParticle(
 }
 
 // particle that takes into account camera position
-export function createParticle(
+export function Particle(
   position: Position,
   velocity: Velocity,
   cameraPosition: Position,
@@ -134,42 +134,20 @@ export function createParticle(
 
 // particle that takes into account camera position
 // and goes in every direction
-export function createExplosionParticle(
+export function ExplosionParticle(
   position: Position,
   cameraPosition: Position,
   options: ParticleOptions
 ): any {
   let angle = getValueInRange(0, 360);
   let magnitude = getValueInRange(0, options.magnitude || 5);
-  // HERE!!!
-  // separate angles from magnitude
-  // make random angles from 120 -120 (f.i.)
-  // and separate random magnitude of your choice
-  // that way the particle explosion will be more predictable
-  // that as it is right now!!
-  //let dxVariance = getValueInRange(0.5, 3);
-  //let dyVariance = getValueInRange(0.5, 3);
   let dx = Math.cos(degreesToRadians(angle)) * magnitude;
   let dy = Math.sin(degreesToRadians(angle)) * magnitude;
   let maxTTL = 30;
-
-  //let ParticleAxisVariance = getValueInRange(-15, 15);
-  //let cos = Math.cos(degreesToRadians(particleAxis + ParticleAxisVariance));
-  //let sin = Math.sin(degreesToRadians(particleAxis + ParticleAxisVariance));
-
   return kontra.sprite({
     type: SpriteType.Particle,
-
-    // particles originate from the same point
-    // the always originate from the back of the ship
-    // which is in the center of the screen
     x: position.x,
     y: position.y,
-
-    // variance so that different particles will have
-    // slightly different trajectories
-    //dx: velocity.dx * dxVariance,
-    //dy: velocity.dy * dyVariance,
     dx,
     dy,
 
@@ -178,7 +156,6 @@ export function createExplosionParticle(
     ttl: getValueInRange(0, options.ttl || maxTTL),
     dt: 0,
 
-    // particles are small
     width: 2,
     height: 2,
     color: options.color || { r: 255, g: 255, b: 255 },
