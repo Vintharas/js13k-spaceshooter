@@ -1,6 +1,7 @@
 import { Scene } from "../scenes/scene";
 import { ExplosionParticle, Particle } from "../particles";
 import { getRandomValueOf } from "../utils";
+import { callTimes } from "../fp";
 
 interface Explosion {
   particles: Particle[];
@@ -27,10 +28,4 @@ export function Explosion(scene: Scene, sprite: Sprite): Explosion {
     });
   });
   return { particles };
-}
-
-function callTimes<T>(n: number, func: (() => T)): T[] {
-  return [...Array(n)].map((item, idx) => {
-    return func();
-  });
 }

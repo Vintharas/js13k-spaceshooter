@@ -13,3 +13,7 @@ export function after(func: any, ...afterFuncs: any[]) {
     afterFuncs.forEach((f: any) => f.apply(this, args));
   };
 }
+
+export function callTimes<T>(n: number, func: (() => T)): T[] {
+  return [...Array(n)].map(() => func());
+}
