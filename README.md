@@ -1,3 +1,26 @@
+# Earth That Was
+
+A game under 13Kb for the [js13kgames.com](js13kgames.com) competition.
+
+## Setup
+
+### Requirements
+
+- Node and npm
+
+### Development environment
+
+1. Clone repo
+2. `npm install`
+3. `npm start`
+4. This should set up a webpack dev environment and open the browser. Any updates in the source code will refresh the game with the new code.
+5. To enable additional debug info check `config.ts`
+
+### Build prod package
+
+1. `npm build run`
+2. prod package is in the `dist` folder
+
 # JS13K SPACESHOOTER
 
 - Start working on the game
@@ -19,16 +42,6 @@
 
 ## TODOs
 
-- improve fps
-  - minimize gc thrasing. use pools
-    - in general minimize work update/render for objects the player can't interact with
-    - particles
-    - planets/suns/asteroids/elders
-      - use pools.
-      - remove objects when you're not in system their system
-      - load objects in new system
-    - bullets
-  - instead of creating everything in memory. Try creating all the data in memory, but not the game objects
 - ship radar to be more like arrows showing points of interest overlayed
   - switch on/switch off,
   - overlays on ship screen and show points of interest
@@ -39,6 +52,8 @@
     - refactor drawing primitives
     - review other heavy source code files
   - fix regressions
+    - asteroid collision
+    - alien follow
     - end of galaxy, go to the other side
     - there's something wrong with the stars in the background. particularly when going towards negative numbers. they disappear when they shouldnt
   - sector creation
