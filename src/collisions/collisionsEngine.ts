@@ -72,7 +72,9 @@ export class NewCollisionsEngine {
   }
 
   findStrategyThatApplies(s1: Sprite, s2: Sprite): CollisionStrategy {
-    return this.strategies.find(strategy => strategy.isApplicable(s1, s2));
+    return this.strategies.find(strategy =>
+      strategy.isApplicable(s1, s2, this.dt)
+    );
   }
 
   initializeShip() {

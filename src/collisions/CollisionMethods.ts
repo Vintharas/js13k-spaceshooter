@@ -11,6 +11,12 @@ export const CollisionMethods = {
       const r2 = getRadius(s2);
       return Vector.getDistanceMagnitude(s1, s2) < r1 + r2;
     }
+  },
+  ObjectWithinRadius: {
+    haveCollided(s1: Sprite, s2: Sprite, radius: number) {
+      const r2 = getRadius(s2);
+      return Vector.getDistanceMagnitude(s1, s2) < radius + r2;
+    }
   }
 };
 
