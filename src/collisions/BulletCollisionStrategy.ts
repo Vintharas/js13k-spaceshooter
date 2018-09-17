@@ -4,7 +4,7 @@ import { Scene } from "../scenes/scene";
 import { Explosion } from "../effects/explosion";
 import { CollisionMethods } from "./CollisionMethods";
 
-export class BulletCollision implements CollisionStrategy {
+export class BulletCollisionStrategy implements CollisionStrategy {
   private haveCollided = CollisionMethods.CircleCollision.haveCollided;
 
   constructor(private scene: Scene) {}

@@ -7,7 +7,6 @@ import {
   isObjectOutOfCollisionBounds
 } from "../utils";
 import Config from "../config";
-import { ExplosionParticle } from "../particles";
 import createCell, { CellType, Cell, getRandomCellType } from "../cell";
 import { Ship } from "../ship/ship";
 import { createText } from "../text";
@@ -20,16 +19,22 @@ import { Story } from "../story";
 import { Explosion } from "../effects/explosion";
 import { CollisionStrategy } from "./CollisionStrategy";
 import { NoopCollisionStrategy } from "./NoopCollisionStrategy";
+import { DefaultCollisionStrategies } from "./DefaultCollisionStrategies";
 
 let EnergyBoost = 20;
 let LifeBoost = 10;
 
 export class NewCollisionsEngine {
-  private strategies: CollisionStrategy[] = [new NoopCollisionStrategy()];
+  private strategies: CollisionStrategy[] = [];
   private ship: Ship;
   private dt = 0;
 
-  constructor(private scene: Scene) {}
+  constructor(
+    private scene: Scene,
+    collisionStrategies = DefaultCollisionStrategies(scene)
+  ) {
+    this.strategies.push(...collisionStrategies);
+  }
 
   processCollisions(dt: number) {
     this.dt += dt;
@@ -51,10 +56,15 @@ export class NewCollisionsEngine {
           collidableObjects[j]
         );
         if (
-          strategy.handleCollision(collidableObjects[i], collidableObjects[j])
+          strategy.handleCollision(
+            collidableObjects[i],
+            collidableObjects[j]
+          ) &&
+          collidableObjects[i].type !== SpriteType.Ship
         ) {
           // if there was a collision we don't need to check
           // that more objects collide with this one
+          // unless it's the ship
           break;
         }
       }
