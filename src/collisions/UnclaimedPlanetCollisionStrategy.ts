@@ -1,4 +1,4 @@
-import { CollisionStrategy } from "./CollisionStrategy";
+import { CollisionStrategy, BaseCollisionStrategy } from "./CollisionStrategy";
 import { Planet, PlanetType } from "../planet";
 import { Ship } from "../ship/ship";
 import Game from "../game";
@@ -6,10 +6,12 @@ import { Story } from "../story";
 import { CollisionMethods } from "./CollisionMethods";
 import { Scene } from "../scenes/scene";
 
-export class UnclaimedPlanetCollisionStrategy implements CollisionStrategy {
+export class UnclaimedPlanetCollisionStrategy extends BaseCollisionStrategy {
   private haveCollided = CollisionMethods.ObjectWithinRadius.haveCollided;
 
-  constructor(private scene: Scene) {}
+  constructor(private scene: Scene) {
+    super(0);
+  }
 
   isApplicable(s1: Sprite, s2: Sprite): boolean {
     return (

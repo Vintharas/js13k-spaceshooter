@@ -18,7 +18,6 @@ import Game from "../game";
 import { Story } from "../story";
 import { Explosion } from "../effects/explosion";
 import { CollisionStrategy } from "./CollisionStrategy";
-import { NoopCollisionStrategy } from "./NoopCollisionStrategy";
 import { DefaultCollisionStrategies } from "./DefaultCollisionStrategies";
 
 let EnergyBoost = 20;
@@ -26,8 +25,6 @@ let LifeBoost = 10;
 
 export class NewCollisionsEngine {
   private strategies: CollisionStrategy[] = [];
-  private ship: Ship;
-  private dt = 0;
 
   constructor(
     private scene: Scene,
@@ -37,10 +34,8 @@ export class NewCollisionsEngine {
   }
 
   processCollisions(dt: number) {
-    this.dt += dt;
+    this.strategies.forEach(s => s.updateTicker(dt));
 
-    this.initializeShip();
-    // temporary hack to test something
     let collidableObjects = [
       ...this.scene.sprites.foreground,
       ...this.scene.sprites.activePoolObjects()
@@ -64,7 +59,15 @@ export class NewCollisionsEngine {
         ) {
           // if there was a collision we don't need to check
           // that more objects collide with this one
-          // unless it's the ship
+          // unless it's the ship, when still want to check
+          // whether the Ship collides with more objects
+          if (Config.debug && Config.verbose)
+            console.log(
+              "Collided: ",
+              strategy,
+              collidableObjects[i],
+              collidableObjects[j]
+            );
           break;
         }
       }
@@ -72,20 +75,7 @@ export class NewCollisionsEngine {
   }
 
   findStrategyThatApplies(s1: Sprite, s2: Sprite): CollisionStrategy {
-    return this.strategies.find(strategy =>
-      strategy.isApplicable(s1, s2, this.dt)
-    );
-  }
-
-  initializeShip() {
-    // TODO: we could inject this via constructor
-    // if I untangle the dependency mess
-    if (this.ship) return;
-
-    let shipTypedSprites = this.scene.sprites.foreground.filter(
-      (s: Sprite) => s.type === SpriteType.Ship
-    ) as Ship[];
-    if (shipTypedSprites.length > 0) [this.ship] = shipTypedSprites;
+    return this.strategies.find(strategy => strategy.isApplicable(s1, s2));
   }
 }
 

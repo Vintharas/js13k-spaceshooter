@@ -1,5 +1,7 @@
-import { Position, Positions, isObjectOutOfRenderBounds } from "../utils";
-import CollisionsEngine from "../collisions/collisionsEngine";
+import { Position, Positions } from "../utils";
+import CollisionsEngine, {
+  NewCollisionsEngine
+} from "../collisions/collisionsEngine";
 import Config from "../config";
 import { Camera, createCamera } from "./camera";
 import { createGameStatusText, Message } from "../text";
@@ -118,7 +120,8 @@ export function createScene({
       text.forEach(t => this.messageQueue.push(t));
     }
   });
-  scene.collisionEngine = new CollisionsEngine(scene);
+  //scene.collisionEngine = new CollisionsEngine(scene);
+  scene.collisionEngine = new NewCollisionsEngine(scene);
 
   // Adds debug info sprite with fps, number of objects, etc
   if (Config.debug && Config.renderDebugData) {

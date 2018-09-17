@@ -10,22 +10,22 @@ import { Scene } from "../scenes/scene";
 
 export class ClaimedPlanetCollisionStrategy extends BaseCollisionStrategy {
   private haveCollided = CollisionMethods.ObjectWithinRadius.haveCollided;
-  private dt = 0;
   period = 0.4;
 
   constructor(private scene: Scene) {
     super(/* period */ 0.4);
   }
 
-  isApplicable(s1: Sprite, s2: Sprite, dt: number): boolean {
+  isApplicable(s1: Sprite, s2: Sprite): boolean {
     return (
-      this.withinPeriod(dt) &&
+      this.withinPeriod() &&
       ((isPlanetAndShip(s1, s2) && planetIsClaimed(s1 as Planet, s2 as Ship)) ||
         (isPlanetAndShip(s2, s1) && planetIsClaimed(s2 as Planet, s1 as Ship)))
     );
   }
 
   handleCollision(s1: Sprite, s2: Sprite): boolean {
+    this.resetTicker();
     if (s1.type === SpriteType.Planet)
       return this.handleCollisionBetweenPlanetAndShip(s1 as Planet, s2 as Ship);
     else

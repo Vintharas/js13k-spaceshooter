@@ -1,4 +1,4 @@
-import { CollisionStrategy } from "./CollisionStrategy";
+import { BaseCollisionStrategy } from "./CollisionStrategy";
 import { Asteroid, createAsteroid } from "../asteroid";
 import { CollisionMethods } from "./CollisionMethods";
 import { Explosion } from "../effects/explosion";
@@ -6,10 +6,12 @@ import { Scene } from "../scenes/scene";
 import { getValueInRange } from "../utils";
 import createCell, { CellType } from "../cell";
 
-export class AsteroidCollisionStrategy implements CollisionStrategy {
+export class AsteroidCollisionStrategy extends BaseCollisionStrategy {
   private haveCollided = CollisionMethods.CircleCollision.haveCollided;
 
-  constructor(private scene: Scene) {}
+  constructor(private scene: Scene) {
+    super();
+  }
 
   isApplicable(s1: Sprite, s2: Sprite): boolean {
     return s1.type === SpriteType.Asteroid;

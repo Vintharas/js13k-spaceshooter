@@ -1,13 +1,15 @@
-import { CollisionStrategy } from "./CollisionStrategy";
+import { CollisionStrategy, BaseCollisionStrategy } from "./CollisionStrategy";
 import { Bullet } from "../bullet";
 import { Scene } from "../scenes/scene";
 import { Explosion } from "../effects/explosion";
 import { CollisionMethods } from "./CollisionMethods";
 
-export class BulletCollisionStrategy implements CollisionStrategy {
+export class BulletCollisionStrategy extends BaseCollisionStrategy {
   private haveCollided = CollisionMethods.CircleCollision.haveCollided;
 
-  constructor(private scene: Scene) {}
+  constructor(private scene: Scene) {
+    super();
+  }
 
   isApplicable(s1: Sprite, s2: Sprite): boolean {
     return s1.type === SpriteType.Bullet;

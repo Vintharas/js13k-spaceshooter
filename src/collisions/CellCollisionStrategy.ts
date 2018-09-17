@@ -1,4 +1,4 @@
-import { CollisionStrategy } from "./CollisionStrategy";
+import { BaseCollisionStrategy } from "./CollisionStrategy";
 import { Ship } from "../ship/ship";
 import { Cell, CellType } from "../cell";
 import { CollisionMethods } from "./CollisionMethods";
@@ -7,10 +7,12 @@ import { createText } from "../text";
 import Config from "../config";
 import { Scene } from "../scenes/scene";
 
-export class CellCollisionStrategy implements CollisionStrategy {
+export class CellCollisionStrategy extends BaseCollisionStrategy {
   private haveCollided = CollisionMethods.CircleCollision.haveCollided;
 
-  constructor(private scene: Scene) {}
+  constructor(private scene: Scene) {
+    super();
+  }
 
   isApplicable(s1: Sprite, s2: Sprite): boolean {
     return isCellAndShip(s1, s2) || isCellAndShip(s2, s1);
@@ -23,9 +25,8 @@ export class CellCollisionStrategy implements CollisionStrategy {
   }
 
   handleCollisionBetweenCellAndShip(cell: Cell, ship: Ship): boolean {
-    let dx = cell.x - ship.x;
-    let dy = cell.y - ship.y;
     if (this.haveCollided(cell, ship)) {
+      console.log("cell collided");
       cell.ttl = 0;
       // add energy or life to the ship
       if (cell.cellType === CellType.Energy) {
@@ -67,5 +68,5 @@ export class CellCollisionStrategy implements CollisionStrategy {
 }
 
 function isCellAndShip(s1: Sprite, s2: Sprite) {
-  return s1.type !== SpriteType.Cell && s2.type === SpriteType.Ship;
+  return s1.type === SpriteType.Cell && s2.type === SpriteType.Ship;
 }

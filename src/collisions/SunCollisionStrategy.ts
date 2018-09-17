@@ -10,20 +10,20 @@ import { createText } from "../text";
 
 export class SunCollisionStrategy extends BaseCollisionStrategy {
   private haveCollided = CollisionMethods.ObjectWithinRadius.haveCollided;
-  private dt = 0;
   period = 0.4;
 
   constructor(private scene: Scene) {
     super(/* period */ 0.4);
   }
 
-  isApplicable(s1: Sprite, s2: Sprite, dt: number): boolean {
+  isApplicable(s1: Sprite, s2: Sprite): boolean {
     return (
-      this.withinPeriod(dt) && (isSunAndShip(s1, s2) || isSunAndShip(s2, s1))
+      this.withinPeriod() && (isSunAndShip(s1, s2) || isSunAndShip(s2, s1))
     );
   }
 
   handleCollision(s1: Sprite, s2: Sprite): boolean {
+    this.resetTicker();
     if (s1.type === SpriteType.Sun)
       return this.handleCollisionBetweenSunAndShip(s1 as Sun, s2 as Ship);
     else return this.handleCollisionBetweenSunAndShip(s2 as Sun, s1 as Ship);
