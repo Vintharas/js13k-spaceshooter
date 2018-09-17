@@ -1,0 +1,12 @@
+import { CollisionStrategy } from "./CollisionStrategy";
+
+/* Catch all strategy */
+export class NoopCollisionStrategy implements CollisionStrategy {
+  isApplicable(s1: Sprite, s2: Sprite): boolean {
+    return true;
+  }
+
+  handleCollision(s1: Sprite, s2: Sprite): boolean {
+    return false;
+  }
+}

@@ -1,5 +1,5 @@
 import { Position, Positions, isObjectOutOfRenderBounds } from "../utils";
-import CollisionsEngine from "../collisions";
+import CollisionsEngine from "../collisions/collisionsEngine";
 import Config from "../config";
 import { Camera, createCamera } from "./camera";
 import { createGameStatusText, Message } from "../text";

@@ -1,26 +1,81 @@
-import { Scene } from "./scenes/scene";
-import { createAsteroid, Asteroid } from "./asteroid";
+import { Scene } from "../scenes/scene";
+import { createAsteroid, Asteroid } from "../asteroid";
 import {
   Position,
   getValueInRange,
   RGB,
   isObjectOutOfCollisionBounds
-} from "./utils";
-import Config from "./config";
-import { ExplosionParticle } from "./particles";
-import createCell, { CellType, Cell, getRandomCellType } from "./cell";
-import { Ship } from "./ship/ship";
-import { createText } from "./text";
-import { Planet, PlanetType } from "./planet";
-import { Sun } from "./sun";
-import { Vector } from "./vector";
-import { Bullet } from "./bullet";
-import Game from "./game";
-import { Story } from "./story";
-import { Explosion } from "./effects/explosion";
+} from "../utils";
+import Config from "../config";
+import { ExplosionParticle } from "../particles";
+import createCell, { CellType, Cell, getRandomCellType } from "../cell";
+import { Ship } from "../ship/ship";
+import { createText } from "../text";
+import { Planet, PlanetType } from "../planet";
+import { Sun } from "../sun";
+import { Vector } from "../vector";
+import { Bullet } from "../bullet";
+import Game from "../game";
+import { Story } from "../story";
+import { Explosion } from "../effects/explosion";
+import { CollisionStrategy } from "./CollisionStrategy";
+import { NoopCollisionStrategy } from "./NoopCollisionStrategy";
 
 let EnergyBoost = 20;
 let LifeBoost = 10;
+
+export class NewCollisionsEngine {
+  private strategies: CollisionStrategy[] = [new NoopCollisionStrategy()];
+  private ship: Ship;
+  private dt = 0;
+
+  constructor(private scene: Scene) {}
+
+  processCollisions(dt: number) {
+    this.dt += dt;
+
+    this.initializeShip();
+    // temporary hack to test something
+    let collidableObjects = [
+      ...this.scene.sprites.foreground,
+      ...this.scene.sprites.activePoolObjects()
+    ]
+      .filter(s => !isObjectOutOfCollisionBounds(s, this.scene.cameraPosition))
+      .filter(s => Config.collidableTypes.includes(s.type));
+
+    // collision detection
+    for (let i = 0; i < collidableObjects.length; i++) {
+      for (let j = i + 1; j < collidableObjects.length; j++) {
+        let strategy = this.findStrategyThatApplies(
+          collidableObjects[i],
+          collidableObjects[j]
+        );
+        if (
+          strategy.handleCollision(collidableObjects[i], collidableObjects[j])
+        ) {
+          // if there was a collision we don't need to check
+          // that more objects collide with this one
+          break;
+        }
+      }
+    }
+  }
+
+  findStrategyThatApplies(s1: Sprite, s2: Sprite): CollisionStrategy {
+    return this.strategies.find(strategy => strategy.isApplicable(s1, s2));
+  }
+
+  initializeShip() {
+    // TODO: we could inject this via constructor
+    // if I untangle the dependency mess
+    if (this.ship) return;
+
+    let shipTypedSprites = this.scene.sprites.foreground.filter(
+      (s: Sprite) => s.type === SpriteType.Ship
+    ) as Ship[];
+    if (shipTypedSprites.length > 0) [this.ship] = shipTypedSprites;
+  }
+}
 
 /*
 Improvements for collision engine:
