@@ -1,11 +1,6 @@
 import { degreesToRadians, Position } from "../utils";
 import { Scene } from "../scenes/scene";
-import {
-  StaticParticle,
-  Particle,
-  ParticlePools,
-  ParticleType
-} from "../particles";
+import { ParticlePools } from "../particles/ParticlePools";
 import Config from "../config";
 import { Faction } from "../factions";
 //import { ShipRadar } from "./shipRadar";
@@ -17,6 +12,7 @@ import { ShipWeapons } from "./shipWeapons";
 import { ShipVision } from "./shipVision";
 import { updateWasDamageStatus } from "../behavior";
 import { after } from "../fp";
+import { ParticleType } from "../particles/Particle";
 
 export interface Ship extends Sprite {
   width: number;

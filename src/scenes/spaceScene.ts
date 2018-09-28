@@ -17,7 +17,7 @@ import { ElderPool, ElderType } from "../enemies/elder";
 import { PlanetType, Planet } from "../planet";
 import { Counter } from "../counter";
 import { Story } from "../story";
-import { ParticlePools } from "../particles";
+import { ParticlePools } from "../particles/ParticlePools";
 
 export default function createSpaceScene(gameData: GameData) {
   let game = Game.instance();

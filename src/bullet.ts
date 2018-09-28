@@ -7,9 +7,10 @@ import {
   Color
 } from "./utils";
 import { Scene } from "./scenes/scene";
-import { Particle } from "./particles";
 import { Draw } from "./draw";
 import { callTimes } from "./fp";
+import { ParticlePools } from "./particles/ParticlePools";
+import { ParticleType } from "./particles/Particle";
 
 export interface Bullet extends Sprite {
   damage: number;
@@ -59,16 +60,15 @@ export default function createBullet(
       this.addParticles();
     },
     addParticles() {
-      let particles = callTimes(numberOfParticles, () =>
-        Particle(
-          { x: this.x, y: this.y },
-          { dx: this.dx, dy: this.dy },
+      callTimes(numberOfParticles, () =>
+        ParticlePools.instance().get(ParticleType.Particle, {
+          position: { x: this.x, y: this.y },
+          velocity: { dx: this.dx, dy: this.dy },
           cameraPosition,
           angle,
-          { color }
-        )
+          particleOptions: { color }
+        })
       );
-      particles.forEach(p => scene.addSprite(p));
     },
     /*
     followNearTarget() {

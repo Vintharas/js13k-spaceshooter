@@ -1,5 +1,6 @@
 import { Scene } from "../scenes/scene";
-import { ExplosionParticle, Particle } from "../particles";
+import { ExplosionParticle } from "../particles/ParticlePools";
+import { Particle } from "../particles/Particle";
 import { getRandomValueOf } from "../utils";
 import { callTimes } from "../fp";
 
