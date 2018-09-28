@@ -98,8 +98,7 @@ export function ElderPool(scene: Scene, ship: Position): Pool {
             composeBehavior(elder, PatrolAroundTarget(PatrolType.Orbit, 200));
             composeBehavior(elder, FollowSteadyBehavior(this.ship, 300));
             composeBehavior(elder, Shoot(scene, this.ship));
-          }
-          if (this.elderType === ElderType.Drone) {
+          } else if (this.elderType === ElderType.Drone) {
             // change this behavior to follow fast
             composeBehavior(elder, PatrolAroundTarget(PatrolType.Random));
             composeBehavior(elder, FollowSteadyBehavior(this.ship, 400));

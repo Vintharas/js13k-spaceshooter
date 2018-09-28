@@ -77,6 +77,7 @@ interface PoolBuilder {
 }
 
 interface Pool {
+  objects: Sprite[];
   update(dt?: number): void;
   render(): void;
   clear(): void;

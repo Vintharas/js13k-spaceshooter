@@ -1,4 +1,4 @@
-import { getValueInRange, Color, HSL } from "./utils";
+import { getValueInRange, Color, HSL, degreesToRadians } from "./utils";
 
 // don't like this name
 export default class OffscreenCanvas {
@@ -25,7 +25,6 @@ export default class OffscreenCanvas {
     return this.offscreenCanvas;
   }
 
-  /*
   getPatternBasedOnColor(
     hue: number,
     saturation: number,
@@ -112,9 +111,7 @@ export default class OffscreenCanvas {
     // Also it would be interestin with different distributions in outer/inner
     // parts. That would result in landmasses? for instance
   }
-  */
 
-  /*
   getPatternWithTransparency(
     color: HSL,
     width: number = 16,
@@ -147,7 +144,6 @@ export default class OffscreenCanvas {
 
     return pattern;
   }
-  */
 
   getPatternBasedOnColors(
     primary: HSL,
@@ -218,7 +214,7 @@ function key(
 ) {
   return `${hue}/${saturation}/${light}/${width}/${height}`;
 }
-/*
+
 function tkey(
   hue: number,
   saturation: number,
@@ -228,7 +224,6 @@ function tkey(
 ) {
   return `t/${key(hue, saturation, light, width, height)}`;
 }
-*/
 
 function twocolorkey(
   primary: HSL,

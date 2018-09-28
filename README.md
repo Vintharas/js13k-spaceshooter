@@ -26,9 +26,10 @@ A game under 13Kb for the [js13kgames.com](js13kgames.com) competition.
 - Start working on the game
   - TOPIC: OFFLINE
   - define story
+    - earth doomsday. Find new earth.
     - firefly. smuggling/jobs. fun.
-    - post apocaliptic story? Ai. melancholy.
-  - goal of the game
+    - post apocaliptic story? AI. melancholy.
+  - Goal of the game
     - survive in space before your energy runs out or you die
     - offline
       - as your energy drops your ship system's will go offline
@@ -42,6 +43,13 @@ A game under 13Kb for the [js13kgames.com](js13kgames.com) competition.
 
 ## TODOs
 
+- improve game fps
+  - separate between active/inactive objects
+    - it doesn't make sense to have game objects within the game loop that are extremely distant and which the player can't interact with. I can use pools or a similar system to store/hydrate these objects depending on the position of the player
+      - a star system or sector seems like a nice way to divide things right now
+      - perhaps even a smaller area around the player
+    - it doesn't make sense to run update/render loops for every game object
+  - use pools for particles
 - ship radar to be more like arrows showing points of interest overlayed
   - switch on/switch off,
   - overlays on ship screen and show points of interest
@@ -344,6 +352,8 @@ A game under 13Kb for the [js13kgames.com](js13kgames.com) competition.
 
 ## Art
 
+- background
+  - would be cool to add more objects. supernovas, nearer galaxies, blackholes, etc
 - pixel art for everything
 - ship
   - [*] particle systems for ship thrust
@@ -699,6 +709,7 @@ A game under 13Kb for the [js13kgames.com](js13kgames.com) competition.
 - Fonts
   - try using more pixelated font with generally browser supported fonts
   - or figure something out with doesn't take so much space
+- achievements
 
 ## BUGS
 

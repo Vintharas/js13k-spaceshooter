@@ -1,4 +1,4 @@
-import { getValueInRange, getIntegerInRange, getRandomValueOf } from "./utils";
+import { getIntegerInRange, getRandomValueOf } from "./utils";
 
 export function generateName() {
   let numberOfSyllabes = getIntegerInRange(2, 4);
@@ -11,8 +11,8 @@ export function generateName() {
 }
 
 let vocals = ["a", "e", "i", "o", "u", "ä", "ö", "å"];
-let minCharCode = 97;
-let maxCharCode = 122;
+let minCharCode = 97; // a
+let maxCharCode = 122; // z
 
 function generateSyllable() {
   let syllableSize = getIntegerInRange(1, 3);

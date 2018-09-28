@@ -9,10 +9,15 @@ import {
 import { Scene } from "./scenes/scene";
 import { Particle } from "./particles";
 import { Draw } from "./draw";
+import { callTimes } from "./fp";
 
 export interface Bullet extends Sprite {
   damage: number;
+  owner: Sprite;
+  color: RGB;
 }
+
+const numberOfParticles = 2;
 
 export default function createBullet(
   position: Position,
@@ -29,7 +34,7 @@ export default function createBullet(
 
   return kontra.sprite({
     type: SpriteType.Bullet,
-    // start the bullet on the ship at the end of the triangle
+    // start the bullet at the front of the ship
     x: position.x + cos * 12,
     y: position.y + sin * 12,
     // move the bullet slightly faster than the ship
@@ -40,6 +45,7 @@ export default function createBullet(
     dy: velocity.dy + sin * 5,
     // damage can vary based on who shoots the missile
     damage,
+    // avoid friendly fire
     owner,
     // live only 50 frames
     // TODO: This should be configurable as range of firing
@@ -49,18 +55,20 @@ export default function createBullet(
     height: 2,
     color,
     update() {
-      //this.followNearTarget();
       this.advance();
-      for (let i = 0; i <= 2 /* number of particles */; i++) {
-        let particle = Particle(
+      this.addParticles();
+    },
+    addParticles() {
+      let particles = callTimes(numberOfParticles, () =>
+        Particle(
           { x: this.x, y: this.y },
           { dx: this.dx, dy: this.dy },
           cameraPosition,
           angle,
           { color }
-        );
-        scene.addSprite(particle);
-      }
+        )
+      );
+      particles.forEach(p => scene.addSprite(p));
     },
     /*
     followNearTarget() {

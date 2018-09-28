@@ -1,6 +1,11 @@
 import { degreesToRadians, Position } from "../utils";
 import { Scene } from "../scenes/scene";
-import { StaticParticle, Particle } from "../particles";
+import {
+  StaticParticle,
+  Particle,
+  ParticlePools,
+  ParticleType
+} from "../particles";
 import Config from "../config";
 import { Faction } from "../factions";
 //import { ShipRadar } from "./shipRadar";
@@ -170,18 +175,16 @@ export default function createShip(scene: Scene, faction: Faction) {
       // rotate the ship left or right
       if (kontra.keys.pressed("left")) {
         this.rotation -= 3; // + modifiers.Rotation;
-        let particle = this.createShipParticle(ship.rotation + 75, {
+        this.createShipParticle(ship.rotation + 75, {
           x: 5,
           y: -10
         });
-        scene.addSprite(particle);
       } else if (kontra.keys.pressed("right")) {
         this.rotation += 3; // + modifiers.Rotation;
-        let particle = this.createShipParticle(ship.rotation - 75, {
+        this.createShipParticle(ship.rotation - 75, {
           x: 5,
           y: 10
         });
-        scene.addSprite(particle);
       }
       // move the ship forward in the direction it's facing
       const cos = Math.cos(degreesToRadians(this.rotation));
@@ -200,11 +203,10 @@ export default function createShip(scene: Scene, faction: Faction) {
         this.energy.consume(thrustCost);
         // create particles from this position
         for (let i = 0; i < 2; i++) {
-          let particle = this.createShipParticle(ship.rotation + 180, {
+          this.createShipParticle(ship.rotation + 180, {
             x: 20,
             y: 0
           });
-          scene.addSprite(particle);
         }
       } else if (
         kontra.keys.pressed("down") &&
@@ -216,16 +218,14 @@ export default function createShip(scene: Scene, faction: Faction) {
         this.energy.consume(brakeCost);
         // create particles from this position
 
-        let particleLeft = this.createShipParticle(ship.rotation + 75, {
+        this.createShipParticle(ship.rotation + 75, {
           x: 5,
           y: -10
         });
-        let particleRight = this.createShipParticle(ship.rotation - 75, {
+        this.createShipParticle(ship.rotation - 75, {
           x: 5,
           y: 10
         });
-        scene.addSprite(particleLeft);
-        scene.addSprite(particleRight);
       } else {
         this.ddx = this.ddy = 0;
       }
@@ -241,7 +241,16 @@ export default function createShip(scene: Scene, faction: Faction) {
     createShipParticle(
       particleAxis: number,
       offset: Position = { x: 0, y: 0 }
-    ): Particle {
+    ): void {
+      ParticlePools.instance().get(ParticleType.StaticParticle, {
+        position: { x: Config.canvasWidth / 2, y: Config.canvasHeight / 2 }, // ship position remains static in the canvas
+        velocity: { dx: 1, dy: 1 }, // base speed for particles
+        // the particle axis is opposite to the rotation
+        // of the ship (in the back)
+        particleAxis,
+        offset
+      });
+      /*
       return StaticParticle(
         { x: Config.canvasWidth / 2, y: Config.canvasHeight / 2 }, // ship position remains static in the canvas
         { dx: 1, dy: 1 }, // base speed for particles
@@ -250,6 +259,7 @@ export default function createShip(scene: Scene, faction: Faction) {
         particleAxis,
         offset
       );
+      */
     }
   });
 
