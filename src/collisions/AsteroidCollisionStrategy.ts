@@ -65,8 +65,7 @@ export class AsteroidCollisionStrategy extends BaseCollisionStrategy {
   }
 
   addExplosion(scene: Scene, sprite: Sprite) {
-    let explosion = Explosion(scene, sprite);
-    for (let particle of explosion.particles) scene.addSprite(particle);
+    Explosion(scene, sprite);
   }
 
   releaseCells(scene: Scene, asteroid: Asteroid) {

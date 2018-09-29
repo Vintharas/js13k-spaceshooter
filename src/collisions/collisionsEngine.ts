@@ -257,8 +257,8 @@ export default class CollisionsEngine {
   }
 
   addExplosion(scene: Scene, sprite: Sprite) {
-    let explosion = Explosion(scene, sprite);
-    for (let particle of explosion.particles) scene.addSprite(particle);
+    // managed via pools
+    Explosion(scene, sprite);
   }
 
   releaseCells(scene: Scene, asteroid: Asteroid) {

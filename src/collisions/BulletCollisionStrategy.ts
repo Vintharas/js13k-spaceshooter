@@ -45,7 +45,6 @@ export class BulletCollisionStrategy extends BaseCollisionStrategy {
   }
 
   addExplosion(scene: Scene, sprite: Sprite) {
-    let explosion = Explosion(scene, sprite);
-    for (let particle of explosion.particles) scene.addSprite(particle);
+    Explosion(scene, sprite);
   }
 }
